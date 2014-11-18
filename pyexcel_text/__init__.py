@@ -1,12 +1,23 @@
-#from pyexcel.io import READERS
-#from pyexcel.io import WRITERS
-#
-#READERS["test"] = "test"
-#WRITERS["test"] = "test"
+"""
+    pyexcel.ext.text
+    ~~~~~~~~~~~~~~~~~~~
+
+    Provide readable string prestation
+
+    :copyright: (c) 2014 by C. W.
+    :license: GPL v3
+"""
+import sys
 from pyexcel.presentation import STRINGIFICATION
 
 
 TABLEFMT="simple"
+
+def class_name(name):
+    if sys.version_info[0] > 2:
+        return "<class '%s'>" % name
+    else:
+        return name
 
 
 def present_matrix(matrix_instance):
@@ -32,10 +43,10 @@ def present_book(book_instance):
     return ret.strip('\n')
 
     
-STRINGIFICATION["pyexcel.sheets.matrix.Matrix"] = present_matrix
-STRINGIFICATION["pyexcel.sheets.matrix.FormattableSheet"] = present_matrix
-STRINGIFICATION["pyexcel.sheets.matrix.FilterableSheet"] = present_matrix
-STRINGIFICATION["pyexcel.sheets.sheet.NominableSheet"] = present_nominable_sheet
-STRINGIFICATION["pyexcel.sheets.sheet.Sheet"] = present_nominable_sheet
-STRINGIFICATION["pyexcel.book.Book"] = present_book
+STRINGIFICATION[class_name("pyexcel.sheets.matrix.Matrix")] = present_matrix
+STRINGIFICATION[class_name("pyexcel.sheets.matrix.FormattableSheet")] = present_matrix
+STRINGIFICATION[class_name("pyexcel.sheets.matrix.FilterableSheet")] = present_matrix
+STRINGIFICATION[class_name("pyexcel.sheets.sheet.NominableSheet")] = present_nominable_sheet
+STRINGIFICATION[class_name("pyexcel.sheets.sheet.Sheet")] = present_nominable_sheet
+STRINGIFICATION[class_name("pyexcel.book.Book")] = present_book
 
