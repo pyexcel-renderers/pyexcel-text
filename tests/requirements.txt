@@ -1,0 +1,6 @@
+nose
+rednose
+nose-cov
+python-coveralls
+coverage
+
