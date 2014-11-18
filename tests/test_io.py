@@ -11,6 +11,7 @@ else:
 class TestIO:
     def setUp(self):
         self.testfile = "testfile.txt"
+        text.TABLEFMT = "simple"
     def test_normal_usage(self):
         content = [
             [1, 2, 3],
@@ -29,7 +30,8 @@ class TestIO:
             4  588    6
             7    8  999
             -  ---  ---""").strip('\n')
-        print(written_content)
+        print(written_content+"x")
+        print(content+"x")
         assert written_content == content
 
     def tearDown(self):
@@ -40,6 +42,7 @@ class TestIO:
 class TestStream:
     def setUp(self):
         self.testfile = StringIO()
+        text.TABLEFMT = "simple"
     def test_normal_usage(self):
         content = [
             [1, 2, 3],
