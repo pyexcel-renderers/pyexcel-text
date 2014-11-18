@@ -29,7 +29,7 @@ class TestIO:
             4  588    6
             7    8  999
             -  ---  ---""").strip('\n')
-        print written_content
+        print(written_content)
         assert written_content == content
 
     def tearDown(self):
@@ -56,5 +56,5 @@ class TestStream:
             4  588    6
             7    8  999
             -  ---  ---""").strip('\n')
-        print written_content
+        print(written_content)
         assert written_content == content
