@@ -3,7 +3,60 @@ import pyexcel as pe
 from pyexcel.ext import text
 
 
+class TestJson:
+    def setUp(self):
+        text.TABLEFMT = "json"
+
+    def test_matrix(self):
+        content = [
+            [1, 2, 3],
+            [4, 588, 6],
+            [7, 8, 999]
+        ]
+        s = pe.sheets.Matrix(content)
+        content = "[[1, 2, 3], [4, 588, 6], [7, 8, 999]]"
+        assert str(s) == content
+
+    def test_sheet(self):
+        content = [
+            [1, 2, 3],
+            [4, 588, 6],
+            [7, 8, 999]
+        ]
+        s = pe.Sheet(content, "mytest")
+        content = "{\"mytest\": [[1, 2, 3], [4, 588, 6], [7, 8, 999]]}"
+        assert str(s) == content
+
+    def test_book_presentation(self):
+        data = {
+            'Sheet 1':
+            [
+                [1.0, 2.0, 3.0],
+                [4.0, 5.0, 6.0],
+                [7.0, 8.0, 9.0]
+            ],
+            'Sheet 2':
+            [
+                ['X', 'Y', 'Z'],
+                [1.0, 2.0, 3.0],
+                [4.0, 5.0, 6.0]
+            ],
+            'Sheet 3':
+            [
+                ['O', 'P', 'Q'],
+                [3.0, 2.0, 1.0],
+                [4.0, 3.0, 2.0]
+            ]
+        }
+        book = pe.Book(data)
+        content = '{"Sheet 1": [[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]], "Sheet 2": [["X", "Y", "Z"], [1.0, 2.0, 3.0], [4.0, 5.0, 6.0]], "Sheet 3": [["O", "P", "Q"], [3.0, 2.0, 1.0], [4.0, 3.0, 2.0]]}'
+        assert str(book) == content
+
+
 class TestPresentation:
+    def setUp(self):
+        text.TABLEFMT = "simple"
+
     def test_normal_usage(self):
         content = [
             [1, 2, 3],
@@ -130,4 +183,3 @@ class TestPresentation:
             4.0  3.0  2.0
             ---  ---  ---""").strip("\n")
         assert str(book) == content
-        
