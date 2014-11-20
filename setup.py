@@ -1,5 +1,5 @@
 """
-    pyexcel-tabulate
+    pyexcel-text
     ~~~~~~~~~~~~~~
 
     textual plugin for pyexcel
@@ -20,6 +20,7 @@ setup(
     author="C. W.",
     version='0.0.1',
     author_email="wangc_2011@hotmail.com",
+    url="https://github.com/chfw/pyexcel-text",
     packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
     include_package_data=True,
     dependencies=[
@@ -27,7 +28,8 @@ setup(
         'tabulate'
     ],
     description="It is a plugin to pyexcel and provides the capbility to present and write data in text fromats",
-    long_description=__doc__,
+    long_description=README_txt,
+    tests_require=['nose'],
     zip_safe=False,
     classifiers=[
         'Development Status :: 3 - Alpha',
@@ -39,5 +41,8 @@ setup(
         'Intended Audience :: Developers',
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7'
+        'Programming Language :: Python :: 3.3'
+        'Programming Language :: Python :: 3.4'
+        'Programming Language :: Python :: Implementation :: PyPy'
     ]
 )
