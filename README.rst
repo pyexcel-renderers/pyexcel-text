@@ -1,10 +1,24 @@
+============
 pyexcel-text
 ============
 
 .. image:: https://api.travis-ci.org/chfw/pyexcel-text.svg?branch=master
     :target: http://travis-ci.org/chfw/pyexcel-text
 
-It is a plugin to [pyexcel and extends its capbility to present and write data in text fromats mainly through `tabulate`:
+.. image:: https://coveralls.io/repos/chfw/pyexcel-text/badge.png?branch=master 
+    :target: https://coveralls.io/r/chfw/pyexcel-text?branch=master 
+
+.. image:: https://pypip.in/d/pyexcel-text/badge.png
+    :target: https://pypi.python.org/pypi/pyexcel-text
+
+.. image:: https://pypip.in/py_versions/pyexcel-text/badge.png
+    :target: https://pypi.python.org/pypi/pyexcel-text
+
+.. image:: https://pypip.in/implementation/pyexcel-text/badge.png
+    :target: https://pypi.python.org/pypi/pyexcel-text
+
+
+It is a plugin to `pyexcel <https://github.com/chfw/pyexcel>`__ and extends its capbility to present and write data in text fromats mainly through `tabulate`:
 
 * "plain"
 * "simple"
@@ -17,7 +31,8 @@ It is a plugin to [pyexcel and extends its capbility to present and write data i
 * "latex_booktabs"
 * "json"
 
-Usage::
+Usage
+======
 
     >>> import pyexcel as pe
     >>> import pyexcel.ext.text as text
