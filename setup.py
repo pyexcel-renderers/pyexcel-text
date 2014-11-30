@@ -23,7 +23,7 @@ setup(
     url="https://github.com/chfw/pyexcel-text",
     packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
     include_package_data=True,
-    dependencies=[
+    install_requires=[
         'pyexcel>=0.0.9',
         'tabulate'
     ],
