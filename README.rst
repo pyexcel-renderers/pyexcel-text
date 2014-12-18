@@ -17,6 +17,8 @@ pyexcel-text
 .. image:: https://pypip.in/implementation/pyexcel-text/badge.png
     :target: https://pypi.python.org/pypi/pyexcel-text
 
+.. image:: http://img.shields.io/gittip/chfw.svg
+    :target: https://gratipay.com/chfw/
 
 It is a plugin to `pyexcel <https://github.com/chfw/pyexcel>`__ and extends its capbility to present and write data in text fromats mainly through `tabulate`:
 
