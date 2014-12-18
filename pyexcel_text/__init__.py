@@ -7,7 +7,6 @@
     :copyright: (c) 2014 by C. W.
     :license: GPL v3
 """
-import sys
 from pyexcel.presentation import STRINGIFICATION
 
 
@@ -15,10 +14,7 @@ TABLEFMT="simple"
 
 
 def class_name(name):
-    if sys.version_info[0] > 2:
-        return "<class '%s'>" % name
-    else:
-        return name
+    return "<class '%s'>" % name
 
 
 def present_matrix(matrix_instance):
