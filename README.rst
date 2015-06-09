@@ -8,18 +8,6 @@ pyexcel-text
 .. image:: https://coveralls.io/repos/chfw/pyexcel-text/badge.png?branch=master 
     :target: https://coveralls.io/r/chfw/pyexcel-text?branch=master 
 
-.. image:: https://pypip.in/d/pyexcel-text/badge.png
-    :target: https://pypi.python.org/pypi/pyexcel-text
-
-.. image:: https://pypip.in/py_versions/pyexcel-text/badge.png
-    :target: https://pypi.python.org/pypi/pyexcel-text
-
-.. image:: https://pypip.in/implementation/pyexcel-text/badge.png
-    :target: https://pypi.python.org/pypi/pyexcel-text
-
-.. image:: http://img.shields.io/gittip/chfw.svg
-    :target: https://gratipay.com/chfw/
-
 It is a plugin to `pyexcel <https://github.com/chfw/pyexcel>`__ and extends its capbility to present and write data in text fromats mainly through `tabulate`:
 
 * "plain"
@@ -61,6 +49,18 @@ Usage
              1           2           3
              4           5           6
              7           8           9
+    >>> text.TABLEFMT = "grid"
+    >>> sheet
+    Sheet Name: pyexcel
+    +------------+------------+------------+
+    |   Column 1 |   Column 2 |   Column 3 |
+    +============+============+============+
+    |          1 |          2 |          3 |
+    +------------+------------+------------+
+    |          4 |          5 |          6 |
+    +------------+------------+------------+
+    |          7 |          8 |          9 |
+    +------------+------------+------------+
     >>> multiple_sheets = {
     ...      'Sheet 1':
     ...          [
@@ -82,34 +82,49 @@ Usage
     ...          ]
     ...  }
     >>> book = pe.Book(multiple_sheets)
-    >>> text.TABLEFMT = "rst"
-    >>> text.save_as(book, "myfile.rst")
-    >>> myfile = open("myfile.rst")
+    >>> text.TABLEFMT = "mediawiki"
+    >>> book.save_as("myfile.mediawiki")
+    >>> myfile = open("myfile.mediawiki")
     >>> print(myfile.read())
     Sheet Name: Sheet 1
-    =  =  =
-    1  2  3
-    4  5  6
-    7  8  9
-    =  =  =
+    {| class="wikitable" style="text-align: left;"
+    |+ <!-- caption -->
+    |-
+    | align="right"| 1 || align="right"| 2 || align="right"| 3
+    |-
+    | align="right"| 4 || align="right"| 5 || align="right"| 6
+    |-
+    | align="right"| 7 || align="right"| 8 || align="right"| 9
+    |}
     Sheet Name: Sheet 2
-    ===  ===  ===
-    X    Y    Z
-    1.0  2.0  3.0
-    4.0  5.0  6.0
-    ===  ===  ===
+    {| class="wikitable" style="text-align: left;"
+    |+ <!-- caption -->
+    |-
+    | X   || Y   || Z
+    |-
+    | 1.0 || 2.0 || 3.0
+    |-
+    | 4.0 || 5.0 || 6.0
+    |}
     Sheet Name: Sheet 3
-    ===  ===  ===
-    O    P    Q
-    3.0  2.0  1.0
-    4.0  3.0  2.0
-    ===  ===  ===
+    {| class="wikitable" style="text-align: left;"
+    |+ <!-- caption -->
+    |-
+    | O   || P   || Q
+    |-
+    | 3.0 || 2.0 || 1.0
+    |-
+    | 4.0 || 3.0 || 2.0
+    |}
+    <BLANKLINE>
+
 
 .. testcode::
    :hide:
 
+    >>> myfile.close()
     >>> import os
-    >>> os.unlink("myfile.rst")
+    >>> os.unlink("myfile.mediawiki")
 
 
 Dependencies

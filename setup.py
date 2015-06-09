@@ -18,13 +18,13 @@ with open("README.rst", 'r') as readme:
 setup(
     name='pyexcel-text',
     author="C. W.",
-    version='0.0.2',
+    version='0.0.3',
     author_email="wangc_2011@hotmail.com",
     url="https://github.com/chfw/pyexcel-text",
     packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
     include_package_data=True,
     install_requires=[
-        'pyexcel>=0.0.9',
+        'pyexcel>=0.1.6',
         'tabulate'
     ],
     description="It is a plugin to pyexcel and provides the capbility to present and write data in text fromats",

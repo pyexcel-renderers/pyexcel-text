@@ -10,7 +10,7 @@ else:
 
 class TestIO:
     def setUp(self):
-        self.testfile = "testfile.txt"
+        self.testfile = "testfile.simple"
         text.TABLEFMT = "simple"
     def test_normal_usage(self):
         content = [
@@ -30,8 +30,109 @@ class TestIO:
             4  588    6
             7    8  999
             -  ---  ---""").strip('\n')
-        print(written_content+"x")
-        print(content+"x")
+        assert written_content == content
+
+    def test_new_normal_usage(self):
+        content = [
+            [1, 2, 3],
+            [4, 588, 6],
+            [7, 8, 999]
+        ]
+        pe.save_as(array=content, dest_file_name=self.testfile)
+        f = open(self.testfile, "r")
+        written_content = f.read()
+        f.close()
+        content = dedent("""
+            Sheet Name: pyexcel_sheet1
+            -  ---  ---
+            1    2    3
+            4  588    6
+            7    8  999
+            -  ---  ---""").strip('\n')
+        assert written_content.strip('\n') == content
+
+    def tearDown(self):
+        if os.path.exists(self.testfile):
+            os.unlink(self.testfile)
+
+class TestRst:
+    def setUp(self):
+        self.testfile = "testfile.rst"
+
+    def test_new_normal_usage(self):
+        content = [
+            [1, 2, 3],
+            [4, 588, 6],
+            [7, 8, 999]
+        ]
+        pe.save_as(array=content, dest_file_name=self.testfile)
+        f = open(self.testfile, "r")
+        written_content = f.read()
+        f.close()
+        content = dedent("""
+        Sheet Name: pyexcel_sheet1
+        =  ===  ===
+        1    2    3
+        4  588    6
+        7    8  999
+        =  ===  ===""").strip('\n')
+        assert written_content.strip('\n') == content
+
+    def test_dict(self):
+        adict = {
+            'sheet 1': [[1,2],[3,4]],
+            'sheet 2': [[5,6],[7,8]]
+        }
+        pe.save_book_as(bookdict=adict, dest_file_name=self.testfile)
+        f = open(self.testfile, "r")
+        written_content = f.read()
+        f.close()
+        content = dedent("""
+        Sheet Name: sheet 1
+        =  =
+        1  2
+        3  4
+        =  =
+        Sheet Name: sheet 2
+        =  =
+        5  6
+        7  8
+        =  =""").strip('\n')
+        assert written_content.strip('\n') == content
+
+    def tearDown(self):
+        if os.path.exists(self.testfile):
+            os.unlink(self.testfile)
+
+class TestJSON:
+    def setUp(self):
+        self.testfile = "testfile.json"
+
+    def test_new_normal_usage(self):
+        content = [
+            [1, 2, 3],
+            [4, 588, 6],
+            [7, 8, 999]
+        ]
+        pe.save_as(array=content, dest_file_name=self.testfile)
+        f = open(self.testfile, "r")
+        written_content = f.read()
+        f.close()
+        content = dedent("""
+            [[1, 2, 3], [4, 588, 6], [7, 8, 999]]""").strip('\n')
+        assert written_content == content
+
+    def test_dict(self):
+        adict = {
+            'sheet 1': [[1,2],[3,4]],
+            'sheet 2': [[5,6],[7,8]]
+        }
+        pe.save_book_as(bookdict=adict, dest_file_name=self.testfile)
+        f = open(self.testfile, "r")
+        written_content = f.read()
+        f.close()
+        content = dedent("""
+            {"sheet 1": [[1, 2], [3, 4]], "sheet 2": [[5, 6], [7, 8]]}""").strip('\n')
         assert written_content == content
 
     def tearDown(self):
@@ -59,5 +160,4 @@ class TestStream:
             4  588    6
             7    8  999
             -  ---  ---""").strip('\n')
-        print(written_content)
         assert written_content == content
