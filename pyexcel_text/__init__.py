@@ -13,7 +13,10 @@ from pyexcel.deprecated import deprecated
 from functools import partial
 
 
-TABLEFMT="simple"
+TABLEFMT = "simple"
+_SHARED_MESSAGE = """
+Deprecated since v0.0.3! Please use pyexcel's save_as, save_book_as
+"""
 
 
 def class_name(name):
@@ -29,12 +32,14 @@ def present_matrix(matrix_instance):
         import tabulate
         return tabulate.tabulate(matrix_instance.to_array(), tablefmt=TABLEFMT)
 
-    
+
 def present_nominable_sheet(nmsheet_instance):
     """Textualize a NominableSheet"""
     if TABLEFMT == "json":
         import json
-        return json.dumps({nmsheet_instance.name:nmsheet_instance.to_array()})
+        return json.dumps({
+            nmsheet_instance.name: nmsheet_instance.to_array()
+        })
     else:
         import tabulate
         ret = "Sheet Name: %s\n" % nmsheet_instance.name
@@ -45,7 +50,7 @@ def present_nominable_sheet(nmsheet_instance):
         else:
             return ret+present_matrix(nmsheet_instance)
 
-        
+
 def present_book(book_instance):
     """Textualize a pyexcel Book"""
     if TABLEFMT == "json":
@@ -57,10 +62,12 @@ def present_book(book_instance):
             ret += present_nominable_sheet(book_instance.sheets[sheet])
             ret += "\n"
         return ret.strip('\n')
-        
+
+
 @partial(
     deprecated,
-    message="Deprecated since v0.0.3! Please use pyexcel's save_as, save_book_as or instance method Sheet.save_as or Book.save_as")
+    message=(_SHARED_MESSAGE +
+             " or instance method Sheet.save_as or Book.save_as"))
 def save_as(instance, filename):
     """Save a pyexcel instance as text to a file"""
     f = open(filename, "w")
@@ -70,18 +77,24 @@ def save_as(instance, filename):
 
 @partial(
     deprecated,
-    message="Deprecated since v0.0.3! Please use pyexcel's save_as, save_book_as or instance method Sheet.save_to_memory or Book.save_to_memory")
+    message=(
+        _SHARED_MESSAGE +
+        " or instance method Sheet.save_to_memory or Book.save_to_memory"
+    )
+)
 def save_to_memory(instance, stream):
     """Save a pyexcel instance as text to a stream"""
     stream.write(str(instance))
 
-    
-STRINGIFICATION[class_name("pyexcel.sheets.matrix.Matrix")] = present_matrix
-STRINGIFICATION[class_name("pyexcel.sheets.matrix.FormattableSheet")] = present_matrix
-STRINGIFICATION[class_name("pyexcel.sheets.matrix.FilterableSheet")] = present_matrix
-STRINGIFICATION[class_name("pyexcel.sheets.sheet.NominableSheet")] = present_nominable_sheet
-STRINGIFICATION[class_name("pyexcel.sheets.sheet.Sheet")] = present_nominable_sheet
-STRINGIFICATION[class_name("pyexcel.book.Book")] = present_book
+
+STRINGIFICATION.update({
+    class_name("pyexcel.sheets.matrix.Matrix"): present_matrix,
+    class_name("pyexcel.sheets.matrix.FormattableSheet"): present_matrix,
+    class_name("pyexcel.sheets.matrix.FilterableSheet"): present_matrix,
+    class_name("pyexcel.sheets.sheet.NominableSheet"): present_nominable_sheet,
+    class_name("pyexcel.sheets.sheet.Sheet"): present_nominable_sheet,
+    class_name("pyexcel.book.Book"): present_book
+})
 
 
 class TextSheetWriter(SheetWriterBase):
