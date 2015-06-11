@@ -122,12 +122,13 @@ class TextSheetWriter(SheetWriterBase):
 
 
 class TextWriter(BookWriter):
-    def __init__(self, file, **keywords):
-        BookWriter.__init__(self, file, **keywords)
-        if is_string(type(file)):
-            self.f = open(file, 'w')
+    def __init__(self, filename, **keywords):
+        BookWriter.__init__(self, filename, **keywords)
+        if is_string(type(filename)):
+            self.f = open(filename, 'w')
         else:
-            self.f = file
+            self.f = filename
+        self.filename = filename
 
     def create_sheet(self, name):
         return TextSheetWriter(
@@ -137,7 +138,7 @@ class TextWriter(BookWriter):
             **self.keywords)
 
     def close(self):
-        if is_string(type(file)):
+        if is_string(type(self.filename)):
             self.f.close()
 
 
@@ -155,8 +156,8 @@ class JsonSheetWriter(TextSheetWriter):
 
 
 class JsonWriter(TextWriter):
-    def __init__(self, file, **keywords):
-        TextWriter.__init__(self, file, **keywords)
+    def __init__(self, filename, **keywords):
+        TextWriter.__init__(self, filename, **keywords)
 
     def write(self, sheet_dicts):
         import json
