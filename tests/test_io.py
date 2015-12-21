@@ -1,5 +1,7 @@
 import os
 import sys
+import json
+
 from textwrap import dedent
 import pyexcel as pe
 from pyexcel.ext import text
@@ -98,6 +100,7 @@ class TestRst:
         5  6
         7  8
         =  =""").strip('\n')
+        print written_content
         assert written_content.strip('\n') == content
 
     def tearDown(self):
@@ -115,12 +118,10 @@ class TestJSON:
             [7, 8, 999]
         ]
         pe.save_as(array=content, dest_file_name=self.testfile)
-        f = open(self.testfile, "r")
-        written_content = f.read()
-        f.close()
-        content = dedent("""
-            [[1, 2, 3], [4, 588, 6], [7, 8, 999]]""").strip('\n')
-        assert written_content == content
+        with open(self.testfile, "r") as f:
+            written_content = json.load(f)
+            print written_content
+            assert written_content == content
 
     def test_dict(self):
         adict = {
@@ -128,12 +129,9 @@ class TestJSON:
             'sheet 2': [[5,6],[7,8]]
         }
         pe.save_book_as(bookdict=adict, dest_file_name=self.testfile)
-        f = open(self.testfile, "r")
-        written_content = f.read()
-        f.close()
-        content = dedent("""
-            {"sheet 1": [[1, 2], [3, 4]], "sheet 2": [[5, 6], [7, 8]]}""").strip('\n')
-        assert written_content == content
+        with open(self.testfile, "r") as f:
+            written_content = json.load(f)
+            assert written_content == adict
 
     def tearDown(self):
         if os.path.exists(self.testfile):

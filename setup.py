@@ -15,10 +15,13 @@ except ImportError:
 with open("README.rst", 'r') as readme:
     README_txt = readme.read()
 
+with open("VERSION", "r") as version:
+    version_txt = version.read().rstrip()
+
 setup(
     name='pyexcel-text',
     author="C. W.",
-    version='0.0.3',
+    version=version_txt,
     author_email="wangc_2011@hotmail.com",
     url="https://github.com/chfw/pyexcel-text",
     packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),

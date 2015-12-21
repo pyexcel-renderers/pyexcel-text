@@ -160,8 +160,14 @@ class JsonWriter(TextWriter):
         TextWriter.__init__(self, filename, **keywords)
 
     def write(self, sheet_dicts):
-        import json
-        self.f.write(json.dumps(sheet_dicts))
+        if self.keywords.get('single_sheet_in_book', False):
+            keys = list(sheet_dicts.keys())
+            sheet = self.create_sheet(keys[0])
+            sheet.write_array(sheet_dicts[keys[0]])
+            sheet.close()
+        else:
+            import json
+            self.f.write(json.dumps(sheet_dicts))
 
     def create_sheet(self, name):
         return JsonSheetWriter(self.f, name)
