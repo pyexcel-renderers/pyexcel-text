@@ -100,7 +100,6 @@ class TestRst:
         5  6
         7  8
         =  =""").strip('\n')
-        print written_content
         assert written_content.strip('\n') == content
 
     def tearDown(self):
@@ -120,7 +119,6 @@ class TestJSON:
         pe.save_as(array=content, dest_file_name=self.testfile)
         with open(self.testfile, "r") as f:
             written_content = json.load(f)
-            print written_content
             assert written_content == content
 
     def test_dict(self):
