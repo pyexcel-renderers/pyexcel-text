@@ -1,14 +1,15 @@
-============
-pyexcel-text
-============
+=============================================================
+pyexcel-text - Let you focus on data, instead of text format
+=============================================================
 
-.. image:: https://api.travis-ci.org/chfw/pyexcel-text.svg?branch=master
-    :target: http://travis-ci.org/chfw/pyexcel-text
+.. image:: https://api.travis-ci.org/pyexcel/pyexcel-text.svg?branch=master
+    :target: http://travis-ci.org/pyexcel/pyexcel-text
 
-.. image:: https://coveralls.io/repos/chfw/pyexcel-text/badge.png?branch=master 
-    :target: https://coveralls.io/r/chfw/pyexcel-text?branch=master 
+.. image:: https://codecov.io/github/pyexcel/pyexcel-xls/coverage.png
+    :target: https://codecov.io/github/pyexcel/pyexcel-xls
 
-It is a plugin to `pyexcel <https://github.com/chfw/pyexcel>`__ and extends its capbility to present and write data in text fromats mainly through `tabulate`:
+
+It is a plugin to `pyexcel <https://github.com/pyexcel/pyexcel>`__ and extends its capbility to present and write data in text fromats mainly through `tabulate`:
 
 * "plain"
 * "simple"
