@@ -27,20 +27,22 @@ setup(
     packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
     include_package_data=True,
     install_requires=[
-        'pyexcel>=0.1.6',
+        'pyexcel>=0.2.0',
+        'pyexcel-io>=0.1.0'
         'tabulate'
     ],
     description="It is a plugin to pyexcel and provides the capbility to present and write data in text fromats",
     long_description=README_txt,
     tests_require=['nose'],
     zip_safe=False,
+    license='New BSD',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Topic :: Office/Business',
         'Topic :: Utilities',
         'Topic :: Software Development :: Libraries',
         'Programming Language :: Python',
-        'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+        'License :: OSI Approved :: BSD License',
         'Intended Audience :: Developers',
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
