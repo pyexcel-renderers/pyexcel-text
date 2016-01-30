@@ -5,13 +5,10 @@ notifications:
 env:
   global:
 python:
-  - 2.6
   - 2.7
-  - 3.3
-  - 3.4
-  - 3.5
-  - pypy
+  - 2.6
 install:
+  - rm applymoban.py
   - pip install -r requirements.txt
   - pip install -r tests/requirements.txt
 script:

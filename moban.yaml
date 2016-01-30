@@ -1,0 +1,10 @@
+overrides: "pyexcel.yaml"
+name: "pyexcel-text"
+nick_name: text
+version: 0.1.1
+file_type: text
+dependencies:
+  - pyexcel>=0.2.0
+  - tabulate
+description: |
+  A plugin to pyexcel and provides the capbility to present and write data in text fromats
