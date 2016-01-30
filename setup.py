@@ -28,7 +28,7 @@ setup(
     include_package_data=True,
     install_requires=[
         'pyexcel>=0.2.0',
-        'pyexcel-io>=0.1.0'
+        'pyexcel-io>=0.1.0',
         'tabulate'
     ],
     description="It is a plugin to pyexcel and provides the capbility to present and write data in text fromats",
