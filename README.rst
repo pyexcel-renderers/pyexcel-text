@@ -25,9 +25,9 @@ It is a plugin to `pyexcel <https://github.com/pyexcel/pyexcel>`__ and extends i
 Usage
 ======
 
-Here is the example usage::
+Here is the example usage:
 
-.. code-block: python
+.. code-block:: python
 
     >>> import pyexcel as pe
     >>> import pyexcel.ext.text as text
