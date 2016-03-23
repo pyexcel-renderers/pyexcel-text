@@ -142,6 +142,16 @@ class TextWriter(BookWriter):
             self.f.close()
 
 
+class HtmlWriter(TextWriter):
+    def __init__(self, filename, **keywords):
+        TextWriter.__init__(self, filename, **keywords)
+        self.f.write("<html><header><title>%s</title><body>" % filename)
+
+    def close(self):
+        self.f.write("</body></html>")
+        TextWriter.close(self)
+
+
 class JsonSheetWriter(TextSheetWriter):
     def __init__(self, filehandle, name, **keywords):
         self.filehandle = filehandle
@@ -186,5 +196,6 @@ WRITERS.update({
     "mediawiki": TextWriter,
     "latex": TextWriter,
     "latex_booktabs": TextWriter,
+    "html": HtmlWriter,
     "json": JsonWriter
 })

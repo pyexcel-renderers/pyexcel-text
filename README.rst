@@ -122,6 +122,29 @@ Here is the example usage:
     | 4.0 || 3.0 || 2.0
     |}
     <BLANKLINE>
+    >>> myfile.close()
+    >>> book.save_as("myfile.html")
+    >>> myfile = open("myfile.html")
+    >>> print(myfile.read())
+    <html><header><title>myfile.html</title><body>Sheet Name: Sheet 1
+    <table>
+    <tr><td style="text-align: right;">1</td><td style="text-align: right;">2</td><td style="text-align: right;">3</td></tr>
+    <tr><td style="text-align: right;">4</td><td style="text-align: right;">5</td><td style="text-align: right;">6</td></tr>
+    <tr><td style="text-align: right;">7</td><td style="text-align: right;">8</td><td style="text-align: right;">9</td></tr>
+    </table>
+    Sheet Name: Sheet 2
+    <table>
+    <tr><td>X  </td><td>Y  </td><td>Z  </td></tr>
+    <tr><td>1.0</td><td>2.0</td><td>3.0</td></tr>
+    <tr><td>4.0</td><td>5.0</td><td>6.0</td></tr>
+    </table>
+    Sheet Name: Sheet 3
+    <table>
+    <tr><td>O  </td><td>P  </td><td>Q  </td></tr>
+    <tr><td>3.0</td><td>2.0</td><td>1.0</td></tr>
+    <tr><td>4.0</td><td>3.0</td><td>2.0</td></tr>
+    </table>
+    </body></html>
 
 
 .. testcode::
@@ -130,6 +153,7 @@ Here is the example usage:
     >>> myfile.close()
     >>> import os
     >>> os.unlink("myfile.mediawiki")
+    >>> os.unlink("myfile.html")
 
 
 Dependencies
