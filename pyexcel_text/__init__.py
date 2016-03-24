@@ -8,6 +8,7 @@
     :license: GPL v3
 """
 from pyexcel.presentation import STRINGIFICATION
+from pyexcel.sheets.matrix import uniform, Matrix
 from pyexcel_io import BookWriter, SheetWriterBase, is_string, WRITERS
 from pyexcel.deprecated import deprecated
 from functools import partial
@@ -112,6 +113,10 @@ class TextSheetWriter(SheetWriterBase):
         import tabulate
         if 'single_sheet_in_book' in self.keywords:
             self.keywords.pop('single_sheet_in_book')
+        if not isinstance(table, Matrix):
+            if not isinstance(table, list):
+                table = list(table)
+            width, table = uniform(table)
         self.filehandle.write(tabulate.tabulate(table,
                                                 tablefmt=self.file_type,
                                                 **self.keywords))
