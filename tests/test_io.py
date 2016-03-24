@@ -13,6 +13,7 @@ else:
 class TestIO:
     def setUp(self):
         self.testfile = "testfile.simple"
+        self.testfile2 = None
         text.TABLEFMT = "simple"
     def test_normal_usage(self):
         content = [
@@ -53,9 +54,54 @@ class TestIO:
             -  ---  ---""").strip('\n')
         assert written_content.strip('\n') == content
 
+    def test_new_normal_usage_irregular_columns(self):
+        content = [
+            [1, 2, 3],
+            [4, 588, 6],
+            [7, 8]
+        ]
+        pe.save_as(array=content, dest_file_name=self.testfile)
+        f = open(self.testfile, "r")
+        written_content = f.read()
+        f.close()
+        content = dedent("""
+            Sheet Name: pyexcel_sheet1
+            -  ---  -
+            1    2  3
+            4  588  6
+            7    8
+            -  ---  -""").strip('\n')
+        print(written_content)
+        assert written_content.strip('\n') == content
+
+    def test_csvbook_irregular_columns(self):
+        content = [
+            [1, 2, 3],
+            [4, 588, 6],
+            [7, 8]
+        ]
+        self.testfile2 = "testfile.csv"
+        pe.save_as(array=content, dest_file_name=self.testfile2)
+        pe.save_as(file_name=self.testfile2, dest_file_name=self.testfile)
+
+        f = open(self.testfile, "r")
+        written_content = f.read()
+        f.close()
+
+        content = dedent("""
+            Sheet Name: testfile.csv
+            -  ---  -
+            1    2  3
+            4  588  6
+            7    8
+            -  ---  -""").strip('\n')
+        assert written_content.strip('\n') == content
+
     def tearDown(self):
         if os.path.exists(self.testfile):
             os.unlink(self.testfile)
+        if self.testfile2 and os.path.exists(self.testfile2):
+            os.unlink(self.testfile2)
 
 class TestRst:
     def setUp(self):
