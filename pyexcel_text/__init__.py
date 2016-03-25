@@ -8,6 +8,7 @@
     :license: GPL v3
 """
 from pyexcel.presentation import STRINGIFICATION
+from pyexcel.sheets import NominableSheet
 from pyexcel.sheets.matrix import uniform, Matrix
 from pyexcel_io import BookWriter, SheetWriterBase, is_string, WRITERS
 from pyexcel.deprecated import deprecated
@@ -113,13 +114,21 @@ class TextSheetWriter(SheetWriterBase):
         import tabulate
         if 'single_sheet_in_book' in self.keywords:
             self.keywords.pop('single_sheet_in_book')
+
         if not isinstance(table, Matrix):
             if not isinstance(table, list):
                 table = list(table)
             width, table = uniform(table)
+
+        keywords = self.keywords
+        if isinstance(table, NominableSheet):
+            if len(table.colnames) > 0:
+                keywords['headers'] = 'firstrow'
+            table = table.to_array()
+
         self.filehandle.write(tabulate.tabulate(table,
                                                 tablefmt=self.file_type,
-                                                **self.keywords))
+                                                **keywords))
 
     def close(self):
         self.filehandle.write('\n')

@@ -71,7 +71,6 @@ class TestIO:
             4  588  6
             7    8
             -  ---  -""").strip('\n')
-        print(written_content)
         assert written_content.strip('\n') == content
 
     def test_csvbook_irregular_columns(self):
@@ -95,6 +94,102 @@ class TestIO:
             4  588  6
             7    8
             -  ---  -""").strip('\n')
+        assert written_content.strip('\n') == content
+
+    def test_column_series(self):
+        content = [
+            ["Column 1", "Column 2", "Column 3"],
+            [1, 2, 3],
+            [4, 5, 6],
+            [7, 8, 9]
+        ]
+        s = pe.Sheet(content, name_columns_by_row=0)
+
+        pe.save_as(array=s, dest_file_name=self.testfile)
+        f = open(self.testfile, "r")
+        written_content = f.read()
+        f.close()
+
+        content = dedent("""
+            Sheet Name: pyexcel_sheet1
+              Column 1    Column 2    Column 3
+            ----------  ----------  ----------
+                     1           2           3
+                     4           5           6
+                     7           8           9""").strip('\n')
+
+        assert written_content.strip('\n') == content
+
+    def test_column_series_irregular_columns(self):
+        content = [
+            ["Column 1", "Column 2", "Column 3"],
+            [1, 2, 3],
+            [4, 5, 6],
+            [7, 8]
+        ]
+        s = pe.Sheet(content, name_columns_by_row=0)
+
+        pe.save_as(array=s, dest_file_name=self.testfile)
+        f = open(self.testfile, "r")
+        written_content = f.read()
+        f.close()
+
+        # FIXME: numerical align lost when one cell is missing
+        content = dedent("""
+            Sheet Name: pyexcel_sheet1
+              Column 1    Column 2  Column 3
+            ----------  ----------  ----------
+                     1           2  3
+                     4           5  6
+                     7           8""").strip('\n')
+
+        assert written_content.strip('\n') == content
+
+    def test_data_frame(self):
+        content = [
+            ["", "Column 1", "Column 2", "Column 3"],
+            ["Row 1", 1, 2, 3],
+            ["Row 2", 4, 5, 6],
+            ["Row 3", 7, 8, 9]
+        ]
+        s = pe.Sheet(content, name_rows_by_column=0, name_columns_by_row=0)
+
+        pe.save_as(array=s, dest_file_name=self.testfile)
+        f = open(self.testfile, "r")
+        written_content = f.read()
+        f.close()
+
+        content = dedent("""
+            Sheet Name: pyexcel_sheet1
+                     Column 1    Column 2    Column 3
+            -----  ----------  ----------  ----------
+            Row 1           1           2           3
+            Row 2           4           5           6
+            Row 3           7           8           9""").strip('\n')
+
+        assert written_content.strip('\n') == content
+
+    def test_row_series(self):
+        content = [
+            ["Row 1", 1, 2, 3],
+            ["Row 2", 4, 5, 6],
+            ["Row 3", 7, 8, 9]
+        ]
+        s = pe.Sheet(content, name_rows_by_column=0)
+
+        pe.save_as(array=s, dest_file_name=self.testfile)
+        f = open(self.testfile, "r")
+        written_content = f.read()
+        f.close()
+
+        content = dedent("""
+            Sheet Name: pyexcel_sheet1
+            -----  -  -  -
+            Row 1  1  2  3
+            Row 2  4  5  6
+            Row 3  7  8  9
+            -----  -  -  -""").strip('\n')
+
         assert written_content.strip('\n') == content
 
     def tearDown(self):
