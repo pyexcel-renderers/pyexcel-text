@@ -173,7 +173,7 @@ class JsonSheetWriter(TextSheetWriter):
 
     def write_array(self, table):
         import json
-        self.filehandle.write(json.dumps(table))
+        self.filehandle.write(json.dumps(table, sort_keys=True))
 
     def close(self):
         pass
