@@ -45,7 +45,8 @@ class TestIO(unittest.TestCase):
 
         written_content = written_content.strip('\n')
 
-        self.assertTrue(name in self.expected_results)
+        self.assertTrue(name in self.expected_results,
+                        'expected result missing: %s' % written_content)
 
         expected = self.expected_results[name]
 
@@ -407,6 +408,20 @@ class TestJSON(TestIO):
             '[[1, 2, 3], [4, 588, 6], [7, 8, 999]]',
         'new_normal_usage_irregular_columns':
             '[[1, 2, 3], [4, 588, 6], [7, 8]]',
+        'column_series':
+            '[{"Column 1": 1, "Column 2": 2, "Column 3": 3},'
+            ' {"Column 1": 4, "Column 2": 5, "Column 3": 6},'
+            ' {"Column 1": 7, "Column 2": 8, "Column 3": 9}]',
+        'column_series_irregular_columns':
+            '[{"Column 1": 1, "Column 2": 2, "Column 3": 3},'
+            ' {"Column 1": 4, "Column 2": 5, "Column 3": 6},'
+            ' {"Column 1": 7, "Column 2": 8, "Column 3": ""}]',
+        'csvbook_irregular_columns':
+            '[["1", "2", "3"], ["4", "588", "6"], ["7", "8"]]',
+        'data_frame':
+            '{"Row 1": {"Column 1": 1, "Column 2": 2, "Column 3": 3}, "Row 2": {"Column 1": 4, "Column 2": 5, "Column 3": 6}, "Row 3": {"Column 1": 7, "Column 2": 8, "Column 3": 9}}',
+        'row_series':
+            '{"Row 1": [1, 2, 3], "Row 2": [4, 5, 6], "Row 3": [7, 8, 9]}',
     }
 
     def _check_test_file(self, name):
@@ -414,27 +429,6 @@ class TestJSON(TestIO):
             json.load(f)
 
         super(TestJSON, self)._check_test_file(name)
-
-    # These all raise TypeError: x is not JSON serializable
-    @expectedFailure
-    def test_column_series(self):
-        super(TestJSON, self).test_column_series()
-
-    @expectedFailure
-    def test_column_series_irregular_columns(self):
-        super(TestJSON, self).test_column_series_irregular_columns()
-
-    @expectedFailure
-    def test_csvbook_irregular_columns(self):
-        super(TestJSON, self).test_csvbook_irregular_columns()
-
-    @expectedFailure
-    def test_row_series(self):
-        super(TestJSON, self).test_row_series()
-
-    @expectedFailure
-    def test_data_frame(self):
-        super(TestJSON, self).test_data_frame()
 
 
 class TestStream:

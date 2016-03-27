@@ -10,7 +10,13 @@
 from pyexcel.presentation import STRINGIFICATION
 from pyexcel.sheets import NominableSheet
 from pyexcel.sheets.matrix import uniform, Matrix
-from pyexcel_io import BookWriter, SheetWriterBase, is_string, WRITERS
+from pyexcel_io import (
+    BookWriter,
+    SheetWriterBase,
+    is_string,
+    is_generator,
+    WRITERS,
+)
 from pyexcel.deprecated import deprecated
 from functools import partial
 
@@ -173,6 +179,25 @@ class JsonSheetWriter(TextSheetWriter):
 
     def write_array(self, table):
         import json
+
+        # Covert NominableSheet to JSON encodable structure, using headers
+        if isinstance(table, NominableSheet):
+            colnames = table.colnames
+            rownames = table.rownames
+            table = table.to_array()
+            # In the following, row[0] is the name of each row
+            if colnames and rownames:
+                table = dict((row[0], dict(zip(colnames, row[1:])))
+                             for row in table[1:])
+            elif colnames:
+                table = [dict(zip(colnames, row)) for row in table[1:]]
+            elif rownames:
+                table = dict((row[0], row[1:]) for row in table)
+
+        # Reduce generators to a JSON encodable structure
+        elif is_generator(table):
+            table = list(table)
+
         self.filehandle.write(json.dumps(table, sort_keys=True))
 
     def close(self):
