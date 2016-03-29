@@ -32,6 +32,63 @@ class TestIO(unittest.TestCase):
             5  6
             7  8
             -  -""").strip('\n'),
+        'normal_usage': dedent("""
+            Sheet Name: pyexcel
+            -  ---  ---
+            1    2    3
+            4  588    6
+            7    8  999
+            -  ---  ---""").strip('\n'),
+        'new_normal_usage': dedent("""
+            Sheet Name: pyexcel_sheet1
+            -  ---  ---
+            1    2    3
+            4  588    6
+            7    8  999
+            -  ---  ---""").strip('\n'),
+        'new_normal_usage_irregular_columns': dedent("""
+            Sheet Name: pyexcel_sheet1
+            -  ---  -
+            1    2  3
+            4  588  6
+            7    8
+            -  ---  -""").strip('\n'),
+        'csvbook_irregular_columns': dedent("""
+            Sheet Name: testfile.csv
+            -  ---  -
+            1    2  3
+            4  588  6
+            7    8
+            -  ---  -""").strip('\n'),
+        'column_series': dedent("""
+            Sheet Name: pyexcel_sheet1
+              Column 1    Column 2    Column 3
+            ----------  ----------  ----------
+                     1           2           3
+                     4           5           6
+                     7           8           9""").strip('\n'),
+         # FIXME: numerical align lost when one cell is missing
+         'column_series_irregular_columns': dedent("""
+            Sheet Name: pyexcel_sheet1
+              Column 1    Column 2  Column 3
+            ----------  ----------  ----------
+                     1           2  3
+                     4           5  6
+                     7           8""").strip('\n'),
+        'data_frame': dedent("""
+            Sheet Name: pyexcel_sheet1
+                     Column 1    Column 2    Column 3
+            -----  ----------  ----------  ----------
+            Row 1           1           2           3
+            Row 2           4           5           6
+            Row 3           7           8           9""").strip('\n'),
+         'row_series': dedent("""
+            Sheet Name: pyexcel_sheet1
+            -----  -  -  -
+            Row 1  1  2  3
+            Row 2  4  5  6
+            Row 3  7  8  9
+            -----  -  -  -""").strip('\n')
     }
 
     def setUp(self):
@@ -72,14 +129,6 @@ class TestIO(unittest.TestCase):
 
         self._check_test_file('normal_usage')
 
-    expected_results['normal_usage'] = dedent("""
-            Sheet Name: pyexcel
-            -  ---  ---
-            1    2    3
-            4  588    6
-            7    8  999
-            -  ---  ---""").strip('\n')
-
     def test_new_normal_usage(self):
         content = [
             [1, 2, 3],
@@ -90,14 +139,6 @@ class TestIO(unittest.TestCase):
 
         self._check_test_file('new_normal_usage')
 
-    expected_results['new_normal_usage'] = dedent("""
-            Sheet Name: pyexcel_sheet1
-            -  ---  ---
-            1    2    3
-            4  588    6
-            7    8  999
-            -  ---  ---""").strip('\n')
-
     def test_new_normal_usage_irregular_columns(self):
         content = [
             [1, 2, 3],
@@ -107,14 +148,6 @@ class TestIO(unittest.TestCase):
         pe.save_as(array=content, dest_file_name=self.testfile)
 
         self._check_test_file('new_normal_usage_irregular_columns')
-
-    expected_results['new_normal_usage_irregular_columns'] = dedent("""
-            Sheet Name: pyexcel_sheet1
-            -  ---  -
-            1    2  3
-            4  588  6
-            7    8
-            -  ---  -""").strip('\n')
 
     def test_csvbook_irregular_columns(self):
         content = [
@@ -127,14 +160,6 @@ class TestIO(unittest.TestCase):
         pe.save_as(file_name=self.testfile2, dest_file_name=self.testfile)
 
         self._check_test_file('csvbook_irregular_columns')
-
-    expected_results['csvbook_irregular_columns'] = dedent("""
-            Sheet Name: testfile.csv
-            -  ---  -
-            1    2  3
-            4  588  6
-            7    8
-            -  ---  -""").strip('\n')
 
     def test_column_series(self):
         content = [
@@ -149,14 +174,6 @@ class TestIO(unittest.TestCase):
 
         self._check_test_file('column_series')
 
-    expected_results['column_series'] = dedent("""
-            Sheet Name: pyexcel_sheet1
-              Column 1    Column 2    Column 3
-            ----------  ----------  ----------
-                     1           2           3
-                     4           5           6
-                     7           8           9""").strip('\n')
-
     def test_column_series_irregular_columns(self):
         content = [
             ["Column 1", "Column 2", "Column 3"],
@@ -169,15 +186,6 @@ class TestIO(unittest.TestCase):
         pe.save_as(array=s, dest_file_name=self.testfile)
 
         self._check_test_file('column_series_irregular_columns')
-
-        # FIXME: numerical align lost when one cell is missing
-    expected_results['column_series_irregular_columns'] = dedent("""
-            Sheet Name: pyexcel_sheet1
-              Column 1    Column 2  Column 3
-            ----------  ----------  ----------
-                     1           2  3
-                     4           5  6
-                     7           8""").strip('\n')
 
     def test_data_frame(self):
         content = [
@@ -192,14 +200,6 @@ class TestIO(unittest.TestCase):
 
         self._check_test_file('data_frame')
 
-    expected_results['data_frame'] = dedent("""
-            Sheet Name: pyexcel_sheet1
-                     Column 1    Column 2    Column 3
-            -----  ----------  ----------  ----------
-            Row 1           1           2           3
-            Row 2           4           5           6
-            Row 3           7           8           9""").strip('\n')
-
     def test_row_series(self):
         content = [
             ["Row 1", 1, 2, 3],
@@ -211,14 +211,6 @@ class TestIO(unittest.TestCase):
         pe.save_as(array=s, dest_file_name=self.testfile)
 
         self._check_test_file('row_series')
-
-    expected_results['row_series'] = dedent("""
-            Sheet Name: pyexcel_sheet1
-            -----  -  -  -
-            Row 1  1  2  3
-            Row 2  4  5  6
-            Row 3  7  8  9
-            -----  -  -  -""").strip('\n')
 
     def tearDown(self):
         if os.path.exists(self.testfile):
@@ -286,28 +278,25 @@ class TestRst(TestIO):
             Row 2  4  5  6
             Row 3  7  8  9
             =====  =  =  =""").strip('\n'),
-
+        'new_normal_usage': dedent("""
+            Sheet Name: pyexcel_sheet1
+            =  ===  ===
+            1    2    3
+            4  588    6
+            7    8  999
+            =  ===  ===""").strip('\n'),
+        'dict': dedent("""
+            Sheet Name: sheet 1
+            =  =
+            1  2
+            3  4
+            =  =
+            Sheet Name: sheet 2
+            =  =
+            5  6
+            7  8
+            =  =""").strip('\n')
     }
-
-    expected_results['new_normal_usage'] = dedent("""
-        Sheet Name: pyexcel_sheet1
-        =  ===  ===
-        1    2    3
-        4  588    6
-        7    8  999
-        =  ===  ===""").strip('\n')
-
-    expected_results['dict'] = dedent("""
-        Sheet Name: sheet 1
-        =  =
-        1  2
-        3  4
-        =  =
-        Sheet Name: sheet 2
-        =  =
-        5  6
-        7  8
-        =  =""").strip('\n')
 
 
 class TestHTML(TestIO):
