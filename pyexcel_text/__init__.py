@@ -111,15 +111,15 @@ class TextSheetWriter(SheetWriterBase):
         self.file_type = file_type
         self.keywords = keywords
         title = "Sheet Name: %s\n" % name
-        self.filehandle.write(title)
+        if 'single_sheet_in_book' in self.keywords:
+            self.keywords.pop('single_sheet_in_book')
+            self.filehandle.write(title)
 
     def set_size(self, size):
         pass
 
     def write_array(self, table):
         import tabulate
-        if 'single_sheet_in_book' in self.keywords:
-            self.keywords.pop('single_sheet_in_book')
 
         if not isinstance(table, Matrix):
             if not isinstance(table, list):
