@@ -1,16 +1,165 @@
-{%extends 'README.rst.jj2' %}
+================================================================================
+{{name}} - Let you focus on data, instead of {{file_type}} format
+================================================================================
+
+.. image:: https://api.travis-ci.org/pyexcel/{{name}}.png
+    :target: http://travis-ci.org/pyexcel/{{name}}
+
+.. image:: https://codecov.io/github/pyexcel/{{name}}/coverage.png
+    :target: https://codecov.io/github/pyexcel/{{name}}
+
 
 {%block description%}
-**pyexcel-ods** is a tiny wrapper library to read, manipulate and write data in
-ods fromat using python 2.6 and python 2.7. You are likely to use it with
-`pyexcel <https://github.com/pyexcel/pyexcel>`_.
-`pyexcel-ods3 <https://github.com/pyexcel/pyexcel-ods3>`_ is a sister library that
-does the same thing but supports Python 3.3 and 3.4 and depends on lxml.
+It is a plugin to `pyexcel <https://github.com/pyexcel/pyexcel>`__ and extends its capbility to present and write data in text fromats mainly through `tabulate`:
+
+* "plain"
+* "simple"
+* "grid"
+* "pipe"
+* "orgtbl"
+* "rst"
+* "mediawiki"
+* "latex"
+* "latex_booktabs"
+* "json"
+
+Usage
+======
+
+Here is the example usage:
+
+.. code-block:: python
+
+    >>> import pyexcel as pe
+    >>> import pyexcel.ext.text as text
+    >>> content = [
+    ...     ["Column 1", "Column 2", "Column 3"],
+    ...     [1, 2, 3],
+    ...     [4, 5, 6],
+    ...     [7, 8, 9]
+    ... ]
+    >>> sheet = pe.Sheet(content)
+    >>> sheet
+    Sheet Name: pyexcel
+    --------  --------  --------
+    Column 1  Column 2  Column 3
+    1         2         3
+    4         5         6
+    7         8         9
+    --------  --------  --------
+    >>> sheet.name_columns_by_row(0)
+    >>> sheet
+    Sheet Name: pyexcel
+      Column 1    Column 2    Column 3
+    ----------  ----------  ----------
+             1           2           3
+             4           5           6
+             7           8           9
+    >>> text.TABLEFMT = "grid"
+    >>> sheet
+    Sheet Name: pyexcel
+    +------------+------------+------------+
+    |   Column 1 |   Column 2 |   Column 3 |
+    +============+============+============+
+    |          1 |          2 |          3 |
+    +------------+------------+------------+
+    |          4 |          5 |          6 |
+    +------------+------------+------------+
+    |          7 |          8 |          9 |
+    +------------+------------+------------+
+    >>> multiple_sheets = {
+    ...      'Sheet 1':
+    ...          [
+    ...              [1.0, 2.0, 3.0],
+    ...              [4.0, 5.0, 6.0],
+    ...              [7.0, 8.0, 9.0]
+    ...          ],
+    ...      'Sheet 2':
+    ...          [
+    ...              ['X', 'Y', 'Z'],
+    ...              [1.0, 2.0, 3.0],
+    ...              [4.0, 5.0, 6.0]
+    ...          ],
+    ...      'Sheet 3':
+    ...          [
+    ...              ['O', 'P', 'Q'],
+    ...              [3.0, 2.0, 1.0],
+    ...              [4.0, 3.0, 2.0]
+    ...          ]
+    ...  }
+    >>> book = pe.Book(multiple_sheets)
+    >>> text.TABLEFMT = "mediawiki"
+    >>> book.save_as("myfile.mediawiki")
+    >>> myfile = open("myfile.mediawiki")
+    >>> print(myfile.read())
+    Sheet Name: Sheet 1
+    {| class="wikitable" style="text-align: left;"
+    |+ <!-- caption -->
+    |-
+    | align="right"| 1 || align="right"| 2 || align="right"| 3
+    |-
+    | align="right"| 4 || align="right"| 5 || align="right"| 6
+    |-
+    | align="right"| 7 || align="right"| 8 || align="right"| 9
+    |}
+    Sheet Name: Sheet 2
+    {| class="wikitable" style="text-align: left;"
+    |+ <!-- caption -->
+    |-
+    | X   || Y   || Z
+    |-
+    | 1.0 || 2.0 || 3.0
+    |-
+    | 4.0 || 5.0 || 6.0
+    |}
+    Sheet Name: Sheet 3
+    {| class="wikitable" style="text-align: left;"
+    |+ <!-- caption -->
+    |-
+    | O   || P   || Q
+    |-
+    | 3.0 || 2.0 || 1.0
+    |-
+    | 4.0 || 3.0 || 2.0
+    |}
+    <BLANKLINE>
+    >>> myfile.close()
+    >>> book.save_as("myfile.html")
+    >>> myfile = open("myfile.html")
+    >>> print(myfile.read())
+    <html><header><title>myfile.html</title><body>Sheet Name: Sheet 1
+    <table>
+    <tr><td style="text-align: right;">1</td><td style="text-align: right;">2</td><td style="text-align: right;">3</td></tr>
+    <tr><td style="text-align: right;">4</td><td style="text-align: right;">5</td><td style="text-align: right;">6</td></tr>
+    <tr><td style="text-align: right;">7</td><td style="text-align: right;">8</td><td style="text-align: right;">9</td></tr>
+    </table>
+    Sheet Name: Sheet 2
+    <table>
+    <tr><td>X  </td><td>Y  </td><td>Z  </td></tr>
+    <tr><td>1.0</td><td>2.0</td><td>3.0</td></tr>
+    <tr><td>4.0</td><td>5.0</td><td>6.0</td></tr>
+    </table>
+    Sheet Name: Sheet 3
+    <table>
+    <tr><td>O  </td><td>P  </td><td>Q  </td></tr>
+    <tr><td>3.0</td><td>2.0</td><td>1.0</td></tr>
+    <tr><td>4.0</td><td>3.0</td><td>2.0</td></tr>
+    </table>
+    </body></html>
+
+
+.. testcode::
+   :hide:
+
+    >>> myfile.close()
+    >>> import os
+    >>> os.unlink("myfile.mediawiki")
+    >>> os.unlink("myfile.html")
 {%endblock%}
 
 {%block extras %}
-Credits
-================================================================================
+Dependencies
+============
 
-ODSReader is originally written by `Marco Conti <https://github.com/marcoconti83/read-ods-with-odfpy>`_
+* tabulate
 {%endblock%}

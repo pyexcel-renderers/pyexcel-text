@@ -1,12 +1,12 @@
-=============================================================
+================================================================================
 pyexcel-text - Let you focus on data, instead of text format
-=============================================================
+================================================================================
 
-.. image:: https://api.travis-ci.org/pyexcel/pyexcel-text.svg?branch=master
+.. image:: https://api.travis-ci.org/pyexcel/pyexcel-text.png
     :target: http://travis-ci.org/pyexcel/pyexcel-text
 
-.. image:: https://codecov.io/github/pyexcel/pyexcel-xls/coverage.png
-    :target: https://codecov.io/github/pyexcel/pyexcel-xls
+.. image:: https://codecov.io/github/pyexcel/pyexcel-text/coverage.png
+    :target: https://codecov.io/github/pyexcel/pyexcel-text
 
 
 It is a plugin to `pyexcel <https://github.com/pyexcel/pyexcel>`__ and extends its capbility to present and write data in text fromats mainly through `tabulate`:
@@ -154,7 +154,6 @@ Here is the example usage:
     >>> import os
     >>> os.unlink("myfile.mediawiki")
     >>> os.unlink("myfile.html")
-
 
 Dependencies
 ============

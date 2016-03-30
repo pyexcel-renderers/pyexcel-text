@@ -18,7 +18,7 @@ extras = {}
 
 setup(
     name='pyexcel-text',
-    author='C. W.',
+    author='C.W.',
     version='0.1.1',
     author_email='wangc_2011 (at) hotmail.com',
     url='https://github.com/pyexcel/pyexcel-text',

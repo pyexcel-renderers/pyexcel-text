@@ -1,5 +1,10 @@
 {% extends "travis.yml.jj2" %}
 
 {%block test_other_python_versions%}  - 2.6
+  - pypy
+  - pypy3
+  - 3.3
+  - 3.4
+  - 3.5
 {%endblock%}
 
