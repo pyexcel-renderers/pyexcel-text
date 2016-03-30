@@ -1,2 +1,2 @@
 pyexcel>=0.2.0
-tabulate
+tabulate>=0.74

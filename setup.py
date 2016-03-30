@@ -10,7 +10,7 @@ with open("README.rst", 'r') as readme:
 
 dependencies = [
     'pyexcel>=0.2.0',
-    'tabulate',
+    'tabulate>=0.74',
 ]
 
 extras = {}
@@ -19,7 +19,7 @@ extras = {}
 setup(
     name='pyexcel-text',
     author='C.W.',
-    version='0.1.1',
+    version='0.1.2',
     author_email='wangc_2011 (at) hotmail.com',
     url='https://github.com/pyexcel/pyexcel-text',
     description='A plugin to pyexcel and provides the capbility to present and write data in text fromats',
