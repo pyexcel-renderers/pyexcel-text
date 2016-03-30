@@ -32,6 +32,15 @@ class TestIO(unittest.TestCase):
             5  6
             7  8
             -  -""").strip('\n'),
+        'no_title_multiple_sheets': dedent("""
+            -  -
+            1  2
+            3  4
+            -  -
+            -  -
+            5  6
+            7  8
+            -  -""").strip('\n'),
         'normal_usage': dedent("""
             Sheet Name: pyexcel
             -  ---  ---
@@ -41,6 +50,12 @@ class TestIO(unittest.TestCase):
             -  ---  ---""").strip('\n'),
         'new_normal_usage': dedent("""
             Sheet Name: pyexcel_sheet1
+            -  ---  ---
+            1    2    3
+            4  588    6
+            7    8  999
+            -  ---  ---""").strip('\n'),
+        'no_title_single_sheet': dedent("""
             -  ---  ---
             1    2    3
             4  588    6
@@ -109,6 +124,16 @@ class TestIO(unittest.TestCase):
 
         self.assertEqual(written_content, expected)
 
+    def test_no_title_multiple_sheets(self):
+        adict = {
+            'sheet 1': [[1,2],[3,4]],
+            'sheet 2': [[5,6],[7,8]]
+        }
+        pe.save_book_as(bookdict=adict, dest_file_name=self.testfile,
+                        dest_write_title=False)
+
+        self._check_test_file('no_title_multiple_sheets')
+
     def test_dict(self):
         adict = {
             'sheet 1': [[1,2],[3,4]],
@@ -138,6 +163,16 @@ class TestIO(unittest.TestCase):
         pe.save_as(array=content, dest_file_name=self.testfile)
 
         self._check_test_file('new_normal_usage')
+
+    def test_no_title_single_sheet(self):
+        content = [
+            [1, 2, 3],
+            [4, 588, 6],
+            [7, 8, 999]
+        ]
+        pe.save_as(array=content, dest_file_name=self.testfile, dest_write_title=False)
+
+        self._check_test_file('no_title_single_sheet')
 
     def test_new_normal_usage_irregular_columns(self):
         content = [
@@ -223,8 +258,41 @@ class TestRst(TestIO):
 
     TABLEFMT = 'rst'
     expected_results = {
+        'dict': dedent("""
+            Sheet Name: sheet 1
+            =  =
+            1  2
+            3  4
+            =  =
+            Sheet Name: sheet 2
+            =  =
+            5  6
+            7  8
+            =  =""").strip('\n'),
+        'no_title_multiple_sheets': dedent("""
+            =  =
+            1  2
+            3  4
+            =  =
+            =  =
+            5  6
+            7  8
+            =  =""").strip('\n'),
         'normal_usage': dedent("""
             Sheet Name: pyexcel
+            =  ===  ===
+            1    2    3
+            4  588    6
+            7    8  999
+            =  ===  ===""").strip('\n'),
+        'new_normal_usage': dedent("""
+            Sheet Name: pyexcel_sheet1
+            =  ===  ===
+            1    2    3
+            4  588    6
+            7    8  999
+            =  ===  ===""").strip('\n'),
+        'no_title_single_sheet': dedent("""
             =  ===  ===
             1    2    3
             4  588    6
@@ -277,25 +345,7 @@ class TestRst(TestIO):
             Row 1  1  2  3
             Row 2  4  5  6
             Row 3  7  8  9
-            =====  =  =  =""").strip('\n'),
-        'new_normal_usage': dedent("""
-            Sheet Name: pyexcel_sheet1
-            =  ===  ===
-            1    2    3
-            4  588    6
-            7    8  999
-            =  ===  ===""").strip('\n'),
-        'dict': dedent("""
-            Sheet Name: sheet 1
-            =  =
-            1  2
-            3  4
-            =  =
-            Sheet Name: sheet 2
-            =  =
-            5  6
-            7  8
-            =  =""").strip('\n')
+            =====  =  =  =""").strip('\n')
     }
 
 
@@ -315,6 +365,16 @@ class TestHTML(TestIO):
             <tr><td style="text-align: right;">7</td><td style="text-align: right;">8</td></tr>
             </table>
             </body></html>""").strip('\n'),
+        'no_title_multiple_sheets': dedent("""
+            <html><header><title>testfile.html</title><body><table>
+            <tr><td style="text-align: right;">1</td><td style="text-align: right;">2</td></tr>
+            <tr><td style="text-align: right;">3</td><td style="text-align: right;">4</td></tr>
+            </table>
+            <table>
+            <tr><td style="text-align: right;">5</td><td style="text-align: right;">6</td></tr>
+            <tr><td style="text-align: right;">7</td><td style="text-align: right;">8</td></tr>
+            </table>
+            </body></html>""").strip('\n'),
         'normal_usage': dedent("""
             Sheet Name: pyexcel
             <table>
@@ -325,6 +385,13 @@ class TestHTML(TestIO):
         'new_normal_usage': dedent("""
             <html><header><title>testfile.html</title><body>Sheet Name: pyexcel_sheet1
             <table>
+            <tr><td style="text-align: right;">1</td><td style="text-align: right;">  2</td><td style="text-align: right;">  3</td></tr>
+            <tr><td style="text-align: right;">4</td><td style="text-align: right;">588</td><td style="text-align: right;">  6</td></tr>
+            <tr><td style="text-align: right;">7</td><td style="text-align: right;">  8</td><td style="text-align: right;">999</td></tr>
+            </table>
+            </body></html>""").strip('\n'),
+        'no_title_single_sheet': dedent("""
+            <html><header><title>testfile.html</title><body><table>
             <tr><td style="text-align: right;">1</td><td style="text-align: right;">  2</td><td style="text-align: right;">  3</td></tr>
             <tr><td style="text-align: right;">4</td><td style="text-align: right;">588</td><td style="text-align: right;">  6</td></tr>
             <tr><td style="text-align: right;">7</td><td style="text-align: right;">  8</td><td style="text-align: right;">999</td></tr>
@@ -391,9 +458,13 @@ class TestJSON(TestIO):
     expected_results = {
         'dict':
             '{"sheet 1": [[1, 2], [3, 4]], "sheet 2": [[5, 6], [7, 8]]}',
+        'no_title_multiple_sheets':
+            '{"sheet 1": [[1, 2], [3, 4]], "sheet 2": [[5, 6], [7, 8]]}',
         'normal_usage':
             '{"pyexcel": [[1, 2, 3], [4, 588, 6], [7, 8, 999]]}',
         'new_normal_usage':
+            '[[1, 2, 3], [4, 588, 6], [7, 8, 999]]',
+        'no_title_single_sheet':
             '[[1, 2, 3], [4, 588, 6], [7, 8, 999]]',
         'new_normal_usage_irregular_columns':
             '[[1, 2, 3], [4, 588, 6], [7, 8]]',

@@ -22,6 +22,7 @@ It is a plugin to `pyexcel <https://github.com/pyexcel/pyexcel>`__ and extends i
 * "latex"
 * "latex_booktabs"
 * "json"
+* "html"
 
 Usage
 ======

@@ -106,13 +106,14 @@ STRINGIFICATION.update({
 
 
 class TextSheetWriter(SheetWriterBase):
-    def __init__(self, filehandle, file_type, name, **keywords):
+    def __init__(self, filehandle, file_type, name, write_title=True, **keywords):
         self.filehandle = filehandle
         self.file_type = file_type
         self.keywords = keywords
-        title = "Sheet Name: %s\n" % name
         if 'single_sheet_in_book' in self.keywords:
             self.keywords.pop('single_sheet_in_book')
+        if write_title:
+            title = "Sheet Name: %s\n" % name
             self.filehandle.write(title)
 
     def set_size(self, size):
@@ -173,7 +174,7 @@ class HtmlWriter(TextWriter):
 
 
 class JsonSheetWriter(TextSheetWriter):
-    def __init__(self, filehandle, name, **keywords):
+    def __init__(self, filehandle, name, write_title=True, **keywords):
         self.filehandle = filehandle
         self.keywords = keywords
 
