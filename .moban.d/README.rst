@@ -10,7 +10,8 @@
 
 
 {%block description%}
-It is a plugin to `pyexcel <https://github.com/pyexcel/pyexcel>`__ and extends its capbility to present and write data in text fromats mainly through `tabulate`:
+It is a plugin to `pyexcel <https://github.com/pyexcel/pyexcel>`__ and extends
+its capbility to present and write data in text fromats mainly through `tabulate`:
 
 * "plain"
 * "simple"
