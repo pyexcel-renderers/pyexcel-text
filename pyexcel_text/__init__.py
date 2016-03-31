@@ -217,7 +217,7 @@ class JsonWriter(TextWriter):
             sheet.close()
         else:
             import json
-            self.f.write(json.dumps(sheet_dicts))
+            self.f.write(json.dumps(sheet_dicts, sort_keys=True))
 
     def create_sheet(self, name):
         return JsonSheetWriter(self.f, name)
