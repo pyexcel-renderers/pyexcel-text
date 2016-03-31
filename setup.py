@@ -10,7 +10,7 @@ with open("README.rst", 'r') as readme:
 
 dependencies = [
     'pyexcel>=0.2.0',
-    'tabulate>=0.74',
+    'tabulate>=0.7.4',
 ]
 
 extras = {}
