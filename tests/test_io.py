@@ -1,8 +1,10 @@
+import platform
 import os
 import sys
 import json
 import unittest
 
+from distutils.version import LooseVersion
 from textwrap import dedent
 import pyexcel as pe
 from pyexcel.ext import text
@@ -10,6 +12,8 @@ if sys.version_info[0] < 3:
     from StringIO import StringIO
 else:
     from io import StringIO
+
+import tabulate
 
 # Python 2.6 does not have unittest.expectedFailure; just ignore those test
 if hasattr(unittest, 'expectedFailure'):
@@ -330,15 +334,6 @@ class TestRst(TestIO):
             4  588  6
             7    8
             =  ===  =""").strip('\n'),
-        'data_frame': dedent("""
-            Sheet Name: pyexcel_sheet1
-            =====  ==========  ==========  ==========
-                     Column 1    Column 2    Column 3
-            =====  ==========  ==========  ==========
-            Row 1           1           2           3
-            Row 2           4           5           6
-            Row 3           7           8           9
-            =====  ==========  ==========  ==========""").strip('\n'),
         'row_series': dedent("""
             Sheet Name: pyexcel_sheet1
             =====  =  =  =
@@ -347,6 +342,28 @@ class TestRst(TestIO):
             Row 3  7  8  9
             =====  =  =  =""").strip('\n')
     }
+
+    if (LooseVersion(tabulate.__version__) <= LooseVersion('0.7.5') or
+            platform.python_implementation() == 'PyPy'):
+        expected_results['data_frame'] = dedent("""
+            Sheet Name: pyexcel_sheet1
+            =====  ==========  ==========  ==========
+                     Column 1    Column 2    Column 3
+            =====  ==========  ==========  ==========
+            Row 1           1           2           3
+            Row 2           4           5           6
+            Row 3           7           8           9
+            =====  ==========  ==========  ==========""").strip('\n')
+    else:
+        expected_results['data_frame'] = dedent("""
+            Sheet Name: pyexcel_sheet1
+            =====  ==========  ==========  ==========
+            ..       Column 1    Column 2    Column 3
+            =====  ==========  ==========  ==========
+            Row 1           1           2           3
+            Row 2           4           5           6
+            Row 3           7           8           9
+            =====  ==========  ==========  ==========""").strip('\n')
 
 
 class TestHTML(TestIO):
@@ -450,6 +467,12 @@ class TestHTML(TestIO):
             </body></html>
             """).strip('\n'),
     }
+
+    # tabulate 0.7.6-dev adds <thead> and <tbody> elements
+    if LooseVersion(tabulate.__version__) > LooseVersion('0.7.5'):
+        expected_results = dict(
+            (key, value.replace('<tr><th ', '<thead>\n<tr><th ').replace('<tr><th>', '<thead>\n<tr><th>').replace('</th></tr>', '</th></tr>\n</thead>\n<tbody>').replace('<table>\n<tr>', '<table>\n<tbody>\n<tr>').replace('</table>', '</tbody>\n</table>'))
+            for key, value in expected_results.items())
 
 
 class TestJSON(TestIO):
