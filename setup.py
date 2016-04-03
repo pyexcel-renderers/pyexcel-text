@@ -8,6 +8,9 @@ except ImportError:
 with open("README.rst", 'r') as readme:
     README_txt = readme.read()
 
+with open("CHANGELOG.rst", 'r') as changelog:
+    README_txt += changelog.read()
+
 dependencies = [
     'pyexcel>=0.2.0',
     'tabulate>=0.7.4',
