@@ -13,12 +13,20 @@ python:
   - 3.4
   - 3.5
 
+env:
+  - TABULATE_VERSION=pypi
+  - TABULATE_VERSION=dev
+
+before_install:
+  - if [[ $TABULATE_VERSION = "dev" ]]; then pip install git+https://bitbucket.org/astanin/python-tabulate ; fi
+
 # requirements.txt is automatically processed by Travis-CI's default 'install'
 before_script:
   - pip install -r tests/requirements.txt
 
 script:
-  make test
+  - if [[ $TABULATE_VERSION = "dev" ]]; then nosetests ; fi
+  - if [[ $TABULATE_VERSION = "pypi" ]]; then make test ; fi
 
 after_success:
   codecov
