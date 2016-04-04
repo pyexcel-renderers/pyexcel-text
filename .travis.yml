@@ -1,7 +1,9 @@
 sudo: false
 language: python
+
 notifications:
   email: false
+
 python:
   - 2.7
   - 2.6
@@ -10,9 +12,13 @@ python:
   - 3.3
   - 3.4
   - 3.5
+
+# requirements.txt is automatically processed by Travis-CI's default 'install'
 before_script:
   - pip install -r tests/requirements.txt
+
 script:
   make test
+
 after_success:
   codecov
