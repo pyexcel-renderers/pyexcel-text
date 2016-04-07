@@ -125,7 +125,6 @@ class TestIO(unittest.TestCase):
                         'expected result missing: %s' % written_content)
 
         expected = self.expected_results[name]
-
         self.assertEqual(written_content, expected)
 
     def test_no_title_multiple_sheets(self):
@@ -207,9 +206,8 @@ class TestIO(unittest.TestCase):
             [4, 5, 6],
             [7, 8, 9]
         ]
-        s = pe.Sheet(content, name_columns_by_row=0)
-
-        pe.save_as(array=s, dest_file_name=self.testfile)
+        pe.save_as(array=content, name_columns_by_row=0,
+                   dest_file_name=self.testfile)
 
         self._check_test_file('column_series')
 
@@ -220,9 +218,8 @@ class TestIO(unittest.TestCase):
             [4, 5, 6],
             [7, 8]
         ]
-        s = pe.Sheet(content, name_columns_by_row=0)
-
-        pe.save_as(array=s, dest_file_name=self.testfile)
+        pe.save_as(array=content, name_columns_by_row=0,
+                   dest_file_name=self.testfile)
 
         self._check_test_file('column_series_irregular_columns')
 
@@ -233,9 +230,8 @@ class TestIO(unittest.TestCase):
             ["Row 2", 4, 5, 6],
             ["Row 3", 7, 8, 9]
         ]
-        s = pe.Sheet(content, name_rows_by_column=0, name_columns_by_row=0)
-
-        pe.save_as(array=s, dest_file_name=self.testfile)
+        pe.save_as(array=content, name_rows_by_column=0, name_columns_by_row=0,
+                   dest_file_name=self.testfile)
 
         self._check_test_file('data_frame')
 
@@ -245,9 +241,9 @@ class TestIO(unittest.TestCase):
             ["Row 2", 4, 5, 6],
             ["Row 3", 7, 8, 9]
         ]
-        s = pe.Sheet(content, name_rows_by_column=0)
 
-        pe.save_as(array=s, dest_file_name=self.testfile)
+        pe.save_as(array=content, name_rows_by_column=0,
+                   dest_file_name=self.testfile)
 
         self._check_test_file('row_series')
 
@@ -512,7 +508,6 @@ class TestJSON(TestIO):
             json.load(f)
 
         super(TestJSON, self)._check_test_file(name)
-
 
 class TestStream:
     def setUp(self):
