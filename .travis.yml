@@ -13,6 +13,7 @@ python:
   - 3.4
   - 3.5
 before_script:
+  - pip install https://github.com/pyexcel/pyexcel/archive/v0.2.1.zip
   - pip install -r tests/requirements.txt
 
 script:

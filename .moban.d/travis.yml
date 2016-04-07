@@ -8,3 +8,6 @@
   - 3.5
 {%endblock%}
 
+{%block custom_install%}
+  - pip install https://github.com/pyexcel/pyexcel/archive/v0.2.1.zip
+{%endblock%}
