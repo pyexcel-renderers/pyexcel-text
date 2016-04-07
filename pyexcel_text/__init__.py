@@ -5,19 +5,18 @@
     Provide readable string prestation
 
     :copyright: (c) 2014 by C. W.
-    :license: GPL v3
+    :license: New BSD
 """
+import json
+
+import tabulate
+
 from pyexcel.presentation import STRINGIFICATION
-from pyexcel.sheets import NominableSheet
-from pyexcel.sheets.matrix import uniform, Matrix
-from pyexcel_io import (
-    BookWriter,
-    SheetWriterBase,
-    is_string,
-    is_generator,
-    WRITERS,
-)
+from pyexcel.sheets import NominableSheet, SheetStream
+from pyexcel.sheets.matrix import uniform
 from pyexcel.deprecated import deprecated
+from pyexcel.sources import FileSource, SourceFactory
+from pyexcel.constants import KEYWORD_FILE_NAME
 from functools import partial
 
 
@@ -37,7 +36,6 @@ def present_matrix(matrix_instance):
         import json
         return json.dumps(matrix_instance.to_array())
     else:
-        import tabulate
         return tabulate.tabulate(matrix_instance.to_array(), tablefmt=TABLEFMT)
 
 
@@ -49,7 +47,6 @@ def present_nominable_sheet(nmsheet_instance):
             nmsheet_instance.name: nmsheet_instance.to_array()
         })
     else:
-        import tabulate
         ret = "Sheet Name: %s\n" % nmsheet_instance.name
         if len(nmsheet_instance.colnames) > 0:
             data = nmsheet_instance.to_array()
@@ -105,87 +102,125 @@ STRINGIFICATION.update({
 })
 
 
-class TextSheetWriter(SheetWriterBase):
-    def __init__(self, filehandle, file_type, name, write_title=True, **keywords):
-        self.filehandle = filehandle
-        self.file_type = file_type
+class TextSource(FileSource):
+    """
+    Write into json file
+    """
+    TEXT_FILE_FORMATS = [
+        "simple",
+        "plain",
+        "grid",
+        "pipe",
+        "orgtbl",
+        "rst",
+        "mediawiki",
+        "latex",
+        "latex_booktabs"
+    ]
+    @classmethod
+    def can_i_handle(cls, action, file_type):
+        status = False
+        if action == 'write' and file_type in cls.TEXT_FILE_FORMATS:
+            status = True
+        return status
+
+
+class TextSheetSource(TextSource):
+    fields = [KEYWORD_FILE_NAME]
+
+    def __init__(self, file_name=None, write_title=True, **keywords):
+        self.file_name = file_name
         self.keywords = keywords
-        if 'single_sheet_in_book' in self.keywords:
-            self.keywords.pop('single_sheet_in_book')
-        if write_title:
-            title = "Sheet Name: %s\n" % name
-            self.filehandle.write(title)
+        self.write_title = write_title
+        self.file_type = file_name.split(".")[-1]
 
-    def set_size(self, size):
-        pass
+    def write_data(self, sheet):
+        data = self.transform_data(sheet)
+        with open(self.file_name, 'w') as textfile:
+            self.write_sheet(textfile, data, sheet.name)
 
-    def write_array(self, table):
-        import tabulate
+    def write_sheet(self, textfile, data, title):
+        if self.write_title:
+            textfile.write("Sheet Name: %s\n" % title)
+        textfile.write(tabulate.tabulate(data,
+                                         tablefmt=self.file_type,
+                                         **self.keywords))
+        textfile.write("\n")
 
-        if not isinstance(table, Matrix):
-            if not isinstance(table, list):
-                table = list(table)
+    def transform_data(self, sheet):
+        table = []
+        if isinstance(sheet, SheetStream):
+            table = list(sheet.to_array())
             width, table = uniform(table)
 
-        keywords = self.keywords
-        if isinstance(table, NominableSheet):
-            if len(table.colnames) > 0:
-                keywords['headers'] = 'firstrow'
-            table = table.to_array()
-
-        self.filehandle.write(tabulate.tabulate(table,
-                                                tablefmt=self.file_type,
-                                                **keywords))
-
-    def close(self):
-        self.filehandle.write('\n')
-        pass
+        if isinstance(sheet, NominableSheet):
+            if len(sheet.colnames) > 0:
+                self.keywords['headers'] = 'firstrow'
+            table = sheet.to_array()
+        return table
 
 
-class TextWriter(BookWriter):
-    def __init__(self, filename, **keywords):
-        BookWriter.__init__(self, filename, **keywords)
-        if is_string(type(filename)):
-            self.f = open(filename, 'w')
-        else:
-            self.f = filename
-        self.filename = filename
+class TextBookSource(TextSheetSource):
+    def write_data(self, book):
+        with open(self.file_name, 'w') as textfile:
+            self.write_book(textfile, book)
 
-    def create_sheet(self, name):
-        return TextSheetWriter(
-            self.f,
-            self.file_type,
-            name,
-            **self.keywords)
-
-    def close(self):
-        if is_string(type(self.filename)):
-            self.f.close()
+    def write_book(self, textfile, book):
+        for sheet in book:
+            data = self.transform_data(sheet)
+            self.write_sheet(textfile, data, sheet.name)
 
 
-class HtmlWriter(TextWriter):
-    def __init__(self, filename, **keywords):
-        TextWriter.__init__(self, filename, **keywords)
-        self.f.write("<html><header><title>%s</title><body>" % filename)
+class HtmlSheetSource(TextSheetSource):
+    TEXT_FILE_FORMATS = ['html']
 
-    def close(self):
-        self.f.write("</body></html>")
-        TextWriter.close(self)
+    def write_sheet(self, textfile, data, title):
+        textfile.write("<html><header><title>%s</title><body>" % self.file_name)
+        TextSheetSource.write_sheet(self, textfile, data, title)
+        textfile.write("</body></html>")
 
 
-class JsonSheetWriter(TextSheetWriter):
-    def __init__(self, filehandle, name, write_title=True, **keywords):
-        self.filehandle = filehandle
+class HtmlBookSource(TextBookSource):
+    TEXT_FILE_FORMATS = ['html']
+
+    def write_book(self, textfile, book):
+        textfile.write("<html><header><title>%s</title><body>" % self.file_name)
+        TextBookSource.write_book(self, textfile, book)
+        textfile.write("</body></html>")
+
+
+class JsonSource(FileSource):
+    """
+    Write into json file
+    """
+    @classmethod
+    def can_i_handle(cls, action, file_type):
+        status = False
+        if action == 'write' and file_type == "json":
+            status = True
+        return status
+
+
+class JsonSheetSource(JsonSource):
+    """
+    Write a two dimensional array into json format
+    """
+    fields = [KEYWORD_FILE_NAME]
+
+    def __init__(self, file_name=None, **keywords):
+        self.file_name = file_name
         self.keywords = keywords
+    
+    def write_data(self, sheet):
+        data = self.transform_data(sheet)
+        with open(self.file_name, 'w') as jsonfile:
+            jsonfile.write(json.dumps(data, sort_keys=True))
 
-    def write_array(self, table):
-        import json
-
-        # Covert NominableSheet to JSON encodable structure, using headers
-        if isinstance(table, NominableSheet):
-            colnames = table.colnames
-            rownames = table.rownames
-            table = table.to_array()
+    def transform_data(self, sheet):
+        table = sheet.to_array()
+        if hasattr(sheet, 'colnames'):
+            colnames = sheet.colnames
+            rownames = sheet.rownames
             # In the following, row[0] is the name of each row
             if colnames and rownames:
                 table = dict((row[0], dict(zip(colnames, row[1:])))
@@ -194,48 +229,27 @@ class JsonSheetWriter(TextSheetWriter):
                 table = [dict(zip(colnames, row)) for row in table[1:]]
             elif rownames:
                 table = dict((row[0], row[1:]) for row in table)
-
-        # Reduce generators to a JSON encodable structure
-        elif is_generator(table):
-            table = list(table)
-
-        self.filehandle.write(json.dumps(table, sort_keys=True))
-
-    def close(self):
-        pass
-
-
-class JsonWriter(TextWriter):
-    def __init__(self, filename, **keywords):
-        TextWriter.__init__(self, filename, **keywords)
-
-    def write(self, sheet_dicts):
-        if self.keywords.get('single_sheet_in_book', False):
-            keys = list(sheet_dicts.keys())
-            sheet = self.create_sheet(keys[0])
-            sheet.write_array(sheet_dicts[keys[0]])
-            sheet.close()
         else:
-            import json
-            self.f.write(json.dumps(sheet_dicts, sort_keys=True))
-
-    def create_sheet(self, name):
-        return JsonSheetWriter(self.f, name)
-
-    def close(self):
-        TextWriter.close(self)
+            table = list(table)
+        return table
 
 
-WRITERS.update({
-    "simple": TextWriter,
-    "plain": TextWriter,
-    "grid": TextWriter,
-    "pipe": TextWriter,
-    "orgtbl": TextWriter,
-    "rst": TextWriter,
-    "mediawiki": TextWriter,
-    "latex": TextWriter,
-    "latex_booktabs": TextWriter,
-    "html": HtmlWriter,
-    "json": JsonWriter
-})
+class JsonBookSource(JsonSheetSource):
+    """
+    Write a dictionary of two dimensional arrays into json format
+    """
+    def write_data(self, book):
+        if self.keywords.get('single_sheet_in_book', False):
+            keys = list(book.keys())
+            JsonSheetSource.write_data(book[keys[0]])
+        else:
+            with open(self.file_name, 'w') as jsonfile:
+                jsonfile.write(json.dumps(book.to_dict(), sort_keys=True))
+
+
+SourceFactory.register_a_source("sheet", "write", JsonSheetSource)
+SourceFactory.register_a_source("book", "write", JsonBookSource)
+SourceFactory.register_a_source("sheet", "write", TextSheetSource)
+SourceFactory.register_a_source("book", "write", TextBookSource)
+SourceFactory.register_a_source("sheet", "write", HtmlSheetSource)
+SourceFactory.register_a_source("book", "write", HtmlBookSource)
