@@ -120,11 +120,11 @@ class TextSheetSource(TextSource):
         self.file_type = file_name.split(".")[-1]
 
     def write_data(self, sheet):
-        data = self.transform_data(sheet)
+        data = self._transform_data(sheet)
         with open(self.file_name, 'w') as textfile:
-            self.write_sheet(textfile, data, sheet.name)
+            self._write_sheet(textfile, data, sheet.name)
 
-    def write_sheet(self, textfile, data, title):
+    def _write_sheet(self, textfile, data, title):
         if self.write_title:
             textfile.write("Sheet Name: %s\n" % title)
         textfile.write(tabulate.tabulate(data,
@@ -132,7 +132,7 @@ class TextSheetSource(TextSource):
                                          **self.keywords))
         textfile.write("\n")
 
-    def transform_data(self, sheet):
+    def _transform_data(self, sheet):
         table = []
         if isinstance(sheet, SheetStream):
             table = list(sheet.to_array())
@@ -148,30 +148,38 @@ class TextSheetSource(TextSource):
 class TextBookSource(TextSheetSource):
     def write_data(self, book):
         with open(self.file_name, 'w') as textfile:
-            self.write_book(textfile, book)
+            self._write_book(textfile, book)
 
-    def write_book(self, textfile, book):
+    def _write_book(self, textfile, book):
         for sheet in book:
-            data = self.transform_data(sheet)
-            self.write_sheet(textfile, data, sheet.name)
+            data = self._transform_data(sheet)
+            self._write_sheet(textfile, data, sheet.name)
 
 
-class HtmlSheetSource(TextSheetSource):
+class HtmlMixin(object):
+    def write_html_header(self, open_filehandle, title):
+        open_filehandle.write("<html><header><title>%s</title><body>" % title)
+
+    def write_html_footer(self, open_filehandle):
+        open_filehandle.write("</body></html>")
+
+
+class HtmlSheetSource(TextSheetSource, HtmlMixin):
     TEXT_FILE_FORMATS = ['html']
 
-    def write_sheet(self, textfile, data, title):
-        textfile.write("<html><header><title>%s</title><body>" % self.file_name)
-        TextSheetSource.write_sheet(self, textfile, data, title)
-        textfile.write("</body></html>")
+    def _write_sheet(self, textfile, data, title):
+        self.write_html_header(textfile, self.file_name)
+        TextSheetSource._write_sheet(self, textfile, data, title)
+        self.write_html_footer(textfile)
 
 
-class HtmlBookSource(TextBookSource):
+class HtmlBookSource(TextBookSource, HtmlMixin):
     TEXT_FILE_FORMATS = ['html']
 
-    def write_book(self, textfile, book):
-        textfile.write("<html><header><title>%s</title><body>" % self.file_name)
-        TextBookSource.write_book(self, textfile, book)
-        textfile.write("</body></html>")
+    def _write_book(self, textfile, book):
+        self.write_html_header(textfile, self.file_name)
+        TextBookSource._write_book(self, textfile, book)
+        self.write_html_footer(textfile)
 
 
 class JsonSource(FileSource):
@@ -197,11 +205,11 @@ class JsonSheetSource(JsonSource):
         self.keywords = keywords
 
     def write_data(self, sheet):
-        data = self.transform_data(sheet)
+        data = self._transform_data(sheet)
         with open(self.file_name, 'w') as jsonfile:
             jsonfile.write(json.dumps(data, sort_keys=True))
 
-    def transform_data(self, sheet):
+    def _transform_data(self, sheet):
         table = sheet.to_array()
         if hasattr(sheet, 'colnames'):
             colnames = sheet.colnames
@@ -224,12 +232,8 @@ class JsonBookSource(JsonSheetSource):
     Write a dictionary of two dimensional arrays into json format
     """
     def write_data(self, book):
-        if self.keywords.get('single_sheet_in_book', False):
-            keys = list(book.keys())
-            JsonSheetSource.write_data(book[keys[0]])
-        else:
-            with open(self.file_name, 'w') as jsonfile:
-                jsonfile.write(json.dumps(book.to_dict(), sort_keys=True))
+        with open(self.file_name, 'w') as jsonfile:
+            jsonfile.write(json.dumps(book.to_dict(), sort_keys=True))
 
 
 def extend_sources(SourceFactory):
