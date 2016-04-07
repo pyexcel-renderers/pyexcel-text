@@ -8,16 +8,15 @@
     :license: New BSD
 """
 import json
+from functools import partial
 
 import tabulate
 
-from pyexcel.presentation import STRINGIFICATION
 from pyexcel.sheets import NominableSheet, SheetStream
 from pyexcel.sheets.matrix import uniform
 from pyexcel.deprecated import deprecated
-from pyexcel.sources import FileSource, SourceFactory
+from pyexcel.sources import FileSource
 from pyexcel.constants import KEYWORD_FILE_NAME
-from functools import partial
 
 
 TABLEFMT = "simple"
@@ -33,7 +32,6 @@ def class_name(name):
 def present_matrix(matrix_instance):
     """Textualize a Matrix"""
     if TABLEFMT == "json":
-        import json
         return json.dumps(matrix_instance.to_array())
     else:
         return tabulate.tabulate(matrix_instance.to_array(), tablefmt=TABLEFMT)
@@ -42,7 +40,6 @@ def present_matrix(matrix_instance):
 def present_nominable_sheet(nmsheet_instance):
     """Textualize a NominableSheet"""
     if TABLEFMT == "json":
-        import json
         return json.dumps({
             nmsheet_instance.name: nmsheet_instance.to_array()
         })
@@ -59,7 +56,6 @@ def present_nominable_sheet(nmsheet_instance):
 def present_book(book_instance):
     """Textualize a pyexcel Book"""
     if TABLEFMT == "json":
-        import json
         return json.dumps(book_instance.to_dict())
     else:
         ret = ""
@@ -75,9 +71,8 @@ def present_book(book_instance):
              " or instance method Sheet.save_as or Book.save_as"))
 def save_as(instance, filename):
     """Save a pyexcel instance as text to a file"""
-    f = open(filename, "w")
-    f.write(str(instance))
-    f.close()
+    with open(filename, "w") as outfile:
+        outfile.write(str(instance))
 
 
 @partial(
@@ -90,16 +85,6 @@ def save_as(instance, filename):
 def save_to_memory(instance, stream):
     """Save a pyexcel instance as text to a stream"""
     stream.write(str(instance))
-
-
-STRINGIFICATION.update({
-    class_name("pyexcel.sheets.matrix.Matrix"): present_matrix,
-    class_name("pyexcel.sheets.matrix.FormattableSheet"): present_matrix,
-    class_name("pyexcel.sheets.matrix.FilterableSheet"): present_matrix,
-    class_name("pyexcel.sheets.sheet.NominableSheet"): present_nominable_sheet,
-    class_name("pyexcel.sheets.sheet.Sheet"): present_nominable_sheet,
-    class_name("pyexcel.book.Book"): present_book
-})
 
 
 class TextSource(FileSource):
@@ -210,7 +195,7 @@ class JsonSheetSource(JsonSource):
     def __init__(self, file_name=None, **keywords):
         self.file_name = file_name
         self.keywords = keywords
-    
+
     def write_data(self, sheet):
         data = self.transform_data(sheet)
         with open(self.file_name, 'w') as jsonfile:
@@ -247,9 +232,21 @@ class JsonBookSource(JsonSheetSource):
                 jsonfile.write(json.dumps(book.to_dict(), sort_keys=True))
 
 
-SourceFactory.register_a_source("sheet", "write", JsonSheetSource)
-SourceFactory.register_a_source("book", "write", JsonBookSource)
-SourceFactory.register_a_source("sheet", "write", TextSheetSource)
-SourceFactory.register_a_source("book", "write", TextBookSource)
-SourceFactory.register_a_source("sheet", "write", HtmlSheetSource)
-SourceFactory.register_a_source("book", "write", HtmlBookSource)
+def extend_sources(SourceFactory):
+    SourceFactory.register_a_source("sheet", "write", JsonSheetSource)
+    SourceFactory.register_a_source("book", "write", JsonBookSource)
+    SourceFactory.register_a_source("sheet", "write", TextSheetSource)
+    SourceFactory.register_a_source("book", "write", TextBookSource)
+    SourceFactory.register_a_source("sheet", "write", HtmlSheetSource)
+    SourceFactory.register_a_source("book", "write", HtmlBookSource)
+
+
+def extend_presentation(presentation):
+    presentation.update({
+        class_name("pyexcel.sheets.matrix.Matrix"): present_matrix,
+        class_name("pyexcel.sheets.matrix.FormattableSheet"): present_matrix,
+        class_name("pyexcel.sheets.matrix.FilterableSheet"): present_matrix,
+        class_name("pyexcel.sheets.sheet.NominableSheet"): present_nominable_sheet,
+        class_name("pyexcel.sheets.sheet.Sheet"): present_nominable_sheet,
+        class_name("pyexcel.book.Book"): present_book
+    })
