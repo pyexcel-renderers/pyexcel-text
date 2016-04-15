@@ -12,10 +12,11 @@ from functools import partial
 
 import tabulate
 
+from pyexcel.presentation import STRINGIFICATION as presentation
 from pyexcel.sheets import NominableSheet, SheetStream
 from pyexcel.sheets.matrix import uniform
 from pyexcel.deprecated import deprecated
-from pyexcel.sources import FileSource
+from pyexcel.sources import FileSource, SourceFactory
 from pyexcel.constants import KEYWORD_FILE_NAME
 
 
@@ -236,21 +237,19 @@ class JsonBookSource(JsonSheetSource):
             jsonfile.write(json.dumps(book.to_dict(), sort_keys=True))
 
 
-def extend_sources(SourceFactory):
-    SourceFactory.register_a_source("sheet", "write", JsonSheetSource)
-    SourceFactory.register_a_source("book", "write", JsonBookSource)
-    SourceFactory.register_a_source("sheet", "write", TextSheetSource)
-    SourceFactory.register_a_source("book", "write", TextBookSource)
-    SourceFactory.register_a_source("sheet", "write", HtmlSheetSource)
-    SourceFactory.register_a_source("book", "write", HtmlBookSource)
+SourceFactory.register_a_source("sheet", "write", JsonSheetSource)
+SourceFactory.register_a_source("book", "write", JsonBookSource)
+SourceFactory.register_a_source("sheet", "write", TextSheetSource)
+SourceFactory.register_a_source("book", "write", TextBookSource)
+SourceFactory.register_a_source("sheet", "write", HtmlSheetSource)
+SourceFactory.register_a_source("book", "write", HtmlBookSource)
 
 
-def extend_presentation(presentation):
-    presentation.update({
-        class_name("pyexcel.sheets.matrix.Matrix"): present_matrix,
-        class_name("pyexcel.sheets.matrix.FormattableSheet"): present_matrix,
-        class_name("pyexcel.sheets.matrix.FilterableSheet"): present_matrix,
-        class_name("pyexcel.sheets.sheet.NominableSheet"): present_nominable_sheet,
-        class_name("pyexcel.sheets.sheet.Sheet"): present_nominable_sheet,
-        class_name("pyexcel.book.Book"): present_book
-    })
+presentation.update({
+    class_name("pyexcel.sheets.matrix.Matrix"): present_matrix,
+    class_name("pyexcel.sheets.matrix.FormattableSheet"): present_matrix,
+    class_name("pyexcel.sheets.matrix.FilterableSheet"): present_matrix,
+    class_name("pyexcel.sheets.sheet.NominableSheet"): present_nominable_sheet,
+    class_name("pyexcel.sheets.sheet.Sheet"): present_nominable_sheet,
+    class_name("pyexcel.book.Book"): present_book
+})
