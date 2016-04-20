@@ -1,8 +1,6 @@
 import json
 
-from pyexcel.book import Book
-from pyexcel.sheets import Sheet
-from pyexcel.sources import FileSource, SourceFactory
+from pyexcel.sources.base import FileSource
 from pyexcel.constants import KEYWORD_FILE_NAME, KEYWORD_FILE_TYPE
 
 from ._compact import StringIO
@@ -25,6 +23,8 @@ class JsonSheetSource(JsonSource):
     Write a two dimensional array into json format
     """
     fields = [KEYWORD_FILE_NAME]
+    targets = ('sheet',)
+    actions = ('write',)
 
     def __init__(self, file_name=None, write_title=True, **keywords):
         self.file_name = file_name
@@ -83,6 +83,8 @@ def write_json_book(jsonfile, bookdict):
 
 
 class JsonBookSourceInMemory(JsonSheetSourceInMemory):
+    targets = ('book',)
+    actions = ('write',)
 
     def write_data(self, book):
         write_json_book(self.content, book.to_dict())
@@ -92,15 +94,14 @@ class JsonBookSource(JsonSheetSource):
     """
     Write a dictionary of two dimensional arrays into json format
     """
+    targets = ('book',)
+    actions = ('write',)
+
     def write_data(self, book):
         with open(self.file_name, 'w') as jsonfile:
             write_json_book(jsonfile, book.to_dict())
 
 
-SourceFactory.register_a_source("sheet", "write", JsonSheetSource)
-SourceFactory.register_a_source("book", "write", JsonBookSource)
-SourceFactory.register_a_source("sheet", "write", JsonSheetSourceInMemory)
-SourceFactory.register_a_source("book", "write", JsonBookSourceInMemory)
+sources = (JsonSheetSource, JsonBookSource, JsonSheetSourceInMemory, JsonBookSourceInMemory)
 
-Sheet.register_presentation('json')
-Book.register_presentation('json')
+file_types = ('json',)

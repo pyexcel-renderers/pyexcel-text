@@ -1,29 +1,30 @@
 import tabulate
 
-from pyexcel.book import Book
-from pyexcel.sheets import NominableSheet, SheetStream, Sheet
+from pyexcel.sheets import NominableSheet, SheetStream
 from pyexcel.sheets.matrix import uniform
-from pyexcel.sources import FileSource, SourceFactory
+from pyexcel.sources.base import FileSource
 from pyexcel.constants import KEYWORD_FILE_NAME, KEYWORD_FILE_TYPE
 
 from ._compact import StringIO
+
+file_types = (
+    'simple',
+    'plain',
+    'grid',
+    'pipe',
+    'orgtbl',
+    'rst',
+    'mediawiki',
+    'latex',
+    'latex_booktabs'
+)
 
 
 class TextSource(FileSource):
     """
     Write into json file
     """
-    TEXT_FILE_FORMATS = [
-        "simple",
-        "plain",
-        "grid",
-        "pipe",
-        "orgtbl",
-        "rst",
-        "mediawiki",
-        "latex",
-        "latex_booktabs"
-    ]
+    TEXT_FILE_FORMATS = file_types
     @classmethod
     def can_i_handle(cls, action, file_type):
         status = False
@@ -34,6 +35,8 @@ class TextSource(FileSource):
 
 class TextSheetSource(TextSource):
     fields = [KEYWORD_FILE_NAME]
+    targets = ('sheet',)
+    actions = ('write',)
 
     def __init__(self, file_name=None, write_title=True, **keywords):
         self.file_name = file_name
@@ -69,6 +72,8 @@ class TextSheetSource(TextSource):
 
 class TextSheetSourceInMemory(TextSheetSource):
     fields = [KEYWORD_FILE_TYPE]
+    targets = ('sheet',)
+    actions = ('write',)
 
     def __init__(self, file_type=None, file_stream=None, write_title=True,
                  **keywords):
@@ -86,6 +91,8 @@ class TextSheetSourceInMemory(TextSheetSource):
 
 
 class TextBookSource(TextSheetSource):
+    targets = ('book',)
+
     def write_data(self, book):
         with open(self.file_name, 'w') as textfile:
             self._write_book(textfile, book)
@@ -112,27 +119,5 @@ class TextBookSourceInMemory(TextBookSource):
         self._write_book(self.content, book)
 
 
-SourceFactory.register_a_source("sheet", "write", TextSheetSource)
-SourceFactory.register_a_source("book", "write", TextBookSource)
-SourceFactory.register_a_source("sheet", "write", TextSheetSourceInMemory)
-SourceFactory.register_a_source("book", "write", TextBookSourceInMemory)
+sources = (TextSheetSource, TextBookSource, TextSheetSourceInMemory, TextBookSourceInMemory)
 
-
-Sheet.register_presentation('simple')
-Sheet.register_presentation('plain')
-Sheet.register_presentation("grid")
-Sheet.register_presentation("pipe")
-Sheet.register_presentation("orgtbl")
-Sheet.register_presentation("rst")
-Sheet.register_presentation("mediawiki")
-Sheet.register_presentation("latex")
-Sheet.register_presentation("latex_booktabs")
-Book.register_presentation('simple')
-Book.register_presentation('plain')
-Book.register_presentation("grid")
-Book.register_presentation("pipe")
-Book.register_presentation("orgtbl")
-Book.register_presentation("rst")
-Book.register_presentation("mediawiki")
-Book.register_presentation("latex")
-Book.register_presentation("latex_booktabs")

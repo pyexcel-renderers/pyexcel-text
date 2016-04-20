@@ -1,7 +1,3 @@
-from pyexcel.book import Book
-from pyexcel.sheets import Sheet
-from pyexcel.sources import SourceFactory
-
 from .text import TextSheetSource, TextBookSource
 from .text import TextSheetSourceInMemory, TextBookSourceInMemory
 
@@ -50,10 +46,6 @@ class HtmlBookSourceInMemory(TextBookSourceInMemory, HtmlMixin):
         self.write_html_footer(textfile)
 
 
-SourceFactory.register_a_source("sheet", "write", HtmlSheetSource)
-SourceFactory.register_a_source("book", "write", HtmlBookSource)
-SourceFactory.register_a_source("sheet", "write", HtmlSheetSourceInMemory)
-SourceFactory.register_a_source("book", "write", HtmlBookSourceInMemory)
+sources = (HtmlSheetSource, HtmlBookSource, HtmlBookSourceInMemory, HtmlSheetSourceInMemory)
 
-Sheet.register_presentation('html')
-Book.register_presentation('html')
+file_types = ('html',)
