@@ -7,6 +7,7 @@ from pyexcel.constants import KEYWORD_FILE_NAME, KEYWORD_FILE_TYPE
 
 from ._compact import StringIO
 
+
 file_types = (
     'simple',
     'plain',

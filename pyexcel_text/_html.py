@@ -2,6 +2,9 @@ from .text import TextSheetSource, TextBookSource
 from .text import TextSheetSourceInMemory, TextBookSourceInMemory
 
 
+file_types = ('html',)
+
+
 class HtmlMixin(object):
     def write_html_header(self, open_filehandle, title):
         open_filehandle.write("<html><header><title>%s</title><body>" % title)
@@ -47,5 +50,3 @@ class HtmlBookSourceInMemory(TextBookSourceInMemory, HtmlMixin):
 
 
 sources = (HtmlSheetSource, HtmlBookSource, HtmlBookSourceInMemory, HtmlSheetSourceInMemory)
-
-file_types = ('html',)
