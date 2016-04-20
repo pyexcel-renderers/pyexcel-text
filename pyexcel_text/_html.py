@@ -1,5 +1,5 @@
-from .text import TextSheetSource, TextBookSource
-from .text import TextSheetSourceInMemory, TextBookSourceInMemory
+from ._text import TextSheetSource, TextBookSource
+from ._text import TextSheetSourceInMemory, TextBookSourceInMemory
 
 
 file_types = ('html',)
