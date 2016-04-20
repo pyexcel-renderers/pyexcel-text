@@ -32,7 +32,6 @@ Here is the example usage:
 .. code-block:: python
 
     >>> import pyexcel as pe
-    >>> import pyexcel.ext.text as text
     >>> content = [
     ...     ["Column 1", "Column 2", "Column 3"],
     ...     [1, 2, 3],
@@ -40,7 +39,7 @@ Here is the example usage:
     ...     [7, 8, 9]
     ... ]
     >>> sheet = pe.Sheet(content)
-    >>> sheet
+    >>> print(sheet.simple)
     Sheet Name: pyexcel
     --------  --------  --------
     Column 1  Column 2  Column 3
@@ -48,16 +47,17 @@ Here is the example usage:
     4         5         6
     7         8         9
     --------  --------  --------
+    <BLANKLINE>
     >>> sheet.name_columns_by_row(0)
-    >>> sheet
+    >>> print(sheet.simple)
     Sheet Name: pyexcel
       Column 1    Column 2    Column 3
     ----------  ----------  ----------
              1           2           3
              4           5           6
              7           8           9
-    >>> text.TABLEFMT = "grid"
-    >>> sheet
+    <BLANKLINE>
+    >>> print(sheet.grid)
     Sheet Name: pyexcel
     +------------+------------+------------+
     |   Column 1 |   Column 2 |   Column 3 |
@@ -68,6 +68,7 @@ Here is the example usage:
     +------------+------------+------------+
     |          7 |          8 |          9 |
     +------------+------------+------------+
+    <BLANKLINE>
     >>> multiple_sheets = {
     ...      'Sheet 1':
     ...          [
@@ -89,7 +90,6 @@ Here is the example usage:
     ...          ]
     ...  }
     >>> book = pe.Book(multiple_sheets)
-    >>> text.TABLEFMT = "mediawiki"
     >>> book.save_as("myfile.mediawiki")
     >>> myfile = open("myfile.mediawiki")
     >>> print(myfile.read())

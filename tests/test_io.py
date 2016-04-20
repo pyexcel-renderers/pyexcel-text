@@ -153,7 +153,7 @@ class TestIO(unittest.TestCase):
             [7, 8, 999]
         ]
         s = pe.Sheet(content)
-        text.save_as(s, self.testfile)
+        s.save_as(self.testfile)
 
         self._check_test_file('normal_usage')
 
@@ -389,12 +389,13 @@ class TestHTML(TestIO):
             </table>
             </body></html>""").strip('\n'),
         'normal_usage': dedent("""
-            Sheet Name: pyexcel
+            <html><header><title>testfile.html</title><body>Sheet Name: pyexcel
             <table>
             <tr><td style="text-align: right;">1</td><td style="text-align: right;">  2</td><td style="text-align: right;">  3</td></tr>
             <tr><td style="text-align: right;">4</td><td style="text-align: right;">588</td><td style="text-align: right;">  6</td></tr>
             <tr><td style="text-align: right;">7</td><td style="text-align: right;">  8</td><td style="text-align: right;">999</td></tr>
-            </table>""").strip('\n'),
+            </table>
+            </body></html>""").strip('\n'),
         'new_normal_usage': dedent("""
             <html><header><title>testfile.html</title><body>Sheet Name: pyexcel_sheet1
             <table>
@@ -482,25 +483,25 @@ class TestJSON(TestIO):
         'normal_usage':
             '{"pyexcel": [[1, 2, 3], [4, 588, 6], [7, 8, 999]]}',
         'new_normal_usage':
-            '[[1, 2, 3], [4, 588, 6], [7, 8, 999]]',
+            '{"pyexcel_sheet1": [[1, 2, 3], [4, 588, 6], [7, 8, 999]]}',
         'no_title_single_sheet':
             '[[1, 2, 3], [4, 588, 6], [7, 8, 999]]',
         'new_normal_usage_irregular_columns':
-            '[[1, 2, 3], [4, 588, 6], [7, 8]]',
+            '{"pyexcel_sheet1": [[1, 2, 3], [4, 588, 6], [7, 8]]}',
         'column_series':
-            '[{"Column 1": 1, "Column 2": 2, "Column 3": 3},'
+            '{"pyexcel_sheet1": [{"Column 1": 1, "Column 2": 2, "Column 3": 3},'
             ' {"Column 1": 4, "Column 2": 5, "Column 3": 6},'
-            ' {"Column 1": 7, "Column 2": 8, "Column 3": 9}]',
+            ' {"Column 1": 7, "Column 2": 8, "Column 3": 9}]}',
         'column_series_irregular_columns':
-            '[{"Column 1": 1, "Column 2": 2, "Column 3": 3},'
+            '{"pyexcel_sheet1": [{"Column 1": 1, "Column 2": 2, "Column 3": 3},'
             ' {"Column 1": 4, "Column 2": 5, "Column 3": 6},'
-            ' {"Column 1": 7, "Column 2": 8, "Column 3": ""}]',
+            ' {"Column 1": 7, "Column 2": 8, "Column 3": ""}]}',
         'csvbook_irregular_columns':
-            '[["1", "2", "3"], ["4", "588", "6"], ["7", "8"]]',
+            '{"testfile.csv": [["1", "2", "3"], ["4", "588", "6"], ["7", "8"]]}',
         'data_frame':
-            '{"Row 1": {"Column 1": 1, "Column 2": 2, "Column 3": 3}, "Row 2": {"Column 1": 4, "Column 2": 5, "Column 3": 6}, "Row 3": {"Column 1": 7, "Column 2": 8, "Column 3": 9}}',
+            '{"pyexcel_sheet1": {"Row 1": {"Column 1": 1, "Column 2": 2, "Column 3": 3}, "Row 2": {"Column 1": 4, "Column 2": 5, "Column 3": 6}, "Row 3": {"Column 1": 7, "Column 2": 8, "Column 3": 9}}}',
         'row_series':
-            '{"Row 1": [1, 2, 3], "Row 2": [4, 5, 6], "Row 3": [7, 8, 9]}',
+            '{"pyexcel_sheet1": {"Row 1": [1, 2, 3], "Row 2": [4, 5, 6], "Row 3": [7, 8, 9]}}',
     }
 
     def _check_test_file(self, name):
@@ -509,10 +510,7 @@ class TestJSON(TestIO):
 
         super(TestJSON, self)._check_test_file(name)
 
-class TestStream:
-    def setUp(self):
-        self.testfile = StringIO()
-        text.TABLEFMT = "simple"
+class TestStream(unittest.TestCase):
     def test_normal_usage(self):
         content = [
             [1, 2, 3],
@@ -520,16 +518,17 @@ class TestStream:
             [7, 8, 999]
         ]
         s = pe.Sheet(content)
-        text.save_to_memory(s, self.testfile)
-        written_content = self.testfile.getvalue()
+        # note, plus the trailing '\n'
+        # due to tabluate produces the extra new line
         content = dedent("""
             Sheet Name: pyexcel
             -  ---  ---
             1    2    3
             4  588    6
             7    8  999
-            -  ---  ---""").strip('\n')
-        assert written_content == content
+            -  ---  ---
+            """).strip('\n') + '\n' 
+        self.assertEqual(s.simple,content)
 
 if __name__ == "__main__":
     unittest.main()
