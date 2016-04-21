@@ -1,9 +1,18 @@
+"""
+    pyexcel_text.html
+    ~~~~~~~~~~~~~~~~~~~
+
+    Provide tabulate output, see file_types for more details
+
+    :copyright: (c) 2014-2016 by C. W.
+    :license: New BSD
+"""
 import tabulate
 
 from pyexcel.sheets import NominableSheet, SheetStream
 from pyexcel.sheets.matrix import uniform
 from pyexcel.sources.base import FileSource
-from pyexcel.constants import KEYWORD_FILE_NAME, KEYWORD_FILE_TYPE
+from pyexcel.sources import params
 
 from ._compact import StringIO
 
@@ -29,15 +38,15 @@ class TextSource(FileSource):
     @classmethod
     def can_i_handle(cls, action, file_type):
         status = False
-        if action == 'write' and file_type in cls.TEXT_FILE_FORMATS:
+        if action == params.WRITE_ACTION and file_type in cls.TEXT_FILE_FORMATS:
             status = True
         return status
 
 
 class TextSheetSource(TextSource):
-    fields = [KEYWORD_FILE_NAME]
-    targets = ('sheet',)
-    actions = ('write',)
+    fields = [params.FILE_NAME]
+    targets = (params.SHEET,)
+    actions = (params.WRITE_ACTION,)
 
     def __init__(self, file_name=None, write_title=True, **keywords):
         self.file_name = file_name
@@ -72,9 +81,9 @@ class TextSheetSource(TextSource):
 
 
 class TextSheetSourceInMemory(TextSheetSource):
-    fields = [KEYWORD_FILE_TYPE]
-    targets = ('sheet',)
-    actions = ('write',)
+    fields = [params.FILE_TYPE]
+    targets = (params.SHEET,)
+    actions = (params.WRITE_ACTION,)
 
     def __init__(self, file_type=None, file_stream=None, write_title=True,
                  **keywords):
@@ -92,7 +101,7 @@ class TextSheetSourceInMemory(TextSheetSource):
 
 
 class TextBookSource(TextSheetSource):
-    targets = ('book',)
+    targets = (params.BOOK,)
 
     def write_data(self, book):
         with open(self.file_name, 'w') as textfile:
@@ -105,7 +114,7 @@ class TextBookSource(TextSheetSource):
 
 
 class TextBookSourceInMemory(TextBookSource):
-    fields = [KEYWORD_FILE_TYPE]
+    fields = [params.FILE_TYPE]
 
     def __init__(self, file_type=None, file_stream=None, write_title=True, **keywords):
         if file_stream:
@@ -120,5 +129,6 @@ class TextBookSourceInMemory(TextBookSource):
         self._write_book(self.content, book)
 
 
-sources = (TextSheetSource, TextBookSource, TextSheetSourceInMemory, TextBookSourceInMemory)
+sources = (TextSheetSource, TextBookSource,
+           TextSheetSourceInMemory, TextBookSourceInMemory)
 

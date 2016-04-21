@@ -1,13 +1,12 @@
 """
-    pyexcel.ext.text
+    pyexcel_text
     ~~~~~~~~~~~~~~~~~~~
 
-    Provide readable string presetation
+    Provide text output
 
     :copyright: (c) 2014 by C. W.
     :license: New BSD
 """
-
 from . import _text as text
 from . import _json as json
 from . import _html as html
@@ -23,8 +22,20 @@ file_types = text.file_types + json.file_types + html.file_types
 
 
 def save_as(instance, filename):
+    """
+    Legacy modular function. Now it is removed
+
+    raising an exception here to get the attention of
+    the user of pyexcel
+    """
     raise Exception(_SHARED_MESSAGE)
 
 
 def save_to_memory(instance, stream):
+    """
+    Legacy modular function. Now it is removed
+
+    raising an exception here to get the attention of
+    the user of pyexcel
+    """
     raise Exception(_SHARED_MESSAGE)

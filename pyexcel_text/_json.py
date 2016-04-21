@@ -1,33 +1,27 @@
 import json
 
-from pyexcel.sources.base import FileSource
-from pyexcel.constants import KEYWORD_FILE_NAME, KEYWORD_FILE_TYPE
+from pyexcel.sources import params
 
 from ._compact import StringIO
-
+from ._text import TextSource
 
 file_types = ('json',)
 
 
-class JsonSource(FileSource):
+class JsonSource(TextSource):
     """
     Write into json file
     """
-    @classmethod
-    def can_i_handle(cls, action, file_type):
-        status = False
-        if action == 'write' and file_type == "json":
-            status = True
-        return status
+    TEXT_FILE_FORMATS = file_types
 
 
 class JsonSheetSource(JsonSource):
     """
     Write a two dimensional array into json format
     """
-    fields = [KEYWORD_FILE_NAME]
-    targets = ('sheet',)
-    actions = ('write',)
+    fields = [params.FILE_NAME]
+    targets = (params.SHEET,)
+    actions = (params.WRITE_ACTION,)
 
     def __init__(self, file_name=None, write_title=True, **keywords):
         self.file_name = file_name
@@ -63,7 +57,7 @@ class JsonSheetSource(JsonSource):
 
 
 class JsonSheetSourceInMemory(JsonSheetSource):
-    fields = [KEYWORD_FILE_TYPE]
+    fields = [params.FILE_TYPE]
     def __init__(self, file_type=None, file_stream=None, write_title=True,
                  **keywords):
         if file_stream:
@@ -86,8 +80,8 @@ def write_json_book(jsonfile, bookdict):
 
 
 class JsonBookSourceInMemory(JsonSheetSourceInMemory):
-    targets = ('book',)
-    actions = ('write',)
+    targets = (params.BOOK,)
+    actions = (params.WRITE_ACTION,)
 
     def write_data(self, book):
         write_json_book(self.content, book.to_dict())
@@ -97,13 +91,14 @@ class JsonBookSource(JsonSheetSource):
     """
     Write a dictionary of two dimensional arrays into json format
     """
-    targets = ('book',)
-    actions = ('write',)
+    targets = (params.BOOK,)
+    actions = (params.WRITE_ACTION,)
 
     def write_data(self, book):
         with open(self.file_name, 'w') as jsonfile:
             write_json_book(jsonfile, book.to_dict())
 
 
-sources = (JsonSheetSource, JsonBookSource, JsonSheetSourceInMemory, JsonBookSourceInMemory)
+sources = (JsonSheetSource, JsonBookSource,
+           JsonSheetSourceInMemory, JsonBookSourceInMemory)
 

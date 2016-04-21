@@ -1,3 +1,12 @@
+"""
+    pyexcel_text.html
+    ~~~~~~~~~~~~~~~~~~~
+
+    Provide html output
+
+    :copyright: (c) 2014-2016 by C. W.
+    :license: New BSD
+"""
 from ._text import TextSheetSource, TextBookSource
 from ._text import TextSheetSourceInMemory, TextBookSourceInMemory
 
@@ -49,4 +58,5 @@ class HtmlBookSourceInMemory(TextBookSourceInMemory, HtmlMixin):
         self.write_html_footer(textfile)
 
 
-sources = (HtmlSheetSource, HtmlBookSource, HtmlBookSourceInMemory, HtmlSheetSourceInMemory)
+sources = (HtmlSheetSource, HtmlBookSource,
+           HtmlBookSourceInMemory, HtmlSheetSourceInMemory)
