@@ -30,7 +30,7 @@ file_types = (
 )
 
 class WriteOnlyMemorySourceMixin(object):
-    def init(self, file_type=None, file_stream=None, write_title=True,
+    def __init__(self, file_type=None, file_stream=None, write_title=True,
                  **keywords):
         if file_stream:
             self.content = file_stream
@@ -94,10 +94,12 @@ class TextSheetSource(TextSource):
 class TextSheetSourceInMemory(TextSheetSource, WriteOnlyMemorySourceMixin):
     fields = [params.FILE_TYPE]
 
-    def __init__(self, file_type=None, file_stream=None, write_title=True,
-                 **keywords):
-        self.init(file_type=file_type, write_title=write_title, file_stream=file_stream, **keywords)
-            
+    def __init__(self, file_type=None, file_stream=None,
+                 write_title=True, **keywords):
+        WriteOnlyMemorySourceMixin.__init__(
+            self, file_type=file_type,
+            file_stream=file_stream, write_title=write_title, **keywords)
+
     def write_data(self, sheet):
         data = self._transform_data(sheet)
         self._write_sheet(self.content, data, sheet.name)
@@ -119,9 +121,11 @@ class TextBookSource(TextSheetSource):
 class TextBookSourceInMemory(TextBookSource, WriteOnlyMemorySourceMixin):
     fields = [params.FILE_TYPE]
 
-    def __init__(self, file_type=None, file_stream=None, write_title=True, **keywords):
-        self.init(file_type=file_type,
-                  file_stream=file_stream, write_title=write_title, **keywords)
+    def __init__(self, file_type=None, file_stream=None,
+                 write_title=True, **keywords):
+        WriteOnlyMemorySourceMixin.__init__(
+            self, file_type=file_type,
+            file_stream=file_stream, write_title=write_title, **keywords)
             
     def write_data(self, book):
         self._write_book(self.content, book)

@@ -2,7 +2,7 @@ import json
 
 from pyexcel.sources import params
 
-from ._text import TextSource
+from ._text import TextSource, WriteOnlyMemorySourceMixin
 from ._compact import StringIO
 
 
@@ -57,17 +57,16 @@ class JsonSheetSource(JsonSource):
         return table
 
 
-class JsonSheetSourceInMemory(JsonSheetSource):
+class JsonSheetSourceInMemory(JsonSheetSource, WriteOnlyMemorySourceMixin):
     fields = [params.FILE_TYPE]
     def __init__(self, file_type=None, file_stream=None, write_title=True,
                  **keywords):
-        if file_stream:
-            self.content = file_stream
-        else:
-            self.content = StringIO()
-        self.file_type = file_type
-        self.keywords = keywords
-        self.write_title = write_title
+        WriteOnlyMemorySourceMixin.__init__(
+            self,
+            file_type=file_type,
+            file_stream=file_stream,
+            write_title=write_title,
+            **keywords)
 
     def write_data(self, sheet):
         data = self._transform_data(sheet)
