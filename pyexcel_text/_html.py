@@ -35,7 +35,7 @@ class HtmlSheetSourceInMemory(TextSheetSourceInMemory, HtmlMixin):
     TEXT_FILE_FORMATS = ['html']
 
     def _write_sheet(self, textfile, data, title):
-        self.write_html_header(textfile, "memory")
+        self.write_html_header(textfile, title)
         TextSheetSource._write_sheet(self, textfile, data, title)
         self.write_html_footer(textfile)
 

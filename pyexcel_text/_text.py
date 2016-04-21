@@ -29,6 +29,17 @@ file_types = (
     'latex_booktabs'
 )
 
+class WriteOnlyMemorySourceMixin(object):
+    def init(self, file_type=None, file_stream=None, write_title=True,
+                 **keywords):
+        if file_stream:
+            self.content = file_stream
+        else:
+            self.content = StringIO()
+        self.file_type = file_type
+        self.keywords = keywords
+        self.write_title = write_title
+
 
 class TextSource(FileSource):
     """
@@ -80,20 +91,12 @@ class TextSheetSource(TextSource):
         return table
 
 
-class TextSheetSourceInMemory(TextSheetSource):
+class TextSheetSourceInMemory(TextSheetSource, WriteOnlyMemorySourceMixin):
     fields = [params.FILE_TYPE]
-    targets = (params.SHEET,)
-    actions = (params.WRITE_ACTION,)
 
     def __init__(self, file_type=None, file_stream=None, write_title=True,
                  **keywords):
-        if file_stream:
-            self.content = file_stream
-        else:
-            self.content = StringIO()
-        self.write_title=write_title
-        self.file_type = file_type
-        self.keywords = keywords
+        self.init(file_type=file_type, write_title=write_title, file_stream=file_stream, **keywords)
             
     def write_data(self, sheet):
         data = self._transform_data(sheet)
@@ -113,17 +116,12 @@ class TextBookSource(TextSheetSource):
             self._write_sheet(textfile, data, sheet.name)
 
 
-class TextBookSourceInMemory(TextBookSource):
+class TextBookSourceInMemory(TextBookSource, WriteOnlyMemorySourceMixin):
     fields = [params.FILE_TYPE]
 
     def __init__(self, file_type=None, file_stream=None, write_title=True, **keywords):
-        if file_stream:
-            self.content = file_stream
-        else:
-            self.content = StringIO()
-        self.file_type = file_type
-        self.write_title = write_title
-        self.keywords = keywords
+        self.init(file_type=file_type,
+                  file_stream=file_stream, write_title=write_title, **keywords)
             
     def write_data(self, book):
         self._write_book(self.content, book)
