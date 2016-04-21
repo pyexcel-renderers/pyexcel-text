@@ -3,7 +3,6 @@ import json
 from pyexcel.sources import params
 
 from ._text import TextSource, WriteOnlyMemorySourceMixin
-from ._compact import StringIO
 
 
 file_types = ('json',)
