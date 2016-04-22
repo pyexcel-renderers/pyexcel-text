@@ -1,5 +1,5 @@
 ================================================================================
-pyexcel-text - Let you focus on data, instead of text format
+pyexcel-text - Let you focus on data, instead of text formats
 ================================================================================
 
 .. image:: https://api.travis-ci.org/pyexcel/pyexcel-text.png
@@ -145,7 +145,7 @@ Html
 
 .. code-block:: python
 
-	>>> book.save_as("myfile.html")
+    >>> book.save_as("myfile.html")
     >>> myfile = open("myfile.html")
     >>> print(myfile.read())
     <html><header><title>myfile.html</title><body>Sheet Name: Sheet 1
