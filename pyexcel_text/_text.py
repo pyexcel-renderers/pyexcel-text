@@ -30,6 +30,9 @@ file_types = (
 )
 
 class WriteOnlyMemorySourceMixin(object):
+    """
+    Write up all memory source initialization once here
+    """
     def __init__(self, file_type=None, file_stream=None, write_title=True,
                  **keywords):
         if file_stream:
@@ -43,22 +46,25 @@ class WriteOnlyMemorySourceMixin(object):
 
 class TextSource(FileSource):
     """
-    Write into json file
+    Base class for all sources in this module
     """
-    TEXT_FILE_FORMATS = file_types
+    fields = [params.FILE_NAME]
+    targets = (params.SHEET,)
+    actions = (params.WRITE_ACTION,)
+    text_file_formats = file_types
+
     @classmethod
     def can_i_handle(cls, action, file_type):
         status = False
-        if action == params.WRITE_ACTION and file_type in cls.TEXT_FILE_FORMATS:
+        if action == params.WRITE_ACTION and file_type in cls.text_file_formats:
             status = True
         return status
 
 
 class TextSheetSource(TextSource):
-    fields = [params.FILE_NAME]
-    targets = (params.SHEET,)
-    actions = (params.WRITE_ACTION,)
-
+    """
+    A single sheet in text format
+    """
     def __init__(self, file_name=None, write_title=True, **keywords):
         self.file_name = file_name
         self.keywords = keywords
@@ -66,11 +72,18 @@ class TextSheetSource(TextSource):
         self.file_type = file_name.split(".")[-1]
 
     def write_data(self, sheet):
+        """
+        Call by pyexcel to write out a sheet instance
+        """
         data = self._transform_data(sheet)
         with open(self.file_name, 'w') as textfile:
-            self._write_sheet(textfile, data, sheet.name)
+            self.write_sheet(textfile, data, sheet.name)
 
-    def _write_sheet(self, textfile, data, title):
+    def write_sheet(self, textfile, data, title):
+        """write out data to a file handle
+
+        the file handle can be a stream
+        """
         if self.write_title:
             textfile.write("Sheet Name: %s\n" % title)
         textfile.write(tabulate.tabulate(data,
@@ -92,6 +105,9 @@ class TextSheetSource(TextSource):
 
 
 class TextSheetSourceInMemory(TextSheetSource, WriteOnlyMemorySourceMixin):
+    """
+    Write to an io stream
+    """
     fields = [params.FILE_TYPE]
 
     def __init__(self, file_type=None, file_stream=None,
@@ -101,11 +117,15 @@ class TextSheetSourceInMemory(TextSheetSource, WriteOnlyMemorySourceMixin):
             file_stream=file_stream, write_title=write_title, **keywords)
 
     def write_data(self, sheet):
+        """no need to close file because it is a memory stream"""
         data = self._transform_data(sheet)
-        self._write_sheet(self.content, data, sheet.name)
+        self.write_sheet(self.content, data, sheet.name)
 
 
 class TextBookSource(TextSheetSource):
+    """
+    A excel book in text format
+    """
     targets = (params.BOOK,)
 
     def __init__(self, file_name=None, write_title=True, **keywords):
@@ -115,16 +135,21 @@ class TextBookSource(TextSheetSource):
         self.file_type = file_name.split(".")[-1]
 
     def write_data(self, book):
+        """Override TextSheetSource.write_data so as to write a book"""
         with open(self.file_name, 'w') as textfile:
-            self._write_book(textfile, book)
+            self.write_book(textfile, book)
 
-    def _write_book(self, textfile, book):
+    def write_book(self, textfile, book):
+        """but write_book in turn needs to write_sheet"""
         for sheet in book:
             data = self._transform_data(sheet)
-            self._write_sheet(textfile, data, sheet.name)
+            self.write_sheet(textfile, data, sheet.name)
 
 
 class TextBookSourceInMemory(TextBookSource, WriteOnlyMemorySourceMixin):
+    """
+    Write book in text format to memory
+    """
     fields = [params.FILE_TYPE]
 
     def __init__(self, file_type=None, file_stream=None,
@@ -132,11 +157,12 @@ class TextBookSourceInMemory(TextBookSource, WriteOnlyMemorySourceMixin):
         WriteOnlyMemorySourceMixin.__init__(
             self, file_type=file_type,
             file_stream=file_stream, write_title=write_title, **keywords)
-            
+
     def write_data(self, book):
-        self._write_book(self.content, book)
+        """Yet again, no need to close a memory stream"""
+        self.write_book(self.content, book)
 
 
+# register sources
 sources = (TextSheetSource, TextBookSource,
            TextSheetSourceInMemory, TextBookSourceInMemory)
-

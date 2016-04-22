@@ -20,9 +20,8 @@ Added
 Updated
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-#. `#8 <https://github.com/pyexcel/pyexcel-text/issues/8>`_, write_header as an
-option(False) to disable header writing.
-
+#. `#8 <https://github.com/pyexcel/pyexcel-text/issues/8>`_,
+   write_header as an option(False) to disable header writing
 #. the json output of multiple sheet book will be sorted by its sheet names.
 
 0.1.1 - 30.01.2016
@@ -50,7 +49,7 @@ Updated
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 #. `#1 <https://github.com/pyexcel/pyexcel-text/issues/1>`_, align api interface
-with other pyexcel plugins, e.g. save_as, save_book_as
+    with other pyexcel plugins, e.g. save_as, save_book_as
 
 0.0.2 - 30.11.2014
 --------------------------------------------------------------------------------

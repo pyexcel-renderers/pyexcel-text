@@ -15,6 +15,7 @@ file_types = ('html',)
 
 
 class HtmlMixin(object):
+    """provide html header and footer"""
     def write_html_header(self, open_filehandle, title):
         open_filehandle.write("<html><header><title>%s</title><body>" % title)
 
@@ -23,38 +24,38 @@ class HtmlMixin(object):
 
 
 class HtmlSheetSource(TextSheetSource, HtmlMixin):
-    TEXT_FILE_FORMATS = ['html']
+    text_file_formats = ['html']
 
-    def _write_sheet(self, textfile, data, title):
+    def write_sheet(self, textfile, data, title):
         self.write_html_header(textfile, self.file_name)
-        TextSheetSource._write_sheet(self, textfile, data, title)
+        TextSheetSource.write_sheet(self, textfile, data, title)
         self.write_html_footer(textfile)
 
 
 class HtmlSheetSourceInMemory(TextSheetSourceInMemory, HtmlMixin):
-    TEXT_FILE_FORMATS = ['html']
+    text_file_formats = ['html']
 
-    def _write_sheet(self, textfile, data, title):
+    def write_sheet(self, textfile, data, title):
         self.write_html_header(textfile, title)
-        TextSheetSource._write_sheet(self, textfile, data, title)
+        TextSheetSource.write_sheet(self, textfile, data, title)
         self.write_html_footer(textfile)
 
 
 class HtmlBookSource(TextBookSource, HtmlMixin):
-    TEXT_FILE_FORMATS = ['html']
+    text_file_formats = ['html']
 
-    def _write_book(self, textfile, book):
+    def write_book(self, textfile, book):
         self.write_html_header(textfile, self.file_name)
-        TextBookSource._write_book(self, textfile, book)
+        TextBookSource.write_book(self, textfile, book)
         self.write_html_footer(textfile)
 
 
 class HtmlBookSourceInMemory(TextBookSourceInMemory, HtmlMixin):
-    TEXT_FILE_FORMATS = ['html']
+    text_file_formats = ['html']
 
-    def _write_book(self, textfile, book):
+    def write_book(self, textfile, book):
         self.write_html_header(textfile, "memory")
-        TextBookSource._write_book(self, textfile, book)
+        TextBookSource.write_book(self, textfile, book)
         self.write_html_footer(textfile)
 
 

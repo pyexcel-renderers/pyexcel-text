@@ -1,3 +1,12 @@
+"""
+    pyexcel_text.json
+    ~~~~~~~~~~~~~~~~~~~
+
+    Provide json output
+
+    :copyright: (c) 2014-2016 by C. W.
+    :license: New BSD
+"""
 import json
 
 from pyexcel.sources import params
@@ -8,20 +17,11 @@ from ._text import TextSource, WriteOnlyMemorySourceMixin
 file_types = ('json',)
 
 
-class JsonSource(TextSource):
-    """
-    Write into json file
-    """
-    TEXT_FILE_FORMATS = file_types
-
-
-class JsonSheetSource(JsonSource):
+class JsonSheetSource(TextSource):
     """
     Write a two dimensional array into json format
     """
-    fields = [params.FILE_NAME]
-    targets = (params.SHEET,)
-    actions = (params.WRITE_ACTION,)
+    text_file_formats = file_types
 
     def __init__(self, file_name=None, write_title=True, **keywords):
         self.file_name = file_name
@@ -85,7 +85,7 @@ class JsonBookSourceInMemory(JsonSheetSourceInMemory):
     def write_data(self, book):
         write_json_book(self.content, book.to_dict())
 
-        
+
 class JsonBookSource(JsonSheetSource):
     """
     Write a dictionary of two dimensional arrays into json format
