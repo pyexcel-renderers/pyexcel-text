@@ -108,6 +108,12 @@ class TextSheetSourceInMemory(TextSheetSource, WriteOnlyMemorySourceMixin):
 class TextBookSource(TextSheetSource):
     targets = (params.BOOK,)
 
+    def __init__(self, file_name=None, write_title=True, **keywords):
+        self.file_name = file_name
+        self.keywords = keywords
+        self.write_title = write_title
+        self.file_type = file_name.split(".")[-1]
+
     def write_data(self, book):
         with open(self.file_name, 'w') as textfile:
             self._write_book(textfile, book)

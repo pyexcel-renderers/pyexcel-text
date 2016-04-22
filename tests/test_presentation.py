@@ -1,10 +1,312 @@
+import os
 from unittest import TestCase
 from textwrap import dedent
 
 import pyexcel as pe
+from fixtures import EXPECTED_RESULTS
+
+class TestSimple(TestCase):
+
+    TABLEFMT = 'simple'
+    expected_results = EXPECTED_RESULTS['simple']
+
+    def setUp(self):
+        self.testfile2 = None
+
+    def _check_presentation(self, name, presentation):
+
+        self.assertTrue(name in self.expected_results,
+                        'expected result missing: %s' % presentation)
+
+        expected = self.expected_results[name]
+        self.assertEqual(presentation, expected+'\n')
+
+    def test_no_title_multiple_sheets(self):
+        adict = {
+            'sheet 1': [[1,2],[3,4]],
+            'sheet 2': [[5,6],[7,8]]
+        }
+        book = pe.get_book(bookdict=adict, dest_write_title=False)
+
+        get_presentation_call = getattr(book, "get_%s" % self.TABLEFMT)
+        presentation = get_presentation_call(write_title=False)
+
+        self._check_presentation('no_title_multiple_sheets', presentation)
+
+    def test_dict(self):
+        adict = {
+            'sheet 1': [[1,2],[3,4]],
+            'sheet 2': [[5,6],[7,8]]
+        }
+        book = pe.get_book(bookdict=adict)
+
+        get_presentation_call = getattr(book, "get_%s" % self.TABLEFMT)
+        presentation = get_presentation_call()
+
+        self._check_presentation('dict', presentation)
+
+    def test_normal_usage(self):
+        content = [
+            [1, 2, 3],
+            [4, 588, 6],
+            [7, 8, 999]
+        ]
+        sheet = pe.Sheet(content)
+
+        get_presentation_call = getattr(sheet, "get_%s" % self.TABLEFMT)
+        presentation = get_presentation_call()
+
+        self._check_presentation('normal_usage', presentation)
+
+    def test_new_normal_usage(self):
+        content = [
+            [1, 2, 3],
+            [4, 588, 6],
+            [7, 8, 999]
+        ]
+        sheet = pe.get_sheet(array=content)
+
+        get_presentation_call = getattr(sheet, "get_%s" % self.TABLEFMT)
+        presentation = get_presentation_call()
+
+        self._check_presentation('new_normal_usage', presentation)
+
+    def test_no_title_single_sheet(self):
+        content = [
+            [1, 2, 3],
+            [4, 588, 6],
+            [7, 8, 999]
+        ]
+        sheet = pe.get_sheet(array=content)
+
+        get_presentation_call = getattr(sheet, "get_%s" % self.TABLEFMT)
+        presentation = get_presentation_call(write_title=False)
+
+        self._check_presentation('no_title_single_sheet', presentation)
+
+    def test_new_normal_usage_irregular_columns(self):
+        content = [
+            [1, 2, 3],
+            [4, 588, 6],
+            [7, 8]
+        ]
+        sheet = pe.get_sheet(array=content)
+
+        get_presentation_call = getattr(sheet, "get_%s" % self.TABLEFMT)
+        presentation = get_presentation_call()
+
+        self._check_presentation('new_normal_usage_irregular_columns', presentation)
+
+    def test_csvbook_irregular_columns(self):
+        content = [
+            [1, 2, 3],
+            [4, 588, 6],
+            [7, 8]
+        ]
+        self.testfile2 = "testfile.csv"
+        pe.save_as(array=content, dest_file_name=self.testfile2)
+        sheet = pe.get_sheet(file_name=self.testfile2)
+
+        get_presentation_call = getattr(sheet, "get_%s" % self.TABLEFMT)
+        presentation = get_presentation_call()
+
+        self._check_presentation('csvbook_irregular_columns', presentation)
+
+    def test_column_series(self):
+        content = [
+            ["Column 1", "Column 2", "Column 3"],
+            [1, 2, 3],
+            [4, 5, 6],
+            [7, 8, 9]
+        ]
+        sheet = pe.get_sheet(array=content, name_columns_by_row=0)
+
+        get_presentation_call = getattr(sheet, "get_%s" % self.TABLEFMT)
+        presentation = get_presentation_call()
+
+        self._check_presentation('column_series', presentation)
+
+    def test_column_series_irregular_columns(self):
+        content = [
+            ["Column 1", "Column 2", "Column 3"],
+            [1, 2, 3],
+            [4, 5, 6],
+            [7, 8]
+        ]
+        sheet = pe.get_sheet(array=content, name_columns_by_row=0)
+
+        get_presentation_call = getattr(sheet, "get_%s" % self.TABLEFMT)
+        presentation = get_presentation_call()
+
+        self._check_presentation('column_series_irregular_columns', presentation)
+
+    def test_data_frame(self):
+        content = [
+            ["", "Column 1", "Column 2", "Column 3"],
+            ["Row 1", 1, 2, 3],
+            ["Row 2", 4, 5, 6],
+            ["Row 3", 7, 8, 9]
+        ]
+        sheet = pe.get_sheet(array=content, name_rows_by_column=0, name_columns_by_row=0)
+
+        get_presentation_call = getattr(sheet, "get_%s" % self.TABLEFMT)
+        presentation = get_presentation_call()
+
+        self._check_presentation('data_frame', presentation)
+
+    def test_row_series(self):
+        content = [
+            ["Row 1", 1, 2, 3],
+            ["Row 2", 4, 5, 6],
+            ["Row 3", 7, 8, 9]
+        ]
+
+        sheet = pe.get_sheet(array=content, name_rows_by_column=0)
+
+        get_presentation_call = getattr(sheet, "get_%s" % self.TABLEFMT)
+        presentation = get_presentation_call()
+
+        self._check_presentation('row_series', presentation)
+
+    def tearDown(self):
+        if self.testfile2 and os.path.exists(self.testfile2):
+            os.unlink(self.testfile2)
 
 
-class TestJson(TestCase):
+class TestRst(TestSimple):
+    TABLEFMT = 'rst'
+    expected_results = EXPECTED_RESULTS['rst']
+
+
+class TestJson(TestSimple):
+    TABLEFMT = 'json'
+    expected_results = EXPECTED_RESULTS['json']
+
+    def setUp(self):
+        TestSimple.setUp(self)
+        self.expected_results['csvbook_irregular_columns'] = '{"testfile.csv": [["1", "2", "3"], ["4", "588", "6"], ["7", "8", ""]]}'
+        self.expected_results['new_normal_usage_irregular_columns'] = '{"pyexcel_sheet1": [[1, 2, 3], [4, 588, 6], [7, 8, ""]]}'
+    def _check_presentation(self, name, presentation):
+
+        self.assertTrue(name in self.expected_results,
+                        'expected result missing: %s' % presentation)
+
+        expected = self.expected_results[name]
+        self.assertEqual(presentation, expected)
+
+
+
+class TestHtml(TestSimple):
+    TABLEFMT = 'html'
+    expected_results = {
+        'dict': dedent("""
+            <html><header><title>memory</title><body>Sheet Name: sheet 1
+            <table>
+            <tr><td style="text-align: right;">1</td><td style="text-align: right;">2</td></tr>
+            <tr><td style="text-align: right;">3</td><td style="text-align: right;">4</td></tr>
+            </table>
+            Sheet Name: sheet 2
+            <table>
+            <tr><td style="text-align: right;">5</td><td style="text-align: right;">6</td></tr>
+            <tr><td style="text-align: right;">7</td><td style="text-align: right;">8</td></tr>
+            </table>
+            </body></html>""").strip('\n'),
+        'no_title_multiple_sheets': dedent("""
+            <html><header><title>memory</title><body><table>
+            <tr><td style="text-align: right;">1</td><td style="text-align: right;">2</td></tr>
+            <tr><td style="text-align: right;">3</td><td style="text-align: right;">4</td></tr>
+            </table>
+            <table>
+            <tr><td style="text-align: right;">5</td><td style="text-align: right;">6</td></tr>
+            <tr><td style="text-align: right;">7</td><td style="text-align: right;">8</td></tr>
+            </table>
+            </body></html>""").strip('\n'),
+        'normal_usage': dedent("""
+            <html><header><title>pyexcel</title><body>Sheet Name: pyexcel
+            <table>
+            <tr><td style="text-align: right;">1</td><td style="text-align: right;">  2</td><td style="text-align: right;">  3</td></tr>
+            <tr><td style="text-align: right;">4</td><td style="text-align: right;">588</td><td style="text-align: right;">  6</td></tr>
+            <tr><td style="text-align: right;">7</td><td style="text-align: right;">  8</td><td style="text-align: right;">999</td></tr>
+            </table>
+            </body></html>""").strip('\n'),
+        'new_normal_usage': dedent("""
+            <html><header><title>pyexcel_sheet1</title><body>Sheet Name: pyexcel_sheet1
+            <table>
+            <tr><td style="text-align: right;">1</td><td style="text-align: right;">  2</td><td style="text-align: right;">  3</td></tr>
+            <tr><td style="text-align: right;">4</td><td style="text-align: right;">588</td><td style="text-align: right;">  6</td></tr>
+            <tr><td style="text-align: right;">7</td><td style="text-align: right;">  8</td><td style="text-align: right;">999</td></tr>
+            </table>
+            </body></html>""").strip('\n'),
+        'no_title_single_sheet': dedent("""
+            <html><header><title>pyexcel_sheet1</title><body><table>
+            <tr><td style="text-align: right;">1</td><td style="text-align: right;">  2</td><td style="text-align: right;">  3</td></tr>
+            <tr><td style="text-align: right;">4</td><td style="text-align: right;">588</td><td style="text-align: right;">  6</td></tr>
+            <tr><td style="text-align: right;">7</td><td style="text-align: right;">  8</td><td style="text-align: right;">999</td></tr>
+            </table>
+            </body></html>""").strip('\n'),
+        'new_normal_usage_irregular_columns': dedent("""
+            <html><header><title>pyexcel_sheet1</title><body>Sheet Name: pyexcel_sheet1
+            <table>
+            <tr><td style="text-align: right;">1</td><td style="text-align: right;">  2</td><td>3</td></tr>
+            <tr><td style="text-align: right;">4</td><td style="text-align: right;">588</td><td>6</td></tr>
+            <tr><td style="text-align: right;">7</td><td style="text-align: right;">  8</td><td> </td></tr>
+            </table>
+            </body></html>""").strip('\n'),
+        'column_series': dedent("""
+            <html><header><title>pyexcel_sheet1</title><body>Sheet Name: pyexcel_sheet1
+            <table>
+            <tr><th style="text-align: right;">  Column 1</th><th style="text-align: right;">  Column 2</th><th style="text-align: right;">  Column 3</th></tr>
+            <tr><td style="text-align: right;">         1</td><td style="text-align: right;">         2</td><td style="text-align: right;">         3</td></tr>
+            <tr><td style="text-align: right;">         4</td><td style="text-align: right;">         5</td><td style="text-align: right;">         6</td></tr>
+            <tr><td style="text-align: right;">         7</td><td style="text-align: right;">         8</td><td style="text-align: right;">         9</td></tr>
+            </table>
+            </body></html>""").strip('\n'),
+        'column_series_irregular_columns': dedent("""
+            <html><header><title>pyexcel_sheet1</title><body>Sheet Name: pyexcel_sheet1
+            <table>
+            <tr><th style="text-align: right;">  Column 1</th><th style="text-align: right;">  Column 2</th><th>Column 3  </th></tr>
+            <tr><td style="text-align: right;">         1</td><td style="text-align: right;">         2</td><td>3         </td></tr>
+            <tr><td style="text-align: right;">         4</td><td style="text-align: right;">         5</td><td>6         </td></tr>
+            <tr><td style="text-align: right;">         7</td><td style="text-align: right;">         8</td><td>          </td></tr>
+            </table>
+            </body></html>""").strip('\n'),
+        'csvbook_irregular_columns': dedent("""
+            <html><header><title>testfile.csv</title><body>Sheet Name: testfile.csv
+            <table>
+            <tr><td style="text-align: right;">1</td><td style="text-align: right;">  2</td><td>3</td></tr>
+            <tr><td style="text-align: right;">4</td><td style="text-align: right;">588</td><td>6</td></tr>
+            <tr><td style="text-align: right;">7</td><td style="text-align: right;">  8</td><td> </td></tr>
+            </table>
+            </body></html>""").strip('\n'),
+        'data_frame': dedent("""
+            <html><header><title>pyexcel_sheet1</title><body>Sheet Name: pyexcel_sheet1
+            <table>
+            <tr><th>     </th><th style="text-align: right;">  Column 1</th><th style="text-align: right;">  Column 2</th><th style="text-align: right;">  Column 3</th></tr>
+            <tr><td>Row 1</td><td style="text-align: right;">         1</td><td style="text-align: right;">         2</td><td style="text-align: right;">         3</td></tr>
+            <tr><td>Row 2</td><td style="text-align: right;">         4</td><td style="text-align: right;">         5</td><td style="text-align: right;">         6</td></tr>
+            <tr><td>Row 3</td><td style="text-align: right;">         7</td><td style="text-align: right;">         8</td><td style="text-align: right;">         9</td></tr>
+            </table>
+            </body></html>""").strip('\n'),
+        'row_series': dedent("""
+            <html><header><title>pyexcel_sheet1</title><body>Sheet Name: pyexcel_sheet1
+            <table>
+            <tr><td>Row 1</td><td style="text-align: right;">1</td><td style="text-align: right;">2</td><td style="text-align: right;">3</td></tr>
+            <tr><td>Row 2</td><td style="text-align: right;">4</td><td style="text-align: right;">5</td><td style="text-align: right;">6</td></tr>
+            <tr><td>Row 3</td><td style="text-align: right;">7</td><td style="text-align: right;">8</td><td style="text-align: right;">9</td></tr>
+            </table>
+            </body></html>
+            """).strip('\n'),
+    }
+    def _check_presentation(self, name, presentation):
+
+        self.assertTrue(name in self.expected_results,
+                        'expected result missing: %s' % presentation)
+
+        expected = self.expected_results[name]
+        self.assertEqual(presentation, expected)
+
+
+class TestCustomJson(TestCase):
 
     def test_matrix(self):
         content = [
