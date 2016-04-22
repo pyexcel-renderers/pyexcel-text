@@ -27,7 +27,8 @@ its capbility to present and write data in text fromats mainly through `tabulate
 Usage
 ======
 
-Here is the example usage:
+Simple
+------------
 
 .. code-block:: python
 
@@ -57,6 +58,13 @@ Here is the example usage:
              4           5           6
              7           8           9
     <BLANKLINE>
+
+
+Grid
+-------
+
+.. code-block:: python
+
     >>> print(sheet.grid)
     Sheet Name: pyexcel
     +------------+------------+------------+
@@ -69,6 +77,12 @@ Here is the example usage:
     |          7 |          8 |          9 |
     +------------+------------+------------+
     <BLANKLINE>
+
+Mediawiki
+-------------
+
+.. code-block:: python
+
     >>> multiple_sheets = {
     ...      'Sheet 1':
     ...          [
@@ -125,7 +139,13 @@ Here is the example usage:
     |}
     <BLANKLINE>
     >>> myfile.close()
-    >>> book.save_as("myfile.html")
+
+Html
+----------
+
+.. code-block:: python
+
+	>>> book.save_as("myfile.html")
     >>> myfile = open("myfile.html")
     >>> print(myfile.read())
     <html><header><title>myfile.html</title><body>Sheet Name: Sheet 1
