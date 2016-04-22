@@ -3,7 +3,8 @@ from unittest import TestCase
 from textwrap import dedent
 
 import pyexcel as pe
-from fixtures import EXPECTED_RESULTS
+
+from .fixtures import EXPECTED_RESULTS
 
 class TestSimple(TestCase):
 

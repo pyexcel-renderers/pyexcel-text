@@ -1,17 +1,12 @@
 import os
-import sys
 import json
 import unittest
-from fixtures import EXPECTED_RESULTS
-from distutils.version import LooseVersion
+
 from textwrap import dedent
 import pyexcel as pe
-if sys.version_info[0] < 3:
-    from StringIO import StringIO
-else:
-    from io import StringIO
 
-
+from .fixtures import EXPECTED_RESULTS
+    
 # Python 2.6 does not have unittest.expectedFailure; just ignore those test
 if hasattr(unittest, 'expectedFailure'):
     expectedFailure = unittest.expectedFailure
