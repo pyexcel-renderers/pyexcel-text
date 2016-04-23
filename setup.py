@@ -22,7 +22,7 @@ extras = {}
 setup(
     name='pyexcel-text',
     author='C.W.',
-    version='0.1.2',
+    version='0.2.0',
     author_email='wangc_2011 (at) hotmail.com',
     url='https://github.com/pyexcel/pyexcel-text',
     description='A plugin to pyexcel and provides the capbility to present and write data in text fromats',

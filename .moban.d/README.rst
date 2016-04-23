@@ -1,5 +1,5 @@
 ================================================================================
-{{name}} - Let you focus on data, instead of {{file_type}} format
+{{name}} - Let you focus on data, instead of {{file_type}} formats
 ================================================================================
 
 .. image:: https://api.travis-ci.org/pyexcel/{{name}}.png
@@ -28,12 +28,12 @@ its capbility to present and write data in text fromats mainly through `tabulate
 Usage
 ======
 
-Here is the example usage:
+Simple
+------------
 
 .. code-block:: python
 
     >>> import pyexcel as pe
-    >>> import pyexcel.ext.text as text
     >>> content = [
     ...     ["Column 1", "Column 2", "Column 3"],
     ...     [1, 2, 3],
@@ -41,7 +41,7 @@ Here is the example usage:
     ...     [7, 8, 9]
     ... ]
     >>> sheet = pe.Sheet(content)
-    >>> sheet
+    >>> print(sheet.simple)
     Sheet Name: pyexcel
     --------  --------  --------
     Column 1  Column 2  Column 3
@@ -49,16 +49,24 @@ Here is the example usage:
     4         5         6
     7         8         9
     --------  --------  --------
+    <BLANKLINE>
     >>> sheet.name_columns_by_row(0)
-    >>> sheet
+    >>> print(sheet.simple)
     Sheet Name: pyexcel
       Column 1    Column 2    Column 3
     ----------  ----------  ----------
              1           2           3
              4           5           6
              7           8           9
-    >>> text.TABLEFMT = "grid"
-    >>> sheet
+    <BLANKLINE>
+
+
+Grid
+-------
+
+.. code-block:: python
+
+    >>> print(sheet.grid)
     Sheet Name: pyexcel
     +------------+------------+------------+
     |   Column 1 |   Column 2 |   Column 3 |
@@ -69,6 +77,13 @@ Here is the example usage:
     +------------+------------+------------+
     |          7 |          8 |          9 |
     +------------+------------+------------+
+    <BLANKLINE>
+
+Mediawiki
+-------------
+
+.. code-block:: python
+
     >>> multiple_sheets = {
     ...      'Sheet 1':
     ...          [
@@ -90,7 +105,6 @@ Here is the example usage:
     ...          ]
     ...  }
     >>> book = pe.Book(multiple_sheets)
-    >>> text.TABLEFMT = "mediawiki"
     >>> book.save_as("myfile.mediawiki")
     >>> myfile = open("myfile.mediawiki")
     >>> print(myfile.read())
@@ -126,10 +140,16 @@ Here is the example usage:
     |}
     <BLANKLINE>
     >>> myfile.close()
+
+Html
+----------
+
+.. code-block:: python
+
     >>> book.save_as("myfile.html")
     >>> myfile = open("myfile.html")
     >>> print(myfile.read())
-    <html><header><title>myfile.html</title><body>Sheet Name: Sheet 1
+    Sheet Name: Sheet 1
     <table>
     <tr><td style="text-align: right;">1</td><td style="text-align: right;">2</td><td style="text-align: right;">3</td></tr>
     <tr><td style="text-align: right;">4</td><td style="text-align: right;">5</td><td style="text-align: right;">6</td></tr>
@@ -147,8 +167,7 @@ Here is the example usage:
     <tr><td>3.0</td><td>2.0</td><td>1.0</td></tr>
     <tr><td>4.0</td><td>3.0</td><td>2.0</td></tr>
     </table>
-    </body></html>
-
+    <BLANKLINE>
 
 .. testcode::
    :hide:
@@ -157,6 +176,7 @@ Here is the example usage:
     >>> import os
     >>> os.unlink("myfile.mediawiki")
     >>> os.unlink("myfile.html")
+
 {%endblock%}
 
 {%block extras %}
