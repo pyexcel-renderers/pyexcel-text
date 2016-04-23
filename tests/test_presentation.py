@@ -199,112 +199,14 @@ class TestJson(TestSimple):
 
 class TestHtml(TestSimple):
     TABLEFMT = 'html'
-    expected_results = {
-        'dict': dedent("""
-            <html><header><title>memory</title><body>Sheet Name: sheet 1
-            <table>
-            <tr><td style="text-align: right;">1</td><td style="text-align: right;">2</td></tr>
-            <tr><td style="text-align: right;">3</td><td style="text-align: right;">4</td></tr>
-            </table>
-            Sheet Name: sheet 2
-            <table>
-            <tr><td style="text-align: right;">5</td><td style="text-align: right;">6</td></tr>
-            <tr><td style="text-align: right;">7</td><td style="text-align: right;">8</td></tr>
-            </table>
-            </body></html>""").strip('\n'),
-        'no_title_multiple_sheets': dedent("""
-            <html><header><title>memory</title><body><table>
-            <tr><td style="text-align: right;">1</td><td style="text-align: right;">2</td></tr>
-            <tr><td style="text-align: right;">3</td><td style="text-align: right;">4</td></tr>
-            </table>
-            <table>
-            <tr><td style="text-align: right;">5</td><td style="text-align: right;">6</td></tr>
-            <tr><td style="text-align: right;">7</td><td style="text-align: right;">8</td></tr>
-            </table>
-            </body></html>""").strip('\n'),
-        'normal_usage': dedent("""
-            <html><header><title>pyexcel</title><body>Sheet Name: pyexcel
-            <table>
-            <tr><td style="text-align: right;">1</td><td style="text-align: right;">  2</td><td style="text-align: right;">  3</td></tr>
-            <tr><td style="text-align: right;">4</td><td style="text-align: right;">588</td><td style="text-align: right;">  6</td></tr>
-            <tr><td style="text-align: right;">7</td><td style="text-align: right;">  8</td><td style="text-align: right;">999</td></tr>
-            </table>
-            </body></html>""").strip('\n'),
-        'new_normal_usage': dedent("""
-            <html><header><title>pyexcel_sheet1</title><body>Sheet Name: pyexcel_sheet1
-            <table>
-            <tr><td style="text-align: right;">1</td><td style="text-align: right;">  2</td><td style="text-align: right;">  3</td></tr>
-            <tr><td style="text-align: right;">4</td><td style="text-align: right;">588</td><td style="text-align: right;">  6</td></tr>
-            <tr><td style="text-align: right;">7</td><td style="text-align: right;">  8</td><td style="text-align: right;">999</td></tr>
-            </table>
-            </body></html>""").strip('\n'),
-        'no_title_single_sheet': dedent("""
-            <html><header><title>pyexcel_sheet1</title><body><table>
-            <tr><td style="text-align: right;">1</td><td style="text-align: right;">  2</td><td style="text-align: right;">  3</td></tr>
-            <tr><td style="text-align: right;">4</td><td style="text-align: right;">588</td><td style="text-align: right;">  6</td></tr>
-            <tr><td style="text-align: right;">7</td><td style="text-align: right;">  8</td><td style="text-align: right;">999</td></tr>
-            </table>
-            </body></html>""").strip('\n'),
-        'new_normal_usage_irregular_columns': dedent("""
-            <html><header><title>pyexcel_sheet1</title><body>Sheet Name: pyexcel_sheet1
-            <table>
-            <tr><td style="text-align: right;">1</td><td style="text-align: right;">  2</td><td>3</td></tr>
-            <tr><td style="text-align: right;">4</td><td style="text-align: right;">588</td><td>6</td></tr>
-            <tr><td style="text-align: right;">7</td><td style="text-align: right;">  8</td><td> </td></tr>
-            </table>
-            </body></html>""").strip('\n'),
-        'column_series': dedent("""
-            <html><header><title>pyexcel_sheet1</title><body>Sheet Name: pyexcel_sheet1
-            <table>
-            <tr><th style="text-align: right;">  Column 1</th><th style="text-align: right;">  Column 2</th><th style="text-align: right;">  Column 3</th></tr>
-            <tr><td style="text-align: right;">         1</td><td style="text-align: right;">         2</td><td style="text-align: right;">         3</td></tr>
-            <tr><td style="text-align: right;">         4</td><td style="text-align: right;">         5</td><td style="text-align: right;">         6</td></tr>
-            <tr><td style="text-align: right;">         7</td><td style="text-align: right;">         8</td><td style="text-align: right;">         9</td></tr>
-            </table>
-            </body></html>""").strip('\n'),
-        'column_series_irregular_columns': dedent("""
-            <html><header><title>pyexcel_sheet1</title><body>Sheet Name: pyexcel_sheet1
-            <table>
-            <tr><th style="text-align: right;">  Column 1</th><th style="text-align: right;">  Column 2</th><th>Column 3  </th></tr>
-            <tr><td style="text-align: right;">         1</td><td style="text-align: right;">         2</td><td>3         </td></tr>
-            <tr><td style="text-align: right;">         4</td><td style="text-align: right;">         5</td><td>6         </td></tr>
-            <tr><td style="text-align: right;">         7</td><td style="text-align: right;">         8</td><td>          </td></tr>
-            </table>
-            </body></html>""").strip('\n'),
-        'csvbook_irregular_columns': dedent("""
-            <html><header><title>testfile.csv</title><body>Sheet Name: testfile.csv
-            <table>
-            <tr><td style="text-align: right;">1</td><td style="text-align: right;">  2</td><td>3</td></tr>
-            <tr><td style="text-align: right;">4</td><td style="text-align: right;">588</td><td>6</td></tr>
-            <tr><td style="text-align: right;">7</td><td style="text-align: right;">  8</td><td> </td></tr>
-            </table>
-            </body></html>""").strip('\n'),
-        'data_frame': dedent("""
-            <html><header><title>pyexcel_sheet1</title><body>Sheet Name: pyexcel_sheet1
-            <table>
-            <tr><th>     </th><th style="text-align: right;">  Column 1</th><th style="text-align: right;">  Column 2</th><th style="text-align: right;">  Column 3</th></tr>
-            <tr><td>Row 1</td><td style="text-align: right;">         1</td><td style="text-align: right;">         2</td><td style="text-align: right;">         3</td></tr>
-            <tr><td>Row 2</td><td style="text-align: right;">         4</td><td style="text-align: right;">         5</td><td style="text-align: right;">         6</td></tr>
-            <tr><td>Row 3</td><td style="text-align: right;">         7</td><td style="text-align: right;">         8</td><td style="text-align: right;">         9</td></tr>
-            </table>
-            </body></html>""").strip('\n'),
-        'row_series': dedent("""
-            <html><header><title>pyexcel_sheet1</title><body>Sheet Name: pyexcel_sheet1
-            <table>
-            <tr><td>Row 1</td><td style="text-align: right;">1</td><td style="text-align: right;">2</td><td style="text-align: right;">3</td></tr>
-            <tr><td>Row 2</td><td style="text-align: right;">4</td><td style="text-align: right;">5</td><td style="text-align: right;">6</td></tr>
-            <tr><td>Row 3</td><td style="text-align: right;">7</td><td style="text-align: right;">8</td><td style="text-align: right;">9</td></tr>
-            </table>
-            </body></html>
-            """).strip('\n'),
-    }
+    expected_results = EXPECTED_RESULTS['html']
     def _check_presentation(self, name, presentation):
 
         self.assertTrue(name in self.expected_results,
                         'expected result missing: %s' % presentation)
 
         expected = self.expected_results[name]
-        self.assertEqual(presentation, expected)
+        self.assertEqual(presentation, expected+'\n')
 
 
 class TestCustomJson(TestCase):

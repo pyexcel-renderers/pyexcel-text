@@ -173,7 +173,7 @@ EXPECTED_RESULTS = {
     },
     'html': {
         'dict': dedent("""
-            <html><header><title>testfile.html</title><body>Sheet Name: sheet 1
+            Sheet Name: sheet 1
             <table>
             <tr><td style="text-align: right;">1</td><td style="text-align: right;">2</td></tr>
             <tr><td style="text-align: right;">3</td><td style="text-align: right;">4</td></tr>
@@ -182,93 +182,81 @@ EXPECTED_RESULTS = {
             <table>
             <tr><td style="text-align: right;">5</td><td style="text-align: right;">6</td></tr>
             <tr><td style="text-align: right;">7</td><td style="text-align: right;">8</td></tr>
-            </table>
-            </body></html>""").strip('\n'),
+            </table>""").strip('\n'),
         'no_title_multiple_sheets': dedent("""
-            <html><header><title>testfile.html</title><body><table>
+            <table>
             <tr><td style="text-align: right;">1</td><td style="text-align: right;">2</td></tr>
             <tr><td style="text-align: right;">3</td><td style="text-align: right;">4</td></tr>
             </table>
             <table>
             <tr><td style="text-align: right;">5</td><td style="text-align: right;">6</td></tr>
             <tr><td style="text-align: right;">7</td><td style="text-align: right;">8</td></tr>
-            </table>
-            </body></html>""").strip('\n'),
+            </table>""").strip('\n'),
         'normal_usage': dedent("""
-            <html><header><title>testfile.html</title><body>Sheet Name: pyexcel
+            Sheet Name: pyexcel
             <table>
             <tr><td style="text-align: right;">1</td><td style="text-align: right;">  2</td><td style="text-align: right;">  3</td></tr>
             <tr><td style="text-align: right;">4</td><td style="text-align: right;">588</td><td style="text-align: right;">  6</td></tr>
             <tr><td style="text-align: right;">7</td><td style="text-align: right;">  8</td><td style="text-align: right;">999</td></tr>
-            </table>
-            </body></html>""").strip('\n'),
+            </table>""").strip('\n'),
         'new_normal_usage': dedent("""
-            <html><header><title>testfile.html</title><body>Sheet Name: pyexcel_sheet1
+            Sheet Name: pyexcel_sheet1
             <table>
             <tr><td style="text-align: right;">1</td><td style="text-align: right;">  2</td><td style="text-align: right;">  3</td></tr>
             <tr><td style="text-align: right;">4</td><td style="text-align: right;">588</td><td style="text-align: right;">  6</td></tr>
             <tr><td style="text-align: right;">7</td><td style="text-align: right;">  8</td><td style="text-align: right;">999</td></tr>
-            </table>
-            </body></html>""").strip('\n'),
+            </table>""").strip('\n'),
         'no_title_single_sheet': dedent("""
-            <html><header><title>testfile.html</title><body><table>
+            <table>
             <tr><td style="text-align: right;">1</td><td style="text-align: right;">  2</td><td style="text-align: right;">  3</td></tr>
             <tr><td style="text-align: right;">4</td><td style="text-align: right;">588</td><td style="text-align: right;">  6</td></tr>
             <tr><td style="text-align: right;">7</td><td style="text-align: right;">  8</td><td style="text-align: right;">999</td></tr>
-            </table>
-            </body></html>""").strip('\n'),
+            </table>""").strip('\n'),
         'new_normal_usage_irregular_columns': dedent("""
-            <html><header><title>testfile.html</title><body>Sheet Name: pyexcel_sheet1
+            Sheet Name: pyexcel_sheet1
             <table>
             <tr><td style="text-align: right;">1</td><td style="text-align: right;">  2</td><td>3</td></tr>
             <tr><td style="text-align: right;">4</td><td style="text-align: right;">588</td><td>6</td></tr>
             <tr><td style="text-align: right;">7</td><td style="text-align: right;">  8</td><td> </td></tr>
-            </table>
-            </body></html>""").strip('\n'),
+            </table>""").strip('\n'),
         'column_series': dedent("""
-            <html><header><title>testfile.html</title><body>Sheet Name: pyexcel_sheet1
+            Sheet Name: pyexcel_sheet1
             <table>
             <tr><th style="text-align: right;">  Column 1</th><th style="text-align: right;">  Column 2</th><th style="text-align: right;">  Column 3</th></tr>
             <tr><td style="text-align: right;">         1</td><td style="text-align: right;">         2</td><td style="text-align: right;">         3</td></tr>
             <tr><td style="text-align: right;">         4</td><td style="text-align: right;">         5</td><td style="text-align: right;">         6</td></tr>
             <tr><td style="text-align: right;">         7</td><td style="text-align: right;">         8</td><td style="text-align: right;">         9</td></tr>
-            </table>
-            </body></html>""").strip('\n'),
+            </table>""").strip('\n'),
         'column_series_irregular_columns': dedent("""
-            <html><header><title>testfile.html</title><body>Sheet Name: pyexcel_sheet1
+            Sheet Name: pyexcel_sheet1
             <table>
             <tr><th style="text-align: right;">  Column 1</th><th style="text-align: right;">  Column 2</th><th>Column 3  </th></tr>
             <tr><td style="text-align: right;">         1</td><td style="text-align: right;">         2</td><td>3         </td></tr>
             <tr><td style="text-align: right;">         4</td><td style="text-align: right;">         5</td><td>6         </td></tr>
             <tr><td style="text-align: right;">         7</td><td style="text-align: right;">         8</td><td>          </td></tr>
-            </table>
-            </body></html>""").strip('\n'),
+            </table>""").strip('\n'),
         'csvbook_irregular_columns': dedent("""
-            <html><header><title>testfile.html</title><body>Sheet Name: testfile.csv
+            Sheet Name: testfile.csv
             <table>
             <tr><td style="text-align: right;">1</td><td style="text-align: right;">  2</td><td>3</td></tr>
             <tr><td style="text-align: right;">4</td><td style="text-align: right;">588</td><td>6</td></tr>
             <tr><td style="text-align: right;">7</td><td style="text-align: right;">  8</td><td> </td></tr>
-            </table>
-            </body></html>""").strip('\n'),
+            </table>""").strip('\n'),
         'data_frame': dedent("""
-            <html><header><title>testfile.html</title><body>Sheet Name: pyexcel_sheet1
+            Sheet Name: pyexcel_sheet1
             <table>
             <tr><th>     </th><th style="text-align: right;">  Column 1</th><th style="text-align: right;">  Column 2</th><th style="text-align: right;">  Column 3</th></tr>
             <tr><td>Row 1</td><td style="text-align: right;">         1</td><td style="text-align: right;">         2</td><td style="text-align: right;">         3</td></tr>
             <tr><td>Row 2</td><td style="text-align: right;">         4</td><td style="text-align: right;">         5</td><td style="text-align: right;">         6</td></tr>
             <tr><td>Row 3</td><td style="text-align: right;">         7</td><td style="text-align: right;">         8</td><td style="text-align: right;">         9</td></tr>
-            </table>
-            </body></html>""").strip('\n'),
+            </table>""").strip('\n'),
         'row_series': dedent("""
-            <html><header><title>testfile.html</title><body>Sheet Name: pyexcel_sheet1
+            Sheet Name: pyexcel_sheet1
             <table>
             <tr><td>Row 1</td><td style="text-align: right;">1</td><td style="text-align: right;">2</td><td style="text-align: right;">3</td></tr>
             <tr><td>Row 2</td><td style="text-align: right;">4</td><td style="text-align: right;">5</td><td style="text-align: right;">6</td></tr>
             <tr><td>Row 3</td><td style="text-align: right;">7</td><td style="text-align: right;">8</td><td style="text-align: right;">9</td></tr>
-            </table>
-            </body></html>
-            """).strip('\n'),
+            </table>""").strip('\n'),
     },
     'json':{
         'dict':

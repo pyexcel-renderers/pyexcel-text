@@ -18,6 +18,7 @@ from ._compact import StringIO
 
 
 file_types = (
+    'html',
     'simple',
     'plain',
     'grid',

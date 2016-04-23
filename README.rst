@@ -148,7 +148,7 @@ Html
     >>> book.save_as("myfile.html")
     >>> myfile = open("myfile.html")
     >>> print(myfile.read())
-    <html><header><title>myfile.html</title><body>Sheet Name: Sheet 1
+    Sheet Name: Sheet 1
     <table>
     <tr><td style="text-align: right;">1</td><td style="text-align: right;">2</td><td style="text-align: right;">3</td></tr>
     <tr><td style="text-align: right;">4</td><td style="text-align: right;">5</td><td style="text-align: right;">6</td></tr>
@@ -166,8 +166,7 @@ Html
     <tr><td>3.0</td><td>2.0</td><td>1.0</td></tr>
     <tr><td>4.0</td><td>3.0</td><td>2.0</td></tr>
     </table>
-    </body></html>
-
+    <BLANKLINE>
 
 .. testcode::
    :hide:
