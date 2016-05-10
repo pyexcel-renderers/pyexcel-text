@@ -33,7 +33,8 @@ INSTALL_REQUIRES = [
     'tabulate>=0.7.4',
 ]
 
-EXTRAS_REQUIRE = {}
+EXTRAS_REQUIRE = {
+}
 
 CLASSIFIERS = [
     'Topic :: Office/Business',

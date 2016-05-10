@@ -1,13 +1,5 @@
 {% extends "travis.yml.jj2" %}
 
-{%block test_other_python_versions%}  - 2.6
-  - pypy
-  - pypy3
-  - 3.3
-  - 3.4
-  - 3.5
-{%endblock%}
-
 {%block custom_install%}
   - pip install https://github.com/pyexcel/pyexcel/archive/v0.2.1.zip
 {%endblock%}
