@@ -7,7 +7,7 @@ except ImportError:
 
 NAME = 'pyexcel-text'
 AUTHOR = 'C.W.'
-VERSION = '0.2.0'
+VERSION = '0.2.1'
 EMAIL = 'wangc_2011 (at) hotmail.com'
 LICENSE = 'New BSD'
 PACKAGES = find_packages(exclude=['ez_setup', 'examples', 'tests'])
@@ -29,7 +29,7 @@ KEYWORDS = [
 ]
 
 INSTALL_REQUIRES = [
-    'pyexcel>=0.2.0',
+    'pyexcel>=0.2.2',
     'tabulate>=0.7.4',
 ]
 
