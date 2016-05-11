@@ -20,7 +20,7 @@ class TestSimple(TestCase):
                         'expected result missing: %s' % presentation)
 
         expected = self.expected_results[name]
-        self.assertEqual(presentation, expected+'\n')
+        self.assertEqual(presentation, expected)
 
     def test_no_title_multiple_sheets(self):
         adict = {
@@ -185,7 +185,7 @@ class TestJson(TestSimple):
 
     def setUp(self):
         TestSimple.setUp(self)
-        self.expected_results['csvbook_irregular_columns'] = '{"testfile.csv": [["1", "2", "3"], ["4", "588", "6"], ["7", "8", ""]]}'
+        self.expected_results['csvbook_irregular_columns'] = '{"testfile.csv": [[1, 2, 3], [4, 588, 6], [7, 8, ""]]}'
         self.expected_results['new_normal_usage_irregular_columns'] = '{"pyexcel_sheet1": [[1, 2, 3], [4, 588, 6], [7, 8, ""]]}'
     def _check_presentation(self, name, presentation):
 
@@ -206,7 +206,7 @@ class TestHtml(TestSimple):
                         'expected result missing: %s' % presentation)
 
         expected = self.expected_results[name]
-        self.assertEqual(presentation, expected+'\n')
+        self.assertEqual(presentation, expected)
 
 
 class TestCustomJson(TestCase):
@@ -218,7 +218,7 @@ class TestCustomJson(TestCase):
             [7, 8, 999]
         ]
         s = pe.sheets.Sheet(content)
-        content = "{\"pyexcel\": [[1, 2, 3], [4, 588, 6], [7, 8, 999]]}"
+        content = "{\"pyexcel sheet\": [[1, 2, 3], [4, 588, 6], [7, 8, 999]]}"
         self.assertEqual(s.json, content)
 
     def test_sheet(self):
@@ -266,12 +266,12 @@ class TestPresentation(TestCase):
         ]
         s = pe.Sheet(content)
         content = dedent("""
-            Sheet Name: pyexcel
+            pyexcel sheet:
             -  ---  ---
             1    2    3
             4  588    6
             7    8  999
-            -  ---  ---""").strip('\n') + '\n'
+            -  ---  ---""").strip('\n')
         self.assertEqual(s.simple, content)
         
     def test_irregular_usage(self):
@@ -283,12 +283,12 @@ class TestPresentation(TestCase):
         ]
         s = pe.Sheet(content)
         content = dedent("""
-            Sheet Name: pyexcel
+            pyexcel sheet:
             -  ---  -
             1    2  3
             4  588  6
             7    8
-            -  ---  -""").strip('\n') + '\n'
+            -  ---  -""").strip('\n')
         self.assertEqual(s.simple, content)
     
 
@@ -301,12 +301,12 @@ class TestPresentation(TestCase):
         ]
         s = pe.Sheet(content, name_columns_by_row=0)
         content = dedent("""
-            Sheet Name: pyexcel
+            pyexcel sheet:
               Column 1    Column 2    Column 3
             ----------  ----------  ----------
                      1           2           3
                      4           5           6
-                     7           8           9""").strip('\n') + '\n'
+                     7           8           9""").strip('\n')
         self.assertEqual(s.simple, content)
 
     def test_data_frame(self):
@@ -318,12 +318,12 @@ class TestPresentation(TestCase):
         ]
         s = pe.Sheet(content, name_rows_by_column=0, name_columns_by_row=0)
         content = dedent("""
-            Sheet Name: pyexcel
+            pyexcel sheet:
                      Column 1    Column 2    Column 3
             -----  ----------  ----------  ----------
             Row 1           1           2           3
             Row 2           4           5           6
-            Row 3           7           8           9""").strip('\n') + '\n'
+            Row 3           7           8           9""").strip('\n')
         self.assertEqual(s.simple, content)
 
     def test_row_series(self):
@@ -334,12 +334,12 @@ class TestPresentation(TestCase):
         ]
         s = pe.Sheet(content, name_rows_by_column=0)
         content = dedent("""
-            Sheet Name: pyexcel
+            pyexcel sheet:
             -----  -  -  -
             Row 1  1  2  3
             Row 2  4  5  6
             Row 3  7  8  9
-            -----  -  -  -""").strip('\n') + '\n'
+            -----  -  -  -""").strip('\n')
         self.assertEqual(s.simple, content)
 
     def test_book_presentation(self):
@@ -365,22 +365,22 @@ class TestPresentation(TestCase):
         }
         book = pe.Book(data)
         content = dedent("""
-            Sheet Name: Sheet 1
+            Sheet 1:
             -  -  -
             1  2  3
             4  5  6
             7  8  9
             -  -  -
-            Sheet Name: Sheet 2
+            Sheet 2:
             ---  ---  ---
             X    Y    Z
             1.0  2.0  3.0
             4.0  5.0  6.0
             ---  ---  ---
-            Sheet Name: Sheet 3
+            Sheet 3:
             ---  ---  ---
             O    P    Q
             3.0  2.0  1.0
             4.0  3.0  2.0
-            ---  ---  ---""").strip("\n") + '\n'
+            ---  ---  ---""").strip("\n")
         self.assertEqual(book.simple, content)

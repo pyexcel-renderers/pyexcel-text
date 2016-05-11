@@ -197,14 +197,13 @@ class TestStream(unittest.TestCase):
         # note, plus the trailing '\n'
         # due to tabluate produces the extra new line
         content = dedent("""
-            Sheet Name: pyexcel
+            pyexcel sheet:
             -  ---  ---
             1    2    3
             4  588    6
             7    8  999
-            -  ---  ---
-            """).strip('\n') + '\n' 
-        self.assertEqual(s.simple,content)
+            -  ---  ---""").strip('\n')
+        self.assertEqual(s.simple, content)
 
 if __name__ == "__main__":
     unittest.main()
