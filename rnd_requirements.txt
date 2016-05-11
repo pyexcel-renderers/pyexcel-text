@@ -1,0 +1,1 @@
+https://github.com/pyexcel/pyexce/archive/master.zip
