@@ -1,1 +1,1 @@
-https://github.com/pyexcel/pyexce/archive/master.zip
+https://github.com/pyexcel/pyexcel/archive/master.zip
