@@ -11,20 +11,26 @@ import tabulate
 
 from pyexcel.sheets import NominableSheet, SheetStream
 from pyexcel.sheets.matrix import uniform
+from pyexcel.sources.renderer import Renderer
 
+class Tabulater(Renderer):
+    file_types = (
+        'html',
+        'simple',
+        'plain',
+        'grid',
+        'pipe',
+        'orgtbl',
+        'rst',
+        'mediawiki',
+        'latex',
+        'latex_booktabs'
+    )
 
-file_types = (
-    'html',
-    'simple',
-    'plain',
-    'grid',
-    'pipe',
-    'orgtbl',
-    'rst',
-    'mediawiki',
-    'latex',
-    'latex_booktabs'
-)
+    def render_sheet(self, sheet):
+        content = tabulating(sheet, self.file_type, self.write_title)
+        self.stream.write(content)
+
 
 def tabulating(sheet, file_type, write_title):
     content = ""
@@ -47,4 +53,4 @@ def tabulating(sheet, file_type, write_title):
     return content
 
 
-renderer = (tabulating, None)
+renderer = (Tabulater,)

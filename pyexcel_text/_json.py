@@ -8,11 +8,23 @@
     :license: New BSD
 """
 import json
-
+from pyexcel.sources.renderer import Renderer
 
 file_types = ('json',)
 
 
+class Jsonifier(Renderer):
+    file_types = ('json',)
+
+    def render_sheet(self, sheet):
+        content = jsonify(sheet, self.file_type, self.write_title)
+        self.stream.write(content)
+
+    def render_book(self, book):
+        content = jsonify_book(book, self.file_type)
+        self.stream.write(content)
+
+        
 def jsonify(sheet, file_type, write_title):
     content = ""
     table = sheet.to_array()
@@ -40,4 +52,4 @@ def jsonify_book(book, file_type):
     return json.dumps(book.to_dict(), sort_keys=True)
 
 
-renderer = (jsonify, jsonify_book)
+renderer = (Jsonifier,)
