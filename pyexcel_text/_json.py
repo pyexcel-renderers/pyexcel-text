@@ -52,4 +52,4 @@ def jsonify_book(book, file_type):
     return json.dumps(book.to_dict(), sort_keys=True)
 
 
-renderer = (Jsonifier,)
+renderers = (Jsonifier,)
