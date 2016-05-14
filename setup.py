@@ -11,7 +11,7 @@ VERSION = '0.2.1'
 EMAIL = 'wangc_2011 (at) hotmail.com'
 LICENSE = 'New BSD'
 PACKAGES = find_packages(exclude=['ez_setup', 'examples', 'tests'])
-DESCRIPTION = 'A plugin to pyexcel and provides the capbility to present and write data in text fromats'
+DESCRIPTION = 'A plugin to pyexcel and provides the capability to present and write data in text formats'
 KEYWORDS = [
    'excel',
    'python',
