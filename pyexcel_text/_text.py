@@ -11,7 +11,7 @@ import tabulate
 
 from pyexcel.sheets import NominableSheet, SheetStream
 from pyexcel.sheets.matrix import uniform
-from pyexcel.sources.renderer import Renderer
+from pyexcel.sources.write.renderer import Renderer
 
 class Tabulater(Renderer):
     file_types = (

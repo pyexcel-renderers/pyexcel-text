@@ -4,7 +4,7 @@
 
     Provide text output
 
-    :copyright: (c) 2014 by C. W.
+    :copyright: (c) 2014-2016 by C. W.
     :license: New BSD
 """
 from . import _text as text

@@ -8,7 +8,7 @@
     :license: New BSD
 """
 import json
-from pyexcel.sources.renderer import Renderer
+from pyexcel.sources.write.renderer import Renderer
 
 file_types = ('json',)
 
