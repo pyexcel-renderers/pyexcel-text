@@ -29,9 +29,7 @@ class Jsonifier(Renderer):
 def jsonify(sheet, file_type, write_title):
     content = ""
     table = sheet.to_array()
-    if isinstance(table, types.GeneratorType):
-        table = list(table)
-    else:
+    if hasattr(sheet, 'rownames'):
         colnames = sheet.colnames
         rownames = sheet.rownames
         # In the following, row[0] is the name of each row
@@ -42,6 +40,8 @@ def jsonify(sheet, file_type, write_title):
             table = [dict(zip(colnames, row)) for row in table[1:]]
         elif rownames:
             table = dict((row[0], row[1:]) for row in table)
+    else:
+        table = list(table)
     if write_title:
         content = {sheet.name: table}
     else:
