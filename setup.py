@@ -7,15 +7,19 @@ except ImportError:
 
 NAME = 'pyexcel-text'
 AUTHOR = 'C.W.'
-VERSION = '0.2.2'
+VERSION = '0.2.3'
 EMAIL = 'wangc_2011 (at) hotmail.com'
 LICENSE = 'New BSD'
 PACKAGES = find_packages(exclude=['ez_setup', 'examples', 'tests'])
-DESCRIPTION = 'A plugin to pyexcel and provides the capability to present and write data in text formats'
+DESCRIPTION = (
+    'A plugin to pyexcel and provides the capability to present and write d' +
+    'ata in text formats' +
+    ''
+)
 KEYWORDS = [
-   'excel',
-   'python',
-   'pyexcel',
+    'excel',
+    'python',
+    'pyexcel',
         "plain",
         "simple",
         "grid",
