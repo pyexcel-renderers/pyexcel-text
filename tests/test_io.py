@@ -6,12 +6,14 @@ from textwrap import dedent
 import pyexcel as pe
 
 from .fixtures import EXPECTED_RESULTS
-    
+
+
 # Python 2.6 does not have unittest.expectedFailure; just ignore those test
 if hasattr(unittest, 'expectedFailure'):
     expectedFailure = unittest.expectedFailure
 else:
     expectedFailure = lambda func: lambda x: 'skip'
+
 
 class TestIO(unittest.TestCase):
 
@@ -36,8 +38,8 @@ class TestIO(unittest.TestCase):
 
     def test_no_title_multiple_sheets(self):
         adict = {
-            'sheet 1': [[1,2],[3,4]],
-            'sheet 2': [[5,6],[7,8]]
+            'sheet 1': [[1, 2], [3, 4]],
+            'sheet 2': [[5, 6], [7, 8]]
         }
         pe.save_book_as(bookdict=adict, dest_file_name=self.testfile,
                         dest_write_title=False)
@@ -46,8 +48,8 @@ class TestIO(unittest.TestCase):
 
     def test_dict(self):
         adict = {
-            'sheet 1': [[1,2],[3,4]],
-            'sheet 2': [[5,6],[7,8]]
+            'sheet 1': [[1, 2], [3, 4]],
+            'sheet 2': [[5, 6], [7, 8]]
         }
         pe.save_book_as(bookdict=adict, dest_file_name=self.testfile)
 
@@ -80,7 +82,8 @@ class TestIO(unittest.TestCase):
             [4, 588, 6],
             [7, 8, 999]
         ]
-        pe.save_as(array=content, dest_file_name=self.testfile, dest_write_title=False)
+        pe.save_as(array=content, dest_file_name=self.testfile,
+                   dest_write_title=False)
 
         self._check_test_file('no_title_single_sheet')
 
@@ -171,7 +174,6 @@ class TestHTML(TestIO):
 
     TABLEFMT = 'html'
     expected_results = EXPECTED_RESULTS['html']
-
 
 
 class TestJSON(TestIO):

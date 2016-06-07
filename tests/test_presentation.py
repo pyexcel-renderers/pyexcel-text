@@ -6,6 +6,7 @@ import pyexcel as pe
 
 from .fixtures import EXPECTED_RESULTS
 
+
 class TestSimple(TestCase):
 
     TABLEFMT = 'simple'
@@ -24,8 +25,8 @@ class TestSimple(TestCase):
 
     def test_no_title_multiple_sheets(self):
         adict = {
-            'sheet 1': [[1,2],[3,4]],
-            'sheet 2': [[5,6],[7,8]]
+            'sheet 1': [[1, 2], [3, 4]],
+            'sheet 2': [[5, 6], [7, 8]]
         }
         book = pe.get_book(bookdict=adict, dest_write_title=False)
 
@@ -36,8 +37,8 @@ class TestSimple(TestCase):
 
     def test_dict(self):
         adict = {
-            'sheet 1': [[1,2],[3,4]],
-            'sheet 2': [[5,6],[7,8]]
+            'sheet 1': [[1, 2], [3, 4]],
+            'sheet 2': [[5, 6], [7, 8]]
         }
         book = pe.get_book(bookdict=adict)
 
@@ -96,7 +97,8 @@ class TestSimple(TestCase):
         get_presentation_call = getattr(sheet, "get_%s" % self.TABLEFMT)
         presentation = get_presentation_call()
 
-        self._check_presentation('new_normal_usage_irregular_columns', presentation)
+        self._check_presentation('new_normal_usage_irregular_columns',
+                                 presentation)
 
     def test_csvbook_irregular_columns(self):
         content = [
@@ -139,7 +141,8 @@ class TestSimple(TestCase):
         get_presentation_call = getattr(sheet, "get_%s" % self.TABLEFMT)
         presentation = get_presentation_call()
 
-        self._check_presentation('column_series_irregular_columns', presentation)
+        self._check_presentation('column_series_irregular_columns',
+                                 presentation)
 
     def test_data_frame(self):
         content = [
@@ -148,7 +151,8 @@ class TestSimple(TestCase):
             ["Row 2", 4, 5, 6],
             ["Row 3", 7, 8, 9]
         ]
-        sheet = pe.get_sheet(array=content, name_rows_by_column=0, name_columns_by_row=0)
+        sheet = pe.get_sheet(array=content, name_rows_by_column=0,
+                             name_columns_by_row=0)
 
         get_presentation_call = getattr(sheet, "get_%s" % self.TABLEFMT)
         presentation = get_presentation_call()
@@ -185,8 +189,14 @@ class TestJson(TestSimple):
 
     def setUp(self):
         TestSimple.setUp(self)
-        self.expected_results['csvbook_irregular_columns'] = '{"testfile.csv": [[1, 2, 3], [4, 588, 6], [7, 8, ""]]}'
-        self.expected_results['new_normal_usage_irregular_columns'] = '{"pyexcel_sheet1": [[1, 2, 3], [4, 588, 6], [7, 8, ""]]}'
+        _line1 = '{"testfile.csv": [[1, 2, 3], [4, 588, 6], [7, 8, ""]]}'
+        _line2 = '{"pyexcel_sheet1": [[1, 2, 3], [4, 588, 6], [7, 8, ""]]}'
+        delta_result = {
+            'csvbook_irregular_columns': _line1,
+            'new_normal_usage_irregular_columns': _line2
+        }
+        self.expected_results.update(delta_result)
+
     def _check_presentation(self, name, presentation):
 
         self.assertTrue(name in self.expected_results,
@@ -196,10 +206,10 @@ class TestJson(TestSimple):
         self.assertEqual(presentation, expected)
 
 
-
 class TestHtml(TestSimple):
     TABLEFMT = 'html'
     expected_results = EXPECTED_RESULTS['html']
+
     def _check_presentation(self, name, presentation):
 
         self.assertTrue(name in self.expected_results,
@@ -253,7 +263,12 @@ class TestCustomJson(TestCase):
             ]
         }
         book = pe.Book(data)
-        content = '{"Sheet 1": [[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]], "Sheet 2": [["X", "Y", "Z"], [1.0, 2.0, 3.0], [4.0, 5.0, 6.0]], "Sheet 3": [["O", "P", "Q"], [3.0, 2.0, 1.0], [4.0, 3.0, 2.0]]}'
+        content = (
+            '{"Sheet 1": [[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]]' +
+            ',' +
+            ' "Sheet 2": [["X", "Y", "Z"], [1.0, 2.0, 3.0], [4.0, 5.0, 6.0]]' +
+            ',' +
+            ' "Sheet 3": [["O", "P", "Q"], [3.0, 2.0, 1.0], [4.0, 3.0, 2.0]]}')
         self.assertEqual(book.json, content)
 
 
@@ -273,13 +288,13 @@ class TestPresentation(TestCase):
             7    8  999
             -  ---  ---""").strip('\n')
         self.assertEqual(s.simple, content)
-        
+
     def test_irregular_usage(self):
         """textable doesn't like empty string """
         content = [
             [1, 2, 3],
             [4, 588, 6],
-            [7, 8] # one empty string
+            [7, 8]  # one empty string
         ]
         s = pe.Sheet(content)
         content = dedent("""
@@ -290,7 +305,6 @@ class TestPresentation(TestCase):
             7    8
             -  ---  -""").strip('\n')
         self.assertEqual(s.simple, content)
-    
 
     def test_column_series(self):
         content = [

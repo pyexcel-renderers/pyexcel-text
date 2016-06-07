@@ -13,6 +13,7 @@ from pyexcel.sheets import NominableSheet, SheetStream
 from pyexcel.sheets.matrix import uniform
 from pyexcel.sources.rendererfactory import Renderer
 
+
 class Tabulater(Renderer):
     file_types = (
         'html',
@@ -37,7 +38,7 @@ def tabulating(sheet, file_type, write_title):
     if write_title:
         content += "%s:\n" % sheet.name
     table = []
-    keywords = {} 
+    keywords = {}
     if isinstance(sheet, SheetStream):
         table = list(sheet.to_array())
         width, table = uniform(table)

@@ -2,7 +2,7 @@ import platform
 from distutils.version import LooseVersion
 from textwrap import dedent
 import tabulate
-
+# flake8: noqa
 
 EXPECTED_RESULTS = {
     'simple': {

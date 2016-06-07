@@ -8,7 +8,6 @@
     :license: New BSD
 """
 import json
-import types
 from pyexcel.sources.rendererfactory import Renderer
 
 file_types = ('json',)
@@ -25,7 +24,7 @@ class Jsonifier(Renderer):
         content = jsonify_book(book, self.file_type)
         self.stream.write(content)
 
-        
+
 def jsonify(sheet, file_type, write_title):
     content = ""
     table = sheet.to_array()
