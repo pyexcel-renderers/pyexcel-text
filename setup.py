@@ -20,16 +20,17 @@ KEYWORDS = [
     'excel',
     'python',
     'pyexcel',
-        "plain",
-        "simple",
-        "grid",
-        "pipe",
-        "orgtbl",
-        "rst",
-        "mediawiki",
-        "latex",
-        "latex_booktabs",
-        "json"
+    "plain",
+    "simple",
+    "grid",
+    "pipe",
+    "orgtbl",
+    "rst",
+    "mediawiki",
+    "latex",
+    "latex_booktabs",
+    "html",
+    "json"
 ]
 
 INSTALL_REQUIRES = [
@@ -47,11 +48,11 @@ CLASSIFIERS = [
     'Programming Language :: Python',
     'License :: OSI Approved :: BSD License',
     'Intended Audience :: Developers',
-        'Development Status :: 3 - Alpha',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3.3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: Implementation :: PyPy'
+    'Development Status :: 3 - Alpha',
+    'Programming Language :: Python :: 2.7',
+    'Programming Language :: Python :: 3.3',
+    'Programming Language :: Python :: 3.4',
+    'Programming Language :: Python :: Implementation :: PyPy'
 ]
 
 
