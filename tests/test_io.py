@@ -8,13 +8,6 @@ import pyexcel as pe
 from .fixtures import EXPECTED_RESULTS
 
 
-# Python 2.6 does not have unittest.expectedFailure; just ignore those test
-if hasattr(unittest, 'expectedFailure'):
-    expectedFailure = unittest.expectedFailure
-else:
-    expectedFailure = lambda func: lambda x: 'skip'
-
-
 class TestIO(unittest.TestCase):
 
     TABLEFMT = 'simple'
