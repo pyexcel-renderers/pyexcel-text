@@ -284,7 +284,7 @@ EXPECTED_RESULTS = {
         'data_frame':
             '{"pyexcel_sheet1": {"Row 1": {"Column 1": 1, "Column 2": 2, "Column 3": 3}, "Row 2": {"Column 1": 4, "Column 2": 5, "Column 3": 6}, "Row 3": {"Column 1": 7, "Column 2": 8, "Column 3": 9}}}',
         'row_series':
-            '{"pyexcel_sheet1": {"Row 1": [1, 2, 3], "Row 2": [4, 5, 6], "Row 3": [7, 8, 9]}}',
+            '{"pyexcel_sheet1": [{"Row 1": 1, "Row 2": 4, "Row 3": 7}, {"Row 1": 2, "Row 2": 5, "Row 3": 8}, {"Row 1": 3, "Row 2": 6, "Row 3": 9}]}'
     }
 }
 

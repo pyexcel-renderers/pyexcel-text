@@ -36,9 +36,9 @@ def jsonify(sheet, file_type, write_title):
             table = dict((row[0], dict(zip(colnames, row[1:])))
                          for row in table[1:])
         elif colnames:
-            table = [dict(zip(colnames, row)) for row in table[1:]]
+            table = sheet.to_records()
         elif rownames:
-            table = dict((row[0], row[1:]) for row in table)
+            table = sheet.to_records()
     else:
         table = list(table)
     if write_title:
