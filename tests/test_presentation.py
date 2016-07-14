@@ -216,7 +216,8 @@ class TestJson(TestSimple):
         content = [[datetime.datetime(2016, 7, 14, 11, 11, 11)]]
         sheet = pe.get_sheet(array=content)
         presentation = sheet.get_json()
-        eq_(presentation, '{"pyexcel_sheet1": [["2016-07-14 11:11:11.000000"]]}')
+        eq_(presentation,
+            '{"pyexcel_sheet1": [["2016-07-14 11:11:11.000000"]]}')
 
 
 class TestHtml(TestSimple):
