@@ -1,7 +1,8 @@
 import os
 from unittest import TestCase
 from textwrap import dedent
-
+import datetime
+from nose.tools import eq_
 import pyexcel as pe
 
 from .fixtures import EXPECTED_RESULTS
@@ -204,6 +205,18 @@ class TestJson(TestSimple):
 
         expected = self.expected_results[name]
         self.assertEqual(presentation, expected)
+
+    def test_date_serialization(self):
+        content = [[datetime.date(2016, 7, 14)]]
+        sheet = pe.get_sheet(array=content)
+        presentation = sheet.get_json()
+        eq_(presentation, '{"pyexcel_sheet1": [["2016-07-14"]]}')
+
+    def test_datetime_serialization(self):
+        content = [[datetime.datetime(2016, 7, 14, 11, 11, 11)]]
+        sheet = pe.get_sheet(array=content)
+        presentation = sheet.get_json()
+        eq_(presentation, '{"pyexcel_sheet1": [["2016-07-14 11:11:11.000000"]]}')
 
 
 class TestHtml(TestSimple):

@@ -8,6 +8,7 @@
     :license: New BSD
 """
 import json
+import datetime
 from pyexcel.sources.rendererfactory import Renderer
 
 file_types = ('json',)
@@ -45,11 +46,20 @@ def jsonify(sheet, file_type, write_title):
         content = {sheet.name: table}
     else:
         content = table
-    return json.dumps(content, sort_keys=True)
+    return json.dumps(content, sort_keys=True, default=_serializer)
 
 
 def jsonify_book(book, file_type):
-    return json.dumps(book.to_dict(), sort_keys=True)
+    return json.dumps(book.to_dict(), sort_keys=True,
+                      default=_serializer)
+
+
+def _serializer(obj):
+    if isinstance(obj, datetime.datetime):
+        return obj.strftime('%Y-%m-%d %H:%M:%S.%f')
+    elif isinstance(obj, datetime.date):
+        return obj.strftime('%Y-%m-%d')
+    return str(obj)
 
 
 renderers = (Jsonifier,)
