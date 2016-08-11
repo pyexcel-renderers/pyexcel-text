@@ -60,6 +60,3 @@ def _serializer(obj):
     elif isinstance(obj, datetime.date):
         return obj.strftime('%Y-%m-%d')
     return str(obj)
-
-
-renderers = (Jsonifier,)

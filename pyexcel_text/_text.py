@@ -52,6 +52,3 @@ def tabulating(sheet, file_type, write_title):
         tablefmt=file_type,
         **keywords)
     return content
-
-
-renderers = (Tabulater,)
