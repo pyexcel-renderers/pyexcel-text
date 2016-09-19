@@ -9,7 +9,7 @@
 """
 import tabulate
 
-from pyexcel.sheets import NominableSheet, SheetStream
+from pyexcel.generators import SheetStream
 from pyexcel.sheets.matrix import uniform
 from pyexcel.renderers.factory import Renderer
 
@@ -42,8 +42,7 @@ def tabulating(sheet, file_type, write_title):
     if isinstance(sheet, SheetStream):
         table = list(sheet.to_array())
         width, table = uniform(table)
-
-    if isinstance(sheet, NominableSheet):
+    else:
         if len(sheet.colnames) > 0:
             keywords['headers'] = 'firstrow'
         table = sheet.to_array()

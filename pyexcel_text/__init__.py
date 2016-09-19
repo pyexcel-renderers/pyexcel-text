@@ -7,10 +7,9 @@
     :copyright: (c) 2014-2016 by C. W.
     :license: New BSD
 """
-from . import _text as text
-from . import _json as json
+from . import _text  # noqa
+from . import _json  # noqa
 
-renderers = text.renderers + json.renderers
 
 _SHARED_MESSAGE = """
 Removed since v0.1.2! Please use save_as, save_book_as of pyexcel or
