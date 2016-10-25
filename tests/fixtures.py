@@ -270,7 +270,7 @@ EXPECTED_RESULTS = {
         'no_title_single_sheet':
             '[[1, 2, 3], [4, 588, 6], [7, 8, 999]]',
         'new_normal_usage_irregular_columns':
-            '{"pyexcel_sheet1": [[1, 2, 3], [4, 588, 6], [7, 8]]}',
+            '{"pyexcel_sheet1": [[1, 2, 3], [4, 588, 6], [7, 8, ""]]}',
         'column_series':
             '{"pyexcel_sheet1": [{"Column 1": 1, "Column 2": 2, "Column 3": 3},'
             ' {"Column 1": 4, "Column 2": 5, "Column 3": 6},'
@@ -280,7 +280,7 @@ EXPECTED_RESULTS = {
             ' {"Column 1": 4, "Column 2": 5, "Column 3": 6},'
             ' {"Column 1": 7, "Column 2": 8, "Column 3": ""}]}',
         'csvbook_irregular_columns':
-            '{"testfile.csv": [[1, 2, 3], [4, 588, 6], [7, 8]]}',
+            '{"testfile.csv": [[1, 2, 3], [4, 588, 6], [7, 8, ""]]}',
         'data_frame':
             '{"pyexcel_sheet1": {"Row 1": {"Column 1": 1, "Column 2": 2, "Column 3": 3}, "Row 2": {"Column 1": 4, "Column 2": 5, "Column 3": 6}, "Row 3": {"Column 1": 7, "Column 2": 8, "Column 3": 9}}}',
         'row_series':

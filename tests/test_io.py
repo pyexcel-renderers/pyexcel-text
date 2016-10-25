@@ -84,7 +84,7 @@ class TestIO(unittest.TestCase):
         content = [
             [1, 2, 3],
             [4, 588, 6],
-            [7, 8, '']
+            [7, 8]
         ]
         pe.save_as(array=content, dest_file_name=self.testfile)
 
@@ -94,7 +94,7 @@ class TestIO(unittest.TestCase):
         content = [
             [1, 2, 3],
             [4, 588, 6],
-            [7, 8, '']
+            [7, 8]
         ]
         self.testfile2 = "testfile.csv"
         pe.save_as(array=content, dest_file_name=self.testfile2)
