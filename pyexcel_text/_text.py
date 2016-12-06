@@ -29,8 +29,8 @@ class Tabulater(Renderer):
     )
 
     def render_sheet(self, sheet):
-        content = tabulating(sheet, self.file_type, self.write_title)
-        self.stream.write(content)
+        content = tabulating(sheet, self._file_type, self._write_title)
+        self._stream.write(content)
 
 
 def tabulating(sheet, file_type, write_title):

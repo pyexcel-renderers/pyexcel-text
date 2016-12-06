@@ -18,12 +18,12 @@ class Jsonifier(Renderer):
     file_types = ('json',)
 
     def render_sheet(self, sheet):
-        content = jsonify(sheet, self.file_type, self.write_title)
-        self.stream.write(content)
+        content = jsonify(sheet, self._file_type, self._write_title)
+        self._stream.write(content)
 
     def render_book(self, book):
-        content = jsonify_book(book, self.file_type)
-        self.stream.write(content)
+        content = jsonify_book(book, self._file_type)
+        self._stream.write(content)
 
 
 def jsonify(sheet, file_type, write_title):
