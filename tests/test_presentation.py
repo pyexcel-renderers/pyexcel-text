@@ -29,7 +29,7 @@ class TestSimple(TestCase):
             'sheet 1': [[1, 2], [3, 4]],
             'sheet 2': [[5, 6], [7, 8]]
         }
-        book = pe.get_book(bookdict=adict, dest_write_title=False)
+        book = pe.get_book(bookdict=adict)
 
         get_presentation_call = getattr(book, "get_%s" % self.TABLEFMT)
         presentation = get_presentation_call(write_title=False)

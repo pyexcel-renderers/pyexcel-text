@@ -200,5 +200,6 @@ class TestStream(unittest.TestCase):
             -  ---  ---""").strip('\n')
         self.assertEqual(s.simple, content)
 
+
 if __name__ == "__main__":
     unittest.main()
