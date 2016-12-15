@@ -145,32 +145,27 @@ Html
 
     >>> book.save_as("myfile.html")
     >>> myfile = open("myfile.html")
-    >>> print(myfile.read())
+    >>> print(myfile.read()) # doctest: +SKIP
     Sheet 1:
     <table>
-    <tbody>
     <tr><td style="text-align: right;">1</td><td style="text-align: right;">2</td><td style="text-align: right;">3</td></tr>
     <tr><td style="text-align: right;">4</td><td style="text-align: right;">5</td><td style="text-align: right;">6</td></tr>
     <tr><td style="text-align: right;">7</td><td style="text-align: right;">8</td><td style="text-align: right;">9</td></tr>
-    </tbody>
     </table>
     Sheet 2:
     <table>
-    <tbody>
     <tr><td>X  </td><td>Y  </td><td>Z  </td></tr>
     <tr><td>1.0</td><td>2.0</td><td>3.0</td></tr>
     <tr><td>4.0</td><td>5.0</td><td>6.0</td></tr>
-    </tbody>
     </table>
     Sheet 3:
     <table>
-    <tbody>
     <tr><td>O  </td><td>P  </td><td>Q  </td></tr>
     <tr><td>3.0</td><td>2.0</td><td>1.0</td></tr>
     <tr><td>4.0</td><td>3.0</td><td>2.0</td></tr>
-    </tbody>
     </table>
 
+Please note tabulate 0.7.7 gives an extra tbody tag around tr tag.
 
 .. testcode::
    :hide:
