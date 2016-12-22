@@ -50,7 +50,7 @@ CLASSIFIERS = [
 ]
 
 INSTALL_REQUIRES = [
-    'pyexcel>=0.3.4',
+    'pyexcel>=0.4.0',
     'tabulate>=0.7.4',
 ]
 
