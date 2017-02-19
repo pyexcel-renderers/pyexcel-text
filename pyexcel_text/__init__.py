@@ -7,8 +7,7 @@
     :copyright: (c) 2014-2016 by C. W.
     :license: New BSD
 """
-from . import _text  # noqa
-from . import _json  # noqa
+__pyexcel_renderer_plugins__ = ['_text', '_json']
 
 
 _SHARED_MESSAGE = """
