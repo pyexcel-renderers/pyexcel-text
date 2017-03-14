@@ -7,30 +7,32 @@
     :copyright: (c) 2014-2016 by C. W.
     :license: New BSD
 """
-__pyexcel_renderer_plugins__ = ['_text', '_json']
+__TEXT_META__ = {
+    'plugin_type': 'renderer',
+    'submodule': '_text',
+    'file_types': [
+        'html',
+        'simple',
+        'plain',
+        'grid',
+        'pipe',
+        'orgtbl',
+        'rst',
+        'mediawiki',
+        'latex',
+        'latex_booktabs'
+    ],
+    'stream_type': 'string'
+}
 
+__JSON_META__ = {
+    'plugin_type': 'renderer',
+    'submodule': '_json',
+    'file_types': ['json'],
+    'stream_type': 'string'
+}
 
-_SHARED_MESSAGE = """
-Removed since v0.1.2! Please use save_as, save_book_as of pyexcel or
-pyexcel.Sheet.save_as, pyexcel.Book.save_as.
-"""
-
-
-def save_as(instance, filename):
-    """
-    Legacy modular function. Now it is removed
-
-    raising an exception here to get the attention of
-    the user of pyexcel
-    """
-    raise Exception(_SHARED_MESSAGE)
-
-
-def save_to_memory(instance, stream):
-    """
-    Legacy modular function. Now it is removed
-
-    raising an exception here to get the attention of
-    the user of pyexcel
-    """
-    raise Exception(_SHARED_MESSAGE)
+__pyexcel_plugins__ = [
+    __TEXT_META__,
+    __JSON_META__
+]

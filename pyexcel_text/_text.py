@@ -9,7 +9,7 @@
 """
 import tabulate
 
-from pyexcel.generators import SheetStream
+from pyexcel.internal.generators import SheetStream
 from pyexcel.sheets.matrix import uniform
 from pyexcel.renderers.factory import Renderer
 
