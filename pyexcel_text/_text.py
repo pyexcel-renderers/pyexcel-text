@@ -9,9 +9,9 @@
 """
 import tabulate
 
-from pyexcel.internal.generators import SheetStream
+from pyexcel.internal import SheetStream
 from pyexcel.sheets.matrix import uniform
-from pyexcel.renderers.factory import Renderer
+from pyexcel.renderers import Renderer
 
 
 class Tabulater(Renderer):
