@@ -7,7 +7,8 @@ Change log
 Updated:
 ********************************************************************************
 
-#. Support pyexcel v0.5.0. Plugin interface updated.
+#. Support pyexcel v0.5.0. Plugin interface updated to Renderer
+#. remove deprecated save_as and save_to_memory functions
 
 0.2.5 - 28.10.2016
 --------------------------------------------------------------------------------
