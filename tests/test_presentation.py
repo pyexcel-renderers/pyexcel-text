@@ -241,7 +241,7 @@ class TestCustomJson(TestCase):
             [4, 588, 6],
             [7, 8, 999]
         ]
-        s = pe.sheets.Sheet(content)
+        s = pe.Sheet(content)
         content = "{\"pyexcel sheet\": [[1, 2, 3], [4, 588, 6], [7, 8, 999]]}"
         self.assertEqual(s.json, content)
 
