@@ -10,7 +10,7 @@
 import tabulate
 
 from pyexcel.internal import SheetStream
-from pyexcel.sheets.matrix import uniform
+from pyexcel.internal.sheets.matrix import uniform
 from pyexcel.renderers import Renderer
 
 
