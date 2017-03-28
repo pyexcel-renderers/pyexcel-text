@@ -9,7 +9,7 @@
 """
 import json
 import datetime
-from pyexcel.renderers import Renderer
+from pyexcel.renderer import Renderer
 
 file_types = ('json',)
 
