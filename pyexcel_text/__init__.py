@@ -7,10 +7,12 @@
     :copyright: (c) 2014-2016 by C. W.
     :license: New BSD
 """
-__TEXT_META__ = {
-    'plugin_type': 'renderer',
-    'submodule': '_text',
-    'file_types': [
+from pyexcel.internal.common import PyexcelPluginList
+
+
+__pyexcel_plugins__ = PyexcelPluginList(__name__).add_a_renderer(
+    submodule='_text',
+    file_types=[
         'html',
         'simple',
         'plain',
@@ -22,17 +24,9 @@ __TEXT_META__ = {
         'latex',
         'latex_booktabs'
     ],
-    'stream_type': 'string'
-}
-
-__JSON_META__ = {
-    'plugin_type': 'renderer',
-    'submodule': '_json',
-    'file_types': ['json'],
-    'stream_type': 'string'
-}
-
-__pyexcel_plugins__ = [
-    __TEXT_META__,
-    __JSON_META__
-]
+    stream_type='string'
+).add_a_renderer(
+    submodule='_json',
+    file_types=['json'],
+    stream_type='string'
+)
