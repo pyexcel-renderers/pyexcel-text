@@ -10,8 +10,8 @@
 from pyexcel.internal.common import PyexcelPluginList
 
 
-__pyexcel_plugins__ = PyexcelPluginList(__name__).add_a_renderer(
-    submodule='_text',
+PyexcelPluginList(__name__).add_a_renderer(
+    submodule='_text.Tabulater',
     file_types=[
         'html',
         'simple',
@@ -26,7 +26,7 @@ __pyexcel_plugins__ = PyexcelPluginList(__name__).add_a_renderer(
     ],
     stream_type='string'
 ).add_a_renderer(
-    submodule='_json',
+    submodule='_json.Jsonifier',
     file_types=['json'],
     stream_type='string'
 )
