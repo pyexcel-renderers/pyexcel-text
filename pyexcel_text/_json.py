@@ -11,11 +11,8 @@ import json
 import datetime
 from pyexcel.renderer import Renderer
 
-file_types = ('json',)
-
 
 class Jsonifier(Renderer):
-    file_types = ('json',)
 
     def render_sheet(self, sheet):
         content = jsonify(sheet, self._file_type, self._write_title)

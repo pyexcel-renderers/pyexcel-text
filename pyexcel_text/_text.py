@@ -15,19 +15,6 @@ from pyexcel.renderer import Renderer
 
 
 class Tabulater(Renderer):
-    file_types = (
-        'html',
-        'simple',
-        'plain',
-        'grid',
-        'pipe',
-        'orgtbl',
-        'rst',
-        'mediawiki',
-        'latex',
-        'latex_booktabs'
-    )
-
     def render_sheet(self, sheet):
         content = tabulating(sheet, self._file_type, self._write_title)
         self._stream.write(content)
