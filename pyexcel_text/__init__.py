@@ -7,7 +7,7 @@
     :copyright: (c) 2014-2016 by C. W.
     :license: New BSD
 """
-from pyexcel.internal.common import PyexcelPluginChain
+from pyexcel.plugins import PyexcelPluginChain
 
 
 PyexcelPluginChain(__name__).add_a_renderer(
