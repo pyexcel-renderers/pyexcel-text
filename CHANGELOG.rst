@@ -9,6 +9,8 @@ Updated:
 
 #. Read specific data structure from pure json format: two dimensional
    array, a dicionary of list or two dimensional list and a list of records.
+#. Read newline delimited json. two dimensional arrays, a a dicionary of list
+   or two dimensional list and a list of records are supported.
 
 0.2.6 - 19.06.2017
 --------------------------------------------------------------------------------

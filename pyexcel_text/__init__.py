@@ -34,4 +34,9 @@ PyexcelPluginChain(__name__).add_a_renderer(
     file_types=[
         'json'
     ]
+).add_a_parser(
+    relative_plugin_class_path='ndjsonr.NDJsonParser',
+    file_types=[
+        'ndjson'
+    ]
 )

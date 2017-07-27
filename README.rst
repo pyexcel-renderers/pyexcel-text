@@ -68,6 +68,27 @@ What's new?
     | China   | 350km/h   | 2008 |
     +---------+-----------+------+
 
+Here is a variant of json:
+
+    >>> highspeedrail2 = pe.Sheet()
+    >>> highspeedrail2.ndjson = """
+    ... {"year": 1903, "country": "Germany", "speed": "206.7km/h"}
+    ... {"year": 1964, "country": "Japan", "speed": "210km/h"}
+    ... {"year": 2008, "country": "China", "speed": "350km/h"}
+    ... """.strip()
+    >>> highspeedrail2.name = 'High Speed Train Speed Break Through (Source: Wikipedia)'
+    >>> highspeedrail2
+    High Speed Train Speed Break Through (Source: Wikipedia):
+    +---------+-----------+------+
+    | country | speed     | year |
+    +---------+-----------+------+
+    | Germany | 206.7km/h | 1903 |
+    +---------+-----------+------+
+    | Japan   | 210km/h   | 1964 |
+    +---------+-----------+------+
+    | China   | 350km/h   | 2008 |
+    +---------+-----------+------+
+
 
 Simple
 ------------
