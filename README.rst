@@ -2,11 +2,18 @@
 pyexcel-text - Let you focus on data, instead of text formats
 ================================================================================
 
-.. image:: https://api.travis-ci.org/pyexcel/pyexcel-text.png
-    :target: http://travis-ci.org/pyexcel/pyexcel-text
 
-.. image:: https://codecov.io/github/pyexcel/pyexcel-text/coverage.png
-    :target: https://codecov.io/github/pyexcel/pyexcel-text
+.. image:: https://raw.githubusercontent.com/pyexcel/pyexcel.github.io/master/images/patreon.png
+   :target: https://www.patreon.com/pyexcel
+
+.. image:: https://api.travis-ci.org/pyexcel/pyexcel-text.svg?branch=master
+   :target: http://travis-ci.org/pyexcel/pyexcel-text
+
+.. image:: https://codecov.io/gh/pyexcel/pyexcel-text/branch/master/graph/badge.svg
+   :target: https://codecov.io/gh/pyexcel/pyexcel-text
+
+.. image:: https://img.shields.io/gitter/room/gitterHQ/gitter.svg
+   :target: https://gitter.im/pyexcel/Lobby
 
 
 It is a plugin to `pyexcel <https://github.com/pyexcel/pyexcel>`__ and extends
@@ -26,6 +33,41 @@ its capbility to present and write data in text fromats mainly through `tabulate
 
 Usage
 ======
+
+What's new?
+--------------
+
+.. code-block:: python
+
+    >>> import pyexcel as pe
+    >>> sheet = pe.Sheet()
+    >>> sheet.json = '[[1,2],[2,3]]'
+    >>> sheet
+    pyexcel sheet:
+    +---+---+
+    | 1 | 2 |
+    +---+---+
+    | 2 | 3 |
+    +---+---+
+    >>> highspeedrail = pe.Sheet()
+    >>> sheet.json = """
+    ... [{"year": 1903, "country": "Germany", "speed": "206.7km/h"},
+    ... {"year": 1964, "country": "Japan", "speed": "210km/h"},
+    ... {"year": 2008, "country": "China", "speed": "350km/h"}]
+    ... """
+    >>> sheet.name = 'High Speed Train Speed Break Through (Source: Wikipedia)'
+    >>> sheet
+    High Speed Train Speed Break Through (Source: Wikipedia):
+    +---------+-----------+------+
+    | country | speed     | year |
+    +---------+-----------+------+
+    | Germany | 206.7km/h | 1903 |
+    +---------+-----------+------+
+    | Japan   | 210km/h   | 1964 |
+    +---------+-----------+------+
+    | China   | 350km/h   | 2008 |
+    +---------+-----------+------+
+
 
 Simple
 ------------

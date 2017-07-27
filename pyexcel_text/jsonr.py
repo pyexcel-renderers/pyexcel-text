@@ -7,6 +7,7 @@
     :copyright: (c) 2014-2016 by C. W.
     :license: New BSD
 """
+import pyexcel.constants as constants
 from pyexcel.parser import AbstractParser
 from pyexcel.plugins.sources.pydata.common import (
     ArrayReader, RecordsReader, DictReader)
@@ -29,9 +30,10 @@ class JsonParser(AbstractParser):
         return as_a_dict_of_2_dimensional_array(content, **keywords)
 
 
-def as_a_dict_of_2_dimensional_array(content, **keywords):
+def as_a_dict_of_2_dimensional_array(
+        content, sheet_name=constants.DEFAULT_NAME,
+        **keywords):
     if isinstance(content, list):
-        sheet_name = keywords.get('sheet_name')
         if isinstance(content[0], list):
             array_reader = ArrayReader(content, **keywords)
             return {sheet_name: array_reader.to_array()}
@@ -51,6 +53,5 @@ def as_a_dict_of_2_dimensional_array(content, **keywords):
             bookdict = BookDictSource(content, **keywords)
             return bookdict.get_data()
         else:
-            sheet_name = keywords.get('sheet_name')
             dict_reader = DictReader(content, **keywords)
             return {sheet_name: dict_reader.to_array()}
