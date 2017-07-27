@@ -10,7 +10,7 @@ PY26 = PY2 and sys.version_info[1] < 7
 
 NAME = 'pyexcel-text'
 AUTHOR = 'C.W.'
-VERSION = '0.2.6'
+VERSION = '0.2.7'
 EMAIL = 'wangc_2011@hotmail.com'
 LICENSE = 'New BSD'
 DESCRIPTION = (
@@ -18,10 +18,10 @@ DESCRIPTION = (
     'ata in text formats' +
     ''
 )
+URL = 'https://github.com/pyexcel/pyexcel-text'
+DOWNLOAD_URL = '%s/archive/0.2.6.tar.gz' % URL
+FILES = ['README.rst', 'CHANGELOG.rst']
 KEYWORDS = [
-    'excel',
-    'python',
-    'pyexcel',
     "plain",
     "simple",
     "grid",
@@ -33,6 +33,7 @@ KEYWORDS = [
     "latex_booktabs",
     "html",
     "json"
+    'python'
 ]
 
 CLASSIFIERS = [
@@ -95,7 +96,11 @@ def filter_out_test_code(file_handle):
                     found_test_code = False
                     yield line
         else:
-            yield line
+            for keyword in ['|version|', '|today|']:
+                if keyword in line:
+                    break
+            else:
+                yield line
 
 
 if __name__ == '__main__':
@@ -105,7 +110,9 @@ if __name__ == '__main__':
         version=VERSION,
         author_email=EMAIL,
         description=DESCRIPTION,
-        long_description=read_files('README.rst', 'CHANGELOG.rst'),
+        url=URL,
+        download_url=DOWNLOAD_URL,
+        long_description=read_files(*FILES),
         license=LICENSE,
         keywords=KEYWORDS,
         extras_require=EXTRAS_REQUIRE,

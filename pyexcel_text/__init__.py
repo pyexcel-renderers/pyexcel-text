@@ -29,4 +29,9 @@ PyexcelPluginChain(__name__).add_a_renderer(
     relative_plugin_class_path='_json.Jsonifier',
     file_types=['json'],
     stream_type='string'
+).add_a_parser(
+    relative_plugin_class_path='jsonr.JsonParser',
+    file_types=[
+        'json'
+    ]
 )
