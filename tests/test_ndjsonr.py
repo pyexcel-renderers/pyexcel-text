@@ -24,7 +24,7 @@ class TestStructure:
         }
         self._verify(expected)
 
-    def test_dict(self):
+    def test_auto_detect_dict(self):
         sheet_name = 'test'
         self.content = self.parser.parse_file(get_file("dict.ndjson"),
                                               sheet_name=sheet_name)
@@ -90,7 +90,7 @@ class TestMedia:
                                               sheet_name='test')
         self._verify()
 
-    def test_file(self):
+    def test_auto_detect_array(self):
         self.content = self.parser.parse_file(get_file("array.ndjson"),
                                               on_demand=True,
                                               sheet_name='test')

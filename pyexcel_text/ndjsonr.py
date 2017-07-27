@@ -28,7 +28,7 @@ class FlatDictReader(ArrayReader):
 
     def row_iterator(self):
         for row in self._native_sheet:
-            for key, item in row.iteritems():
+            for key, item in row.items():
                 if isinstance(item, list):
                     yield [key] + item
                 else:
