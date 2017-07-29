@@ -1,5 +1,5 @@
 import os
-from nose.tools import eq_
+from nose.tools import eq_, raises
 from pyexcel._compact import StringIO
 from pyexcel_text.jsonp import JsonParser
 
@@ -8,6 +8,18 @@ class TestStructure:
 
     def setUp(self):
         self.parser = JsonParser("json")
+
+    @raises(Exception)
+    def test_wrong_format(self):
+        sheet_name = 'test'
+        self.content = self.parser.parse_file(get_file("unknown.json"),
+                                              sheet_name=sheet_name)
+
+    @raises(Exception)
+    def test_bad_dict(self):
+        sheet_name = 'test'
+        self.content = self.parser.parse_file(get_file("bad_dict.json"),
+                                              sheet_name=sheet_name)
 
     def test_dict(self):
         sheet_name = 'test'
