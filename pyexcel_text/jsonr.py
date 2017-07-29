@@ -1,57 +1,59 @@
 """
-    pyexcel_text.jsonr
+    pyexcel_text.json
     ~~~~~~~~~~~~~~~~~~~
 
-    Render json input
+    Provide json output
 
     :copyright: (c) 2014-2016 by C. W.
     :license: New BSD
 """
-import pyexcel.constants as constants
-from pyexcel.parser import AbstractParser
-from pyexcel.plugins.sources.pydata.common import (
-    ArrayReader, RecordsReader, DictReader)
-from pyexcel.plugins.sources.pydata.bookdict import BookDictSource
 import json
+import datetime
+from pyexcel.renderer import Renderer
 
 
-class JsonParser(AbstractParser):
-    def parse_file(self, file_name, **keywords):
-        with open(file_name, 'r') as f:
-            content = json.load(f)
-            return as_a_dict_of_2_dimensional_array(content, **keywords)
+class Jsonifier(Renderer):
 
-    def parse_file_stream(self, file_stream, **keywords):
-        content = json.load(file_stream)
-        return as_a_dict_of_2_dimensional_array(content, **keywords)
+    def render_sheet(self, sheet):
+        content = jsonify(sheet, self._file_type, self._write_title)
+        self._stream.write(content)
 
-    def parse_file_content(self, file_content, **keywords):
-        content = json.loads(file_content)
-        return as_a_dict_of_2_dimensional_array(content, **keywords)
+    def render_book(self, book):
+        content = jsonify_book(book, self._file_type)
+        self._stream.write(content)
 
 
-def as_a_dict_of_2_dimensional_array(
-        content, sheet_name=constants.DEFAULT_NAME,
-        **keywords):
-    if isinstance(content, list):
-        if isinstance(content[0], list):
-            array_reader = ArrayReader(content, **keywords)
-            return {sheet_name: array_reader.to_array()}
-        elif isinstance(content[0], dict):
-            records_reader = RecordsReader(content, **keywords)
-            return {sheet_name: records_reader.to_array()}
-        else:
-            raise ValueError("Unknow file format")
-    elif isinstance(content, dict):
-        try:
-            keys = list(content.keys())
-            first_item = content.get(keys[0])[0]
-        except Exception as e:
-            print(e)
-            raise
-        if isinstance(first_item, list):
-            bookdict = BookDictSource(content, **keywords)
-            return bookdict.get_data()
-        else:
-            dict_reader = DictReader(content, **keywords)
-            return {sheet_name: dict_reader.to_array()}
+def jsonify(sheet, file_type, write_title):
+    content = ""
+    table = sheet.to_array()
+    if hasattr(sheet, 'rownames'):
+        colnames = sheet.colnames
+        rownames = sheet.rownames
+        # In the following, row[0] is the name of each row
+        if colnames and rownames:
+            table = dict((row[0], dict(zip(colnames, row[1:])))
+                         for row in table[1:])
+        elif colnames:
+            table = sheet.to_records()
+        elif rownames:
+            table = sheet.to_records()
+    else:
+        table = list(table)
+    if write_title:
+        content = {sheet.name: table}
+    else:
+        content = table
+    return json.dumps(content, sort_keys=True, default=_serializer)
+
+
+def jsonify_book(book, file_type):
+    return json.dumps(book.to_dict(), sort_keys=True,
+                      default=_serializer)
+
+
+def _serializer(obj):
+    if isinstance(obj, datetime.datetime):
+        return obj.strftime('%Y-%m-%d %H:%M:%S.%f')
+    elif isinstance(obj, datetime.date):
+        return obj.strftime('%Y-%m-%d')
+    return str(obj)

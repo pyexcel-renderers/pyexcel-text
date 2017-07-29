@@ -1,8 +1,8 @@
 import os
 from nose.tools import eq_, raises
 from pyexcel._compact import StringIO
-from pyexcel_text.ndjsonr import NDJsonParser as JsonParser
-from pyexcel_text.ndjsonr import ARRAY, RECORDS, DICT, AUTO_DETECT
+from pyexcel_text.ndjsonp import NDJsonParser as JsonParser
+from pyexcel_text.ndjsonp import ARRAY, RECORDS, DICT, AUTO_DETECT
 
 
 class TestStructure:

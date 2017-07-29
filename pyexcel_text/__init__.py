@@ -11,7 +11,7 @@ from pyexcel.plugins import PyexcelPluginChain
 
 
 PyexcelPluginChain(__name__).add_a_renderer(
-    relative_plugin_class_path='_text.Tabulater',
+    relative_plugin_class_path='textr.Tabulater',
     file_types=[
         'html',
         'simple',
@@ -26,16 +26,16 @@ PyexcelPluginChain(__name__).add_a_renderer(
     ],
     stream_type='string'
 ).add_a_renderer(
-    relative_plugin_class_path='_json.Jsonifier',
+    relative_plugin_class_path='jsonr.Jsonifier',
     file_types=['json'],
     stream_type='string'
 ).add_a_parser(
-    relative_plugin_class_path='jsonr.JsonParser',
+    relative_plugin_class_path='jsonp.JsonParser',
     file_types=[
         'json'
     ]
 ).add_a_parser(
-    relative_plugin_class_path='ndjsonr.NDJsonParser',
+    relative_plugin_class_path='ndjsonp.NDJsonParser',
     file_types=[
         'ndjson'
     ]

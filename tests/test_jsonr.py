@@ -1,7 +1,7 @@
 import os
 from nose.tools import eq_
 from pyexcel._compact import StringIO
-from pyexcel_text.jsonr import JsonParser
+from pyexcel_text.jsonp import JsonParser
 
 
 class TestStructure:
