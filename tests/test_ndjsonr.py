@@ -10,6 +10,21 @@ class TestStructure:
     def setUp(self):
         self.parser = JsonParser("json")
 
+    def test_key_value_dict(self):
+        sheet_name = 'test'
+        self.content = self.parser.parse_file(
+            get_file("key_value_dict.ndjson"),
+            struct=DICT,
+            sheet_name=sheet_name)
+        expected = {
+            sheet_name: [
+                [u'a', 1],
+                [u'b', 2],
+                [u'c', 3]
+            ]
+        }
+        self._verify(expected)
+
     def test_dict(self):
         sheet_name = 'test'
         self.content = self.parser.parse_file(get_file("dict.ndjson"),
@@ -66,10 +81,16 @@ class TestStructure:
         self._verify(expected)
 
     @raises(Exception)
-    def test_unknown(self):
+    def test_unknown_as_struct(self):
         sheet_name = 'test'
         self.content = self.parser.parse_file(get_file("records.ndjson"),
                                               struct='unknown',
+                                              sheet_name=sheet_name)
+
+    @raises(Exception)
+    def test_unknown_format(self):
+        sheet_name = 'test'
+        self.content = self.parser.parse_file(get_file("unknown.ndjson"),
                                               sheet_name=sheet_name)
 
     def _verify(self, expected):
