@@ -1,10 +1,10 @@
 """
-    pyexcel_text.html
+    pyexcel_text.textr
     ~~~~~~~~~~~~~~~~~~~
 
-    Provide tabulate output, see file_types for more details
+    Render text output, see file_types for more details
 
-    :copyright: (c) 2014-2016 by C. W.
+    :copyright: (c) 2014-2017 by C. W.
     :license: New BSD
 """
 import tabulate

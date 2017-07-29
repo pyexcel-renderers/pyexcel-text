@@ -1,18 +1,18 @@
 """
-    pyexcel_text.jsonr
+    pyexcel_text.jsonp
     ~~~~~~~~~~~~~~~~~~~
 
-    Render json input
+    Parse json input
 
-    :copyright: (c) 2014-2016 by C. W.
+    :copyright: (c) 2014-2017 by C. W.
     :license: New BSD
 """
+import json
 import pyexcel.constants as constants
 from pyexcel.parser import AbstractParser
 from pyexcel.plugins.sources.pydata.common import (
     ArrayReader, RecordsReader, DictReader)
 from pyexcel.plugins.sources.pydata.bookdict import BookDictSource
-import json
 
 
 class JsonParser(AbstractParser):

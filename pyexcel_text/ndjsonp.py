@@ -1,19 +1,19 @@
 """
     pyexcel_text.ndjsonr
-    ~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~
 
     Render newline delimited json input
 
-    :copyright: (c) 2014-2016 by C. W.
+    :copyright: (c) 2014-2017 by C. W.
     :license: New BSD
 """
-import pyexcel.constants as constants
-from pyexcel.parser import AbstractParser
-from pyexcel._compact import StringIO
-from pyexcel.plugins.sources.pydata.common import (
-    ArrayReader, RecordsReader)
 import json
 import itertools
+import pyexcel._compact as compact
+import pyexcel.constants as constants
+from pyexcel.parser import AbstractParser
+from pyexcel.plugins.sources.pydata.common import (
+    ArrayReader, RecordsReader)
 
 
 AUTO_DETECT = 'AD'
@@ -43,6 +43,9 @@ READERS = {
 
 
 class NDJsonParser(AbstractParser):
+    """
+    parse ndjson
+    """
     def parse_file(self, file_name, on_demand=False, **keywords):
         if on_demand:
             file_handle = open(file_name, 'r')
@@ -74,15 +77,21 @@ class NDJsonParser(AbstractParser):
 
     def parse_file_content(self, file_content, **keywords):
         return self.parse_file_stream(
-            StringIO(file_content), **keywords)
+            compact.StringIO(file_content), **keywords)
 
 
 def json_loads(file_stream):
+    """
+    Simple load each line as json
+    """
     for raw_row in file_stream:
         yield json.loads(raw_row)
 
 
 def detect_format(content_generator):
+    """
+    This function need to make sheet.ndjson to work
+    """
     struct = AUTO_DETECT
     first_line = next(content_generator)
     if isinstance(first_line, list):

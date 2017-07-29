@@ -1,10 +1,10 @@
 """
-    pyexcel_text.json
+    pyexcel_text.jsonr
     ~~~~~~~~~~~~~~~~~~~
 
-    Provide json output
+    Render json output
 
-    :copyright: (c) 2014-2016 by C. W.
+    :copyright: (c) 2014-2017 by C. W.
     :license: New BSD
 """
 import json
