@@ -22,6 +22,9 @@ its capbility to present and write data in text fromats mainly through `tabulate
 * "json"
 * "html"
 
+Since v0.2.7, `json` and `ndjson` input are also supported.
+
+
 Usage
 ======
 
