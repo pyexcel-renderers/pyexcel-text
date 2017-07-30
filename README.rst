@@ -50,13 +50,13 @@ What's new?
     | 2 | 3 |
     +---+---+
     >>> highspeedrail = pe.Sheet()
-    >>> sheet.json = """
+    >>> highspeedrail.json = """
     ... [{"year": 1903, "country": "Germany", "speed": "206.7km/h"},
     ... {"year": 1964, "country": "Japan", "speed": "210km/h"},
     ... {"year": 2008, "country": "China", "speed": "350km/h"}]
     ... """
-    >>> sheet.name = 'High Speed Train Speed Break Through (Source: Wikipedia)'
-    >>> sheet
+    >>> highspeedrail.name = 'High Speed Train Speed Break Through (Source: Wikipedia)'
+    >>> highspeedrail
     High Speed Train Speed Break Through (Source: Wikipedia):
     +---------+-----------+------+
     | country | speed     | year |
@@ -67,6 +67,42 @@ What's new?
     +---------+-----------+------+
     | China   | 350km/h   | 2008 |
     +---------+-----------+------+
+    >>> henley_on_thames_facts = pe.Sheet()
+    >>> henley_on_thames_facts.json = """
+    ... {"area": "5.58 square meters",
+    ... "population": "11,619",
+    ... "civial parish": "Henley-on-Thames",
+    ... "latitude": "51.536",
+    ... "longitude": "-0.898"
+    ... }"""
+    >>> henley_on_thames_facts
+    pyexcel sheet:
+    +--------------------+------------------+----------+-----------+------------+
+    | area               | civial parish    | latitude | longitude | population |
+    +--------------------+------------------+----------+-----------+------------+
+    | 5.58 square meters | Henley-on-Thames | 51.536   | -0.898    | 11,619     |
+    +--------------------+------------------+----------+-----------+------------+
+    >>> ccs_insight = pe.Sheet()
+    >>> ccs_insight.name = "Worldwide Mobile Phone Shipments (Billions), 2017-2021"
+    >>> ccs_insight.json = """
+    ... {"year": ["2017", "2018", "2019", "2020", "2021"],
+    ... "smart phones": [1.53, 1.64, 1.74, 1.82, 1.90],
+    ... "feature phones": [0.46, 0.38, 0.30, 0.23, 0.17]}"""
+    >>> ccs_insight
+    pyexcel sheet:
+    +----------------+--------------+------+
+    | feature phones | smart phones | year |
+    +----------------+--------------+------+
+    | 0.46           | 1.53         | 2017 |
+    +----------------+--------------+------+
+    | 0.38           | 1.64         | 2018 |
+    +----------------+--------------+------+
+    | 0.3            | 1.74         | 2019 |
+    +----------------+--------------+------+
+    | 0.23           | 1.82         | 2020 |
+    +----------------+--------------+------+
+    | 0.17           | 1.9          | 2021 |
+    +----------------+--------------+------+
 
 Here is a variant of json:
 
@@ -88,6 +124,43 @@ Here is a variant of json:
     +---------+-----------+------+
     | China   | 350km/h   | 2008 |
     +---------+-----------+------+
+    >>> henley_on_thames_facts2 = pe.Sheet()
+    >>> henley_on_thames_facts2.ndjson = """
+    ... {"area": "5.58 square meters"}
+    ... {"population": "11,619"}
+    ... {"civial parish": "Henley-on-Thames"}
+    ... {"latitude": "51.536"}
+    ... {"longitude": "-0.898"}
+    ... """.strip()
+    >>> henley_on_thames_facts2
+    pyexcel sheet:
+    +---------------+--------------------+
+    | area          | 5.58 square meters |
+    +---------------+--------------------+
+    | population    | 11,619             |
+    +---------------+--------------------+
+    | civial parish | Henley-on-Thames   |
+    +---------------+--------------------+
+    | latitude      | 51.536             |
+    +---------------+--------------------+
+    | longitude     | -0.898             |
+    +---------------+--------------------+
+    >>> ccs_insight2 = pe.Sheet()
+    >>> ccs_insight2.name = "Worldwide Mobile Phone Shipments (Billions), 2017-2021"
+    >>> ccs_insight2.ndjson = """
+    ... {"year": ["2017", "2018", "2019", "2020", "2021"]}
+    ... {"smart phones": [1.53, 1.64, 1.74, 1.82, 1.90]}
+    ... {"feature phones": [0.46, 0.38, 0.30, 0.23, 0.17]}
+    ... """.strip()
+    >>> ccs_insight2
+    pyexcel sheet:
+    +----------------+------+------+------+------+------+
+    | year           | 2017 | 2018 | 2019 | 2020 | 2021 |
+    +----------------+------+------+------+------+------+
+    | smart phones   | 1.53 | 1.64 | 1.74 | 1.82 | 1.9  |
+    +----------------+------+------+------+------+------+
+    | feature phones | 0.46 | 0.38 | 0.3  | 0.23 | 0.17 |
+    +----------------+------+------+------+------+------+
 
 
 Simple

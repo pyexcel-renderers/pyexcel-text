@@ -93,6 +93,12 @@ class TestStructure:
         self.content = self.parser.parse_file(get_file("unknown.ndjson"),
                                               sheet_name=sheet_name)
 
+    @raises(ValueError)
+    def test_bad_json_format(self):
+        sheet_name = 'test'
+        self.content = self.parser.parse_file(get_file("bad.ndjson"),
+                                              sheet_name=sheet_name)
+
     def _verify(self, expected):
         for key in self.content:
             self.content[key] = list(self.content[key])

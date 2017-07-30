@@ -84,8 +84,12 @@ def json_loads(file_stream):
     """
     Simple load each line as json
     """
-    for raw_row in file_stream:
-        yield json.loads(raw_row)
+    try:
+        for raw_row in file_stream:
+            yield json.loads(raw_row)
+    except ValueError:
+        raise ValueError("There has been an json decode error."
+                         "Current version is not error tolerant")
 
 
 def detect_format(content_generator):
