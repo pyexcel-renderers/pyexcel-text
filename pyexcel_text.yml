@@ -3,7 +3,7 @@ name: "pyexcel-text"
 nick_name: text
 version: 0.2.7
 current_version: 0.2.7
-release: 0.2.6
+release: 0.2.7
 file_type: text
 nodocs: true
 dependencies:
