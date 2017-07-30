@@ -1,9 +1,9 @@
 overrides: "pyexcel.yaml"
 name: "pyexcel-text"
 nick_name: text
-version: 0.2.7
-current_version: 0.2.7
-release: 0.2.7
+version: 0.2.7.1
+current_version: 0.2.7.1
+release: 0.2.7.1
 file_type: text
 nodocs: true
 dependencies:

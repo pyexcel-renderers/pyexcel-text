@@ -10,7 +10,7 @@ PY26 = PY2 and sys.version_info[1] < 7
 
 NAME = 'pyexcel-text'
 AUTHOR = 'C.W.'
-VERSION = '0.2.7'
+VERSION = '0.2.7.1'
 EMAIL = 'wangc_2011@hotmail.com'
 LICENSE = 'New BSD'
 DESCRIPTION = (
@@ -19,7 +19,7 @@ DESCRIPTION = (
     ''
 )
 URL = 'https://github.com/pyexcel/pyexcel-text'
-DOWNLOAD_URL = '%s/archive/0.2.7.tar.gz' % URL
+DOWNLOAD_URL = '%s/archive/0.2.7.1.tar.gz' % URL
 FILES = ['README.rst', 'CHANGELOG.rst']
 KEYWORDS = [
     "plain",
